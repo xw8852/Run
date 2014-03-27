@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<property name="isfiles" value="true" />
+
+
+	<dirset id="dirset" dir="res">
+		<include name="layout*" />
+	</dirset>
+
+	<property name="dirs" refid="dirset" />
+	<target name="filterlayout">
+		<delete dir="Blayout" />
+		<delete file="layout.txt" />
+
+		<antcall target="listFile" />
+		<loadfile property="layouts" srcfile="layout.txt" encoding="UTF-8">
+		</loadfile>
+
+		<foreach list="${layouts}" param="layout_1" target="layouts2">
+		</foreach>
+		
+		<loadfile property="layouts2" srcfile="layout.txt" encoding="UTF-8">
+		</loadfile>
+
+		<foreach list="${layouts2}" param="layout_2" target="layouts">
+		</foreach> 
+	</target>
+
+	<target name="layouts">
+		<foreach list="${dirs}" param="layout_dir" target="rlayouts" delimiter=";">
+		</foreach>
+	</target>
+
+	<target name="layouts2">
+		<foreach list="${dirs}" param="layout_dir1" target="rlayouts2" delimiter=";">
+		</foreach>
+	</target>
+
+	<target name="rlayouts">
+		<mkdir dir="Blayout/${layout_dir}" />
+		<copy file="res/${layout_dir}/${layout_2}.xml" overwrite="true" tofile="Blayout/${layout_dir}/${layout_2}.xml" failonerror="false" />
+	</target>
+
+	<target name="rlayouts2">
+		<echo>--- true res/${layout_dir1}/${layout_1}.xml</echo>
+		<loadfile encoding="UTF-8" property="theChar2" srcfile="res/${layout_dir1}/${layout_1}.xml" failonerror="no">
+		</loadfile>
+		<findtask intput="${theChar2}" property="user3" regexp="@layout/[_0-9a-z]{1,}" delimiter="" />
+		<propertyregex casesensitive="false" input="${user3}" property="user1" regexp="@layout/" replace="" />
+		<echo append="true" file="layout.txt" message="${user1}," />
+		<echo>---   ${user3}----</echo>
+	</target>
+
+	<target name="listFile">
+		<foreach list="" param="thefile" target="rfile">
+			<path id="base.path">
+				<fileset id="matches" dir="src">
+					<filename name="**/*.java" />
+					<containsregexp expression="R.layout.[_0-9a-z]{1,}" />
+				</fileset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="rfile">
+		<loadfile encoding="UTF-8" property="theChar" srcfile="${thefile}">
+			
+		</loadfile>
+		<findtask intput="${theChar}" property="user" regexp="R.layout.[_0-9a-z]{1,}" delimiter="" />
+		<propertyregex casesensitive="false" input="${user}" property="user1" regexp="R.layout." replace="" />
+		<echo file="layout.txt" message="${user1}," append="true" />
+	</target>
+
+
+
+
+</project>

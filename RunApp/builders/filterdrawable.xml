@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<property name="isfiles" value="true" />
+
+    <!-- 查找 -->
+
+    <dirset
+        id="dirset3"
+        dir="res" >
+        <include name="layout*" />
+        <include name="drawable" />
+        <include name="value*" />
+    </dirset>
+    <property name="dirs3" refid="dirset3" />
+    <!-- 拷贝 -->
+	<dirset id="dirset2" dir="res">
+		<include name="drawable*" />	
+	</dirset>
+	
+	<property name="dirs2" refid="dirset2" />
+	
+	
+	<target name="filterdrawable">
+		<delete dir="Bdrawable" />
+		<delete file="drawable.txt" />
+		<!-- 查找 -->
+		<antcall target="listFile2" />
+	
+		<loadfile property="drawables" srcfile="drawable.txt" encoding="UTF-8">
+		</loadfile>
+
+		<foreach list="${drawables}" param="drawable_1" target="drawables2">
+		</foreach>
+		
+		<!-- 拷贝 -->
+		<loadfile property="drawables2" srcfile="drawable.txt" encoding="UTF-8">
+		</loadfile>
+
+		<foreach list="${drawables2}" param="drawable_2" target="drawables">
+		</foreach> 
+	</target>
+
+	<!-- 查找 -->
+	<target name="drawables2">
+		<foreach list="${dirs3}" param="drawable_dir1" target="rdrawables2" delimiter=";">
+		</foreach>
+	</target>
+	<target name="rdrawables2">
+		<echo>--- true res/${drawable_dir1}/${drawable_1}.xml</echo>
+		<loadfile encoding="UTF-8" property="theChar2" srcfile="res/${drawable_dir1}/${drawable_1}.xml" failonerror="no">
+		</loadfile>
+		<findtask intput="${theChar2}" property="user3" regexp="@drawable/[_0-9a-z]{1,}" delimiter="" />
+		<propertyregex casesensitive="false" input="${user3}" property="user1" regexp="@drawable/" replace="" />
+		<echo append="true" file="drawable.txt" message="${user1}," />
+		<echo>---   ${user1}, ----</echo>
+	</target>
+	
+	<!-- 拷贝 -->
+	<target name="drawables">
+		<foreach list="${dirs2}" param="drawable_dir" target="rdrawables" delimiter=";">
+		</foreach>
+	</target>
+	<target name="rdrawables">
+		<mkdir dir="Bdrawable/${drawable_dir}" />
+		<copy file="res/${drawable_dir}/${drawable_2}.xml" overwrite="true" tofile="Bdrawable/${drawable_dir}/${drawable_2}.xml" failonerror="false" />
+		<copy file="res/${drawable_dir}/${drawable_2}.png" overwrite="true" tofile="Bdrawable/${drawable_dir}/${drawable_2}.png" failonerror="false" />
+		<copy file="res/${drawable_dir}/${drawable_2}.jpg" overwrite="true" tofile="Bdrawable/${drawable_dir}/${drawable_2}.jpg" failonerror="false" />
+	</target>
+	
+	
+<!-- 查找代码用引用的资源文件 -->
+	<target name="listFile2">
+		<foreach list="" param="thefile" target="rfile2">
+			<path id="base.path">
+				<fileset id="matches" dir="src">
+					<filename name="**/*.java" />
+					<containsregexp expression="R.drawable.[_0-9a-z]{1,}" />
+				</fileset>
+			</path>
+		</foreach>
+		<foreach list="" param="thefile2" target="rfile3">
+			<path id="base.path">
+				<fileset id="matches" dir="res">
+					<filename name="layout*/*.xml" />
+					<containsregexp expression="@drawable/[_0-9a-z]{1,}" />
+				</fileset>
+			</path>
+		</foreach>
+	</target>
+
+	<target name="rfile2">
+		<loadfile encoding="UTF-8" property="theChar" srcfile="${thefile}">
+			
+		</loadfile>
+		<findtask intput="${theChar}" property="user" regexp="R.drawable.[_0-9a-z]{1,}" delimiter="" />
+		<propertyregex casesensitive="false" input="${user}" property="user1" regexp="R.drawable." replace="" />
+		<echo file="drawable.txt" message="${user1}," append="true" />
+	</target>
+
+	<target name="rfile3">
+		<loadfile encoding="UTF-8" property="theChar" srcfile="${thefile2}">		
+		</loadfile>
+		<findtask intput="${theChar}" property="user" regexp="@drawable/[_0-9a-z]{1,}" delimiter="" />
+		<propertyregex casesensitive="false" input="${user}" property="user1" regexp="@drawable/" replace="" />
+		<echo file="drawable.txt" message="${user1}," append="true" />
+	</target>
+
+
+</project>

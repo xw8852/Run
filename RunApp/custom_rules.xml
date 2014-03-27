@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="">
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
+	<taskdef classname="com.msx7.ant.task.FindTask" classpath="builders/ant-findtask.jar" name="findtask">
+	</taskdef>
+	<tstamp>
+
+		<format pattern="yyyyMMdd_HHmmss" property="APK_FILE_TIME" />
+
+		<format pattern="yyyyMMdd" property="DSTAMP" />
+
+		<format pattern="HHmm" property="TSTAMP" />
+	</tstamp>
+
+	<property name="channel" value="" />
+	<property name="server" value="" />
+	<property name="down" value="" />
+	<property name="html" value="" />
+	<property name="apkdir" value="apks/${DSTAMP}/${TSTAMP}" />
+	<property name="apkfile" value="" />
+	<property name="jpush" value="" />
+	<property name="log.open" value="" />
+	<property name="progurad_preffix" value=""/>
+	
+	<scriptdef name="propertyreset" language="javascript" description="Allows to assign @{property} new value">
+		<attribute name="name" />
+		<attribute name="value" />
+		        project.setProperty(attributes.get("name"), attributes.get("value"));
+		</scriptdef>
+	<target name="-inside-noprogurad-set-properties">
+		<propertyreset name="channel" value="${channel.test}" />
+		<propertyreset name="server" value="${Inside_SERVER_PATH}" />
+		<propertyreset name="down" value="${Inside_DOWNLOAD}" />
+		<propertyreset name="html" value="${Inside_URL_PATH}" />
+		<propertyreset name="is-progurad" value="false" />
+		<propertyreset name="apkfile" value="Haiyou${APK_FILE_TIME}Test.apk" />
+		<propertyreset name="jpush" value="${pushmsg.inside}" />
+		<propertyreset name="log.open" value="${log.Inopen}"/>
+	</target>
+
+	<target name="-inside-progurad-set-properties" depends="-inside-noprogurad-set-properties">	
+		<propertyreset name="is-progurad" value="true" />
+		<propertyreset name="progurad_preffix" value="Test-"/>
+		<propertyreset name="apkfile" value="Progurad_Haiyou${APK_FILE_TIME}Test.apk" />
+	</target>
+
+	<target name="-outside-noprogurad-set-properties">
+		<propertyreset name="channel" value="${channel.publish}" />
+		<propertyreset name="server" value="${Outside_SERVER_PATH}" />
+		<propertyreset name="down" value="${Outside_DOWNLOAD}" />
+		<propertyreset name="html" value="${Outside_URL_PATH}" />
+		<propertyreset name="is-progurad" value="false" />
+		<propertyreset name="apkfile" value="Haiyou${APK_FILE_TIME}Mobile.apk" />
+		<propertyreset name="jpush" value="${pushmsg.outside}" />
+		<propertyreset name="log.open" value="${log.Outopen}"/>
+	</target>
+	
+	<target name="-outside-progurad-set-properties" depends="-outside-noprogurad-set-properties">
+		<propertyreset name="is-progurad" value="true" />
+		<propertyreset name="apkfile" value="Progurad_Haiyou${APK_FILE_TIME}Mobile.apk" />
+		<propertyreset name="progurad_preffix" value="Mobile-"/>
+	</target>
+
+
+	<macrodef name="buildapk">
+
+		<!-- <attribute name="channelName" /> -->
+
+		<sequential>
+			<propertyreset name="version.code" value="${versioncode}" />
+			<propertyreset name="version.name" value="${versionname}" />
+			<copy file="AndroidManifest.xml" overwrite="true" tofile="builders/AndroidManifest.xml" />
+			<copy file="src/com/hiker/onebyone/config/GuideConfig.java" overwrite="true" tofile="builders/GuideConfig.java" />
+			<replaceregexp byline="true" file="AndroidManifest.xml" match="versionCode=&quot;94" encoding="UTF-8" replace="versionCode=&quot;${version.code}" />
+			<replaceregexp byline="true" file="AndroidManifest.xml" match="versionName=&quot;V1.2.3" encoding="UTF-8" replace="versionName=&quot;${version.name}" />
+			<replaceregexp byline="true" file="AndroidManifest.xml" match="Ceshi" encoding="UTF-8" replace="${channel}" />
+			<replaceregexp
+                byline="true"
+                encoding="UTF-8"
+                file="src/com/hiker/onebyone/log/HLog.java"
+                match="openLog = ([^;]*)"
+                replace="openLog = ${log.open}" />
+			<replaceregexp
+                byline="true"
+                encoding="UTF-8"
+                file="src/com/hiker/onebyone/config/GuideConfig.java"
+                match="HIKER_SERVER_PATH([^;]*)"
+                replace="HIKER_SERVER_PATH = &quot;${server}&quot;" />
+			<replaceregexp
+                byline="true"
+                encoding="UTF-8"
+                file="src/com/hiker/onebyone/config/GuideConfig.java"
+                match="DOWNLOAD_SERVER_URL([^;]*)=([^;]*)"
+                replace="DOWNLOAD_SERVER_URL = &quot;${down}&quot;" />
+
+			<replaceregexp
+			    byline="true"
+			    encoding="UTF-8"
+			    file="src/com/hiker/onebyone/config/GuideConfig.java"
+			    match="isTestJpushMsg =([^;]*)"
+			    replace="isTestJpushMsg = ${jpush}" />
+			
+			<replaceregexp
+			    byline="true"
+			    encoding="UTF-8"
+			    file="src/com/hiker/onebyone/config/GuideConfig.java"
+			    match="HIKER_URL_PATH([^;]*)"
+			    replace="HIKER_URL_PATH = &quot;${html}&quot;" />
+<!-- build apk -->
+			<antcall target="clean" />
+			<antcall target="release" />
+
+			<mkdir dir="${apkdir}" />
+			<echo>apkfile : ${apkdir}/${apkfile} </echo>
+			<echo>version.code /version.name: ${version.code}/${version.name} </echo>
+			<copy file="bin/${ant.project.name}-release.apk" tofile="${apkdir}/${apkfile}" force="true" />
+
+			<delete file="AndroidManifest.xml" />
+
+			<copy file="builders/AndroidManifest.xml" overwrite="true" tofile="AndroidManifest.xml" />
+			<copy file="builders/GuideConfig.java" overwrite="true" tofile="src/com/hiker/onebyone/config/GuideConfig.java" />
+			
+			<condition property="deployProguardIsExist">  
+			        <and>  
+			            <available file="bin/proguard" type="dir"/>  
+			        </and>   
+			    </condition>  
+			<if condition="${deployProguardIsExist}">
+				<then>
+					<copydir src="bin/proguard" dest="${apkdir}/${progurad_preffix}proguard" > </copydir>
+				</then>
+			</if>
+					
+			
+			<delete file="builders/AndroidManifest.xml" />
+			<delete file="builders/GuideConfig.java" />
+		</sequential>
+	</macrodef>
+
+	<target name="cDebug" depends="-inside-noprogurad-set-properties">
+		<replaceregexp byline="true" file="ant.properties" match="lastInstall=${lastInstall}" encoding="UTF-8" replace="lastInstall=true" />
+		<buildapk />
+	</target>
+
+	<target name="Test" depends="-inside-progurad-set-properties">
+		<replaceregexp byline="true" file="ant.properties" match="lastInstall=${lastInstall}" encoding="UTF-8" replace="lastInstall=true" />
+		<buildapk />
+	</target>
+
+	<target name="cPublish" depends="-outside-noprogurad-set-properties">
+		<replaceregexp byline="true" file="ant.properties" match="lastInstall=${lastInstall}" encoding="UTF-8" replace="lastInstall=true" />
+		<buildapk />
+	</target>
+
+	<target name="Publish" depends="-outside-progurad-set-properties">
+		<replaceregexp byline="true" file="ant.properties" match="lastInstall=${lastInstall}" encoding="UTF-8" replace="lastInstall=true" />
+		<buildapk />
+	</target>
+
+	<target name="debugr" depends="cDebug">
+		<propertyreset name="out.final.file" value="${apkdir}/${apkfile}" />
+		<replaceregexp byline="true" file="ant.properties" match="lastInstall=${lastInstall}" encoding="UTF-8" replace="lastInstall=${out.final.file}" />
+		<antcall target="install" />
+		<antcall target="startApp" />
+	</target>
+
+	<target name="publishr" depends="Publish">
+		<propertyreset name="out.final.file" value="${apkdir}/${apkfile}" />
+		<replaceregexp byline="true" file="ant.properties" match="lastInstall=${lastInstall}" encoding="UTF-8" replace="lastInstall=${out.final.file}" />
+		<antcall target="install" />
+		<antcall target="startApp" />
+	</target>
+
+	<target name="rInstall">
+		<available file="${lastInstall}" property="lastInstall.exist" />
+		<if condition="${lastInstall.exist}">
+			<then>
+				<propertyreset name="out.final.file" value="${lastInstall}" />
+				<antcall target="install" />
+				<antcall target="startApp" />
+			</then>
+			<else>
+				<antcall target="debugr" />
+			</else>
+		</if>
+	</target>
+
+
+	<target name="startApp">
+		<exec executable="${adb}" failonerror="true">
+			<arg line="${adb.device.arg}" />
+			<arg value="shell" />
+			<arg value="am" />
+			<arg value="start" />
+			<arg value="-n" />
+			<arg value="${package}/${mainActivity}" />
+		</exec>
+		<antcall target="clean" />
+	</target>
+
+	<target name="buildPublish">
+		<antcall target="Test" />
+		<antcall target="clean" />
+		<antcall target="Publish" />
+		<copy file="release notes.txt" overwrite="true" tofile="apks/${DSTAMP}/${TSTAMP}/release notes.txt" />
+		<zip destfile="apks/${DSTAMP}/${TSTAMP}/Progurad.zip" >
+            <fileset dir="apks/${DSTAMP}/${TSTAMP}/" >
+                <include name="*proguard/*" />
+            </fileset>
+        </zip>
+
+        <delete>
+            <fileset
+                dir="apks/${DSTAMP}/${TSTAMP}/"
+                includes="*proguard/*" />
+        </delete>
+		
+		<exec executable="cmd.exe" failonerror="true">
+		    <arg line="/c start"/>
+			<arg value="apks\${DSTAMP}\${TSTAMP}" />
+		</exec>
+	</target>
+
+
+
+
+</project>
