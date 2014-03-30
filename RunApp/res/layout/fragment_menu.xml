@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66000000"
+    android:paddingRight="50dp"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|left"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="20dp" >
+
+        <com.android.ivymobi.runapp.widget.RoundImageView
+            android:id="@+id/roundImageView1"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_big_pic" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Abel-zh"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:paddingLeft="20dp" 
+        >
+
+        <RadioButton
+            android:drawableLeft="@drawable/ic_set"
+            android:drawablePadding="5dp"
+            android:id="@+id/radio0"
+            android:layout_width="fill_parent"
+            android:layout_height="42dp" android:paddingRight="20dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/ic_set"
+            android:text="主页" />
+
+         <RadioButton
+            android:drawableLeft="@drawable/ic_set"
+            android:drawablePadding="5dp"
+            android:id="@+id/radio1"
+            android:layout_width="fill_parent"
+            android:layout_height="42dp" android:paddingRight="20dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/ic_set"
+            android:text="附近排行" />
+           <RadioButton
+            android:drawableLeft="@drawable/ic_set"
+            android:drawablePadding="5dp"
+            android:id="@+id/radio2"
+            android:layout_width="fill_parent"
+            android:layout_height="42dp" android:paddingRight="20dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/ic_set"
+            android:text="好友关注" />
+           
+             <RadioButton
+            android:drawableLeft="@drawable/ic_set"
+            android:drawablePadding="5dp"
+            android:id="@+id/radio3"
+            android:layout_width="fill_parent" android:paddingRight="20dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableRight="@drawable/ic_set"
+            android:text="消息" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="38dp" >
+
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:drawableTop="@drawable/ic_launcher"
+            android:text="Button" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:background="@android:color/transparent"
+            android:drawableTop="@drawable/ic_launcher"
+            android:text="Button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:gravity="center"
+        android:paddingLeft="20dp" >
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_set"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="20dp"
+            android:background="#22000000" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="乐动力V1.2.2"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+</LinearLayout>

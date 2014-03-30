@@ -18,7 +18,7 @@ public class SlidingGroup extends ViewGroup {
     private static final float NANOTIME_DIV = 1000000000.0f;
     private static final float SMOOTHING_SPEED = 0.75f;
     private static final float SMOOTHING_CONSTANT = (float) (0.016 / Math.log(SMOOTHING_SPEED));
-    private int offset = 60;
+    private int offset = 40;
     private float mSmoothingTime;
     private float mTouchX;
     private SlidingOvershootInterpolator mScrollInterpolator;
@@ -247,6 +247,9 @@ public class SlidingGroup extends ViewGroup {
         }
 
         velocity = Math.abs(velocity);
+        if(!settle){
+            duration = 0;
+        }else
         if (velocity > 0) {
             duration += (duration / (velocity / BASELINE_FLING_VELOCITY))
                     * FLING_VELOCITY_INFLUENCE;
