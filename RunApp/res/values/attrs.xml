@@ -8,5 +8,19 @@
     <declare-styleable name="RoundImageView">
         <attr name="gap" format="dimension"></attr>
     </declare-styleable>
+    <declare-styleable name="RadioGroup">
+        <attr name="checkedButton" format="integer" />
+        <attr name="orientation" />
+    </declare-styleable>
+
+    <attr name="radioButtonStyle" format="reference" />
+    
+    <attr name="orientation">
+
+        <!-- Defines an horizontal widget. -->
+        <enum name="horizontal" value="0" />
+        <!-- Defines a vertical widget. -->
+        <enum name="vertical" value="1" />
+    </attr>
 
 </resources>
