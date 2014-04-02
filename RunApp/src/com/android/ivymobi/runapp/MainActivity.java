@@ -1,90 +1,118 @@
 package com.android.ivymobi.runapp;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.android.ivymobi.runapp.fragment.FriendFragment;
-import com.android.ivymobi.runapp.fragment.HomeFragment;
-import com.android.ivymobi.runapp.fragment.MessageFragment;
-import com.android.ivymobi.runapp.fragment.RankFragment;
-import com.android.ivymobi.runapp.widget.SlidingGroup;
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.map.LocationData;
+import com.baidu.mapapi.map.MapController;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MyLocationOverlay;
+import com.baidu.mapapi.map.MyLocationOverlay.LocationMode;
+import com.baidu.platform.comapi.basestruct.GeoPoint;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends Activity {
     View msetView;
-    SlidingGroup slidingGroup;
-    RadioGroup radioGroup;
-    TextView titleView;
 
+    TextView titleView;
+    MapView mMapView;
+    LocationClient mLocClient = null;
+    LocationData locData = null;
+    MyLocationOverlay myLocationOverlay;
+    public MyLocationListenner myListener = new MyLocationListenner();
+    private MapController mMapController = null;
+    boolean isRequest = false;//是否手动触发请求定位
+    boolean isFirstLoc = true;//是否首次定位
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        RunApplication app = (RunApplication) this.getApplication();
+        if (app.mBMapManager == null) {
+            app.mBMapManager = new BMapManager(getApplicationContext());
+            /**
+             * 如果BMapManager没有初始化则初始化BMapManager
+             */
+            app.mBMapManager.init(new RunApplication.MyGeneralListener());
+        }
+        // 初始化地图
         setContentView(R.layout.activity_main);
-        msetView = findViewById(R.id.titleBar).findViewById(R.id.imageView1);
-        slidingGroup = (SlidingGroup) findViewById(R.id.slidingGroup1);
-        msetView.setOnClickListener(mSettingClickListener);
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup1);
-        titleView = (TextView) findViewById(R.id.title);
-        radioGroup.setOnCheckedChangeListener(mCheckedChangeListener);
-        changeFragment(-1);
+        mMapView = (MapView) findViewById(R.id.bmapView);
+        mMapController = mMapView.getController();
+
+        mMapView.getController().setZoom(17);
+        mMapView.getController().enableClick(true);
+
+        // 定位初始化
+        mLocClient = new LocationClient(this);
+        locData = new LocationData();
+        mLocClient.registerLocationListener(myListener);
+        LocationClientOption option = new LocationClientOption();
+        option.setOpenGps(true);// 打开gps
+        option.setCoorType("bd09ll"); // 设置坐标类型
+        option.setScanSpan(1000);
+        mLocClient.setLocOption(option);
+        mLocClient.start();
+
+        // 定位图层初始化
+        myLocationOverlay = new MyLocationOverlay(mMapView);
+        // 设置定位数据
+        myLocationOverlay.setData(locData);
+        // 添加定位图层
+        mMapView.getOverlays().add(myLocationOverlay);
+        myLocationOverlay.enableCompass();
+        // 修改定位数据后刷新图层生效
+        mMapView.refresh();
     }
 
-    View.OnClickListener mSettingClickListener = new View.OnClickListener() {
+    /**
+     * 定位SDK监听函数
+     */
+    public class MyLocationListenner implements BDLocationListener {
 
         @Override
-        public void onClick(View v) {
-            slidingGroup.snapToNext();
+        public void onReceiveLocation(BDLocation location) {
+            if (location == null)
+                return;
+
+            locData.latitude = location.getLatitude();
+            locData.longitude = location.getLongitude();
+            // 如果不显示定位精度圈，将accuracy赋值为0即可
+            locData.accuracy = location.getRadius();
+            // 此处可以设置 locData的方向信息, 如果定位 SDK 未返回方向信息，用户可以自己实现罗盘功能添加方向信息。
+            locData.direction = location.getDerect();
+            // 更新定位数据
+            myLocationOverlay.setData(locData);
+            // 更新图层数据执行刷新后生效
+            mMapView.refresh();
+            // 是手动触发请求或首次定位时，移动到定位点
+            if (isRequest || isFirstLoc) {
+                // 移动地图到定位点
+                Log.d("LocationOverlay", "receive location, animate to it");
+                mMapController.animateTo(new GeoPoint((int) (locData.latitude * 1e6), (int) (locData.longitude * 1e6)));
+                isRequest = true;
+                isFirstLoc=false;
+                myLocationOverlay.setLocationMode(LocationMode.FOLLOWING);
+//                requestLocButton.setText("跟随");
+//                mCurBtnType = E_BUTTON_TYPE.FOLLOW;
+            }
+            // 首次定位完成
+            isFirstLoc = false;
         }
-    };
-    RadioGroup.OnCheckedChangeListener mCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
 
-        @Override
-        public void onCheckedChanged(RadioGroup group, int checkedId) {
-            changeFragment(checkedId);
+        public void onReceivePoi(BDLocation poiLocation) {
+            if (poiLocation == null) {
+                return;
+            }
         }
-
-    };
-
-    @Override
-    public void onBackPressed() {
-        if (!slidingGroup.isDefault())
-            slidingGroup.snapToNext();
-        else
-            super.onBackPressed();
-    }
-
-    void changeFragment(int id) {
-        Fragment fragment = null;
-        switch (id) {
-        default:
-        case R.id.radio0:
-            titleView.setText("主页");
-            fragment = new HomeFragment();
-            break;
-        case R.id.radio1:
-            titleView.setText("附件排行");
-            fragment = new RankFragment();
-            break;
-        case R.id.radio2:
-            titleView.setText("关注好友");
-            fragment = new FriendFragment();
-            break;
-        case R.id.radio3:
-            titleView.setText("消息");
-            fragment = new MessageFragment();
-            break;
-        }
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.root, fragment);
-        ft.show(fragment);
-        ft.commit();
-        if (!slidingGroup.isDefault())
-            slidingGroup.snapToDefault();
     }
 }

@@ -1,0 +1,354 @@
+com.android.run.demo.pedometer.CaloriesNotifier -> com.android.run.demo.pedometer.a:
+    com.android.run.demo.pedometer.CaloriesNotifier$Listener mListener -> g
+    double METRIC_RUNNING_FACTOR -> h
+    double IMPERIAL_RUNNING_FACTOR -> i
+    double METRIC_WALKING_FACTOR -> j
+    double IMPERIAL_WALKING_FACTOR -> k
+    double mCalories -> l
+    com.android.run.demo.pedometer.PedometerSettings mSettings -> a
+    com.android.run.demo.pedometer.Utils mUtils -> b
+    boolean mIsMetric -> c
+    boolean mIsRunning -> d
+    float mStepLength -> e
+    float mBodyWeight -> f
+    57:59:void setCalories(float) -> a
+    61:66:void reloadSettings() -> a
+    80:96:void onStep() -> b
+    99:100:void notifyListener() -> d
+    107:113:void speak() -> c
+com.android.run.demo.pedometer.CaloriesNotifier$Listener -> com.android.run.demo.pedometer.b:
+    void valueChanged(float) -> a
+com.android.run.demo.pedometer.DistanceNotifier -> com.android.run.demo.pedometer.c:
+    com.android.run.demo.pedometer.DistanceNotifier$Listener mListener -> f
+    float mDistance -> a
+    com.android.run.demo.pedometer.PedometerSettings mSettings -> b
+    com.android.run.demo.pedometer.Utils mUtils -> c
+    boolean mIsMetric -> d
+    float mStepLength -> e
+    49:51:void setDistance(float) -> a
+    54:57:void reloadSettings() -> a
+    61:73:void onStep() -> b
+    76:77:void notifyListener() -> d
+    84:90:void speak() -> c
+com.android.run.demo.pedometer.DistanceNotifier$Listener -> com.android.run.demo.pedometer.d:
+    void valueChanged(float) -> a
+com.android.run.demo.pedometer.PaceNotifier -> com.android.run.demo.pedometer.e:
+    java.util.ArrayList mListeners -> f
+    int mCounter -> a
+    long mLastStepTime -> g
+    long[] mLastStepDeltas -> h
+    int mLastStepDeltasIndex -> i
+    long mPace -> j
+    com.android.run.demo.pedometer.PedometerSettings mSettings -> b
+    com.android.run.demo.pedometer.Utils mUtils -> c
+    int mDesiredPace -> d
+    boolean mShouldTellFasterslower -> e
+    long mSpokenAt -> k
+    62:68:void setPace(int) -> a
+    70:74:void reloadSettings() -> a
+    77:78:void addListener(com.android.run.demo.pedometer.PaceNotifier$Listener) -> a
+    81:82:void setDesiredPace(int) -> b
+    85:154:void onStep() -> b
+    157:160:void notifyListener() -> d
+    170:175:void speak() -> c
+com.android.run.demo.pedometer.PaceNotifier$Listener -> com.android.run.demo.pedometer.f:
+    void paceChanged(int) -> a
+com.android.run.demo.pedometer.Pedometer -> com.android.run.demo.pedometer.Pedometer:
+    android.content.SharedPreferences mSettings -> b
+    com.android.run.demo.pedometer.PedometerSettings mPedometerSettings -> c
+    com.android.run.demo.pedometer.Utils mUtils -> d
+    android.widget.TextView mStepValueView -> e
+    android.widget.TextView mPaceValueView -> f
+    android.widget.TextView mDistanceValueView -> g
+    android.widget.TextView mSpeedValueView -> h
+    android.widget.TextView mCaloriesValueView -> i
+    android.widget.TextView mDesiredPaceView -> a
+    int mStepValue -> j
+    int mPaceValue -> k
+    float mDistanceValue -> l
+    float mSpeedValue -> m
+    int mCaloriesValue -> n
+    float mDesiredPaceOrSpeed -> o
+    int mMaintain -> p
+    boolean mIsMetric -> q
+    float mMaintainInc -> r
+    boolean mQuitting -> s
+    boolean mIsRunning -> t
+    com.android.run.demo.pedometer.StepService mService -> u
+    android.content.ServiceConnection mConnection -> v
+    com.android.run.demo.pedometer.StepService$ICallback mCallback -> w
+    android.os.Handler mHandler -> x
+    76:85:void onCreate(android.os.Bundle) -> onCreate
+    89:91:void onStart() -> onStart
+    95:179:void onResume() -> onResume
+    182:188:void displayDesiredPaceOrSpeed() -> a
+    192:205:void onPause() -> onPause
+    209:211:void onStop() -> onStop
+    214:216:void onDestroy() -> onDestroy
+    219:221:void onRestart() -> onRestart
+    224:233:void setDesiredPaceOrSpeed(float) -> a
+    236:237:void savePaceSetting() -> b
+    257:263:void startStepService() -> c
+    266:269:void bindStepService() -> d
+    272:274:void unbindStepService() -> e
+    277:284:void stopStepService() -> f
+    287:307:void resetValues(boolean) -> a
+    318:339:boolean onPrepareOptionsMenu(android.view.Menu) -> onPrepareOptionsMenu
+    344:364:boolean onOptionsItemSelected(android.view.MenuItem) -> onOptionsItemSelected
+    239:239:void access$0(com.android.run.demo.pedometer.Pedometer,com.android.run.demo.pedometer.StepService) -> a
+    239:239:com.android.run.demo.pedometer.StepService access$1(com.android.run.demo.pedometer.Pedometer) -> a
+    368:368:com.android.run.demo.pedometer.StepService$ICallback access$2(com.android.run.demo.pedometer.Pedometer) -> b
+    392:392:android.os.Handler access$3(com.android.run.demo.pedometer.Pedometer) -> c
+    56:56:void access$4(com.android.run.demo.pedometer.Pedometer,int) -> a
+    50:50:android.widget.TextView access$5(com.android.run.demo.pedometer.Pedometer) -> d
+    56:56:int access$6(com.android.run.demo.pedometer.Pedometer) -> e
+    57:57:void access$7(com.android.run.demo.pedometer.Pedometer,int) -> b
+    57:57:int access$8(com.android.run.demo.pedometer.Pedometer) -> f
+    51:51:android.widget.TextView access$9(com.android.run.demo.pedometer.Pedometer) -> g
+    58:58:void access$10(com.android.run.demo.pedometer.Pedometer,float) -> a
+    58:58:float access$11(com.android.run.demo.pedometer.Pedometer) -> h
+    52:52:android.widget.TextView access$12(com.android.run.demo.pedometer.Pedometer) -> i
+    59:59:void access$13(com.android.run.demo.pedometer.Pedometer,float) -> b
+    59:59:float access$14(com.android.run.demo.pedometer.Pedometer) -> j
+    53:53:android.widget.TextView access$15(com.android.run.demo.pedometer.Pedometer) -> k
+    60:60:void access$16(com.android.run.demo.pedometer.Pedometer,int) -> c
+    60:60:int access$17(com.android.run.demo.pedometer.Pedometer) -> l
+    54:54:android.widget.TextView access$18(com.android.run.demo.pedometer.Pedometer) -> m
+    61:61:float access$19(com.android.run.demo.pedometer.Pedometer) -> n
+    64:64:float access$20(com.android.run.demo.pedometer.Pedometer) -> o
+    61:61:void access$21(com.android.run.demo.pedometer.Pedometer,float) -> c
+    181:181:void access$22(com.android.run.demo.pedometer.Pedometer) -> p
+    223:223:void access$23(com.android.run.demo.pedometer.Pedometer,float) -> d
+com.android.run.demo.pedometer.Pedometer$1 -> com.android.run.demo.pedometer.g:
+    com.android.run.demo.pedometer.Pedometer this$0 -> a
+    243:248:void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
+    251:252:void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
+com.android.run.demo.pedometer.Pedometer$2 -> com.android.run.demo.pedometer.h:
+    com.android.run.demo.pedometer.Pedometer this$0 -> a
+    370:371:void stepsChanged(int) -> a
+    373:374:void paceChanged(int) -> b
+    376:377:void distanceChanged(float) -> a
+    379:380:void speedChanged(float) -> b
+    382:383:void caloriesChanged(float) -> c
+com.android.run.demo.pedometer.Pedometer$3 -> com.android.run.demo.pedometer.i:
+    com.android.run.demo.pedometer.Pedometer this$0 -> a
+    394:442:void handleMessage(android.os.Message) -> handleMessage
+com.android.run.demo.pedometer.Pedometer$4 -> com.android.run.demo.pedometer.j:
+    com.android.run.demo.pedometer.Pedometer this$0 -> a
+    154:158:void onClick(android.view.View) -> onClick
+com.android.run.demo.pedometer.Pedometer$5 -> com.android.run.demo.pedometer.k:
+    com.android.run.demo.pedometer.Pedometer this$0 -> a
+    163:167:void onClick(android.view.View) -> onClick
+com.android.run.demo.pedometer.PedometerSettings -> com.android.run.demo.pedometer.l:
+    android.content.SharedPreferences mSettings -> a
+    int M_NONE -> b
+    int M_PACE -> c
+    int M_SPEED -> d
+    40:40:boolean isMetric() -> a
+    45:49:float getStepLength() -> b
+    55:59:float getBodyWeight() -> c
+    64:64:boolean isRunning() -> d
+    68:69:int getMaintainOption() -> e
+    82:82:int getDesiredPace() -> f
+    85:85:float getDesiredSpeed() -> g
+    88:97:void savePaceOrSpeedSetting(int,float) -> a
+    103:103:boolean shouldSpeak() -> h
+    107:111:float getSpeakingInterval() -> i
+    115:115:boolean shouldTellSteps() -> j
+    119:119:boolean shouldTellPace() -> k
+    123:123:boolean shouldTellDistance() -> l
+    127:127:boolean shouldTellSpeed() -> m
+    131:131:boolean shouldTellCalories() -> n
+    135:135:boolean shouldTellFasterslower() -> o
+    140:140:boolean wakeAggressively() -> p
+    143:143:boolean keepScreenOn() -> q
+    150:154:void saveServiceRunningWithTimestamp(boolean) -> a
+    157:161:void saveServiceRunningWithNullTimestamp(boolean) -> b
+    164:168:void clearServiceRunning() -> r
+    171:171:boolean isServiceRunning() -> s
+    176:176:boolean isNewStart() -> t
+com.android.run.demo.pedometer.Settings -> com.android.run.demo.pedometer.Settings:
+    34:37:void onCreate(android.os.Bundle) -> onCreate
+com.android.run.demo.pedometer.SpeakingTimer -> com.android.run.demo.pedometer.m:
+    com.android.run.demo.pedometer.PedometerSettings mSettings -> a
+    com.android.run.demo.pedometer.Utils mUtils -> b
+    boolean mShouldSpeak -> c
+    float mInterval -> d
+    long mLastSpeakTime -> e
+    java.util.ArrayList mListeners -> f
+    43:45:void reloadSettings() -> a
+    48:55:void onStep() -> b
+    71:72:void addListener(com.android.run.demo.pedometer.SpeakingTimer$Listener) -> a
+    74:78:void notifyListeners() -> c
+com.android.run.demo.pedometer.SpeakingTimer$Listener -> com.android.run.demo.pedometer.n:
+    void speak() -> c
+com.android.run.demo.pedometer.SpeedNotifier -> com.android.run.demo.pedometer.o:
+    com.android.run.demo.pedometer.SpeedNotifier$Listener mListener -> j
+    int mCounter -> a
+    float mSpeed -> b
+    boolean mIsMetric -> c
+    float mStepLength -> d
+    com.android.run.demo.pedometer.PedometerSettings mSettings -> e
+    com.android.run.demo.pedometer.Utils mUtils -> f
+    float mDesiredSpeed -> g
+    boolean mShouldTellFasterslower -> h
+    boolean mShouldTellSpeed -> i
+    long mSpokenAt -> k
+    65:67:void setSpeed(float) -> a
+    69:76:void reloadSettings() -> a
+    78:79:void setDesiredSpeed(float) -> b
+    82:83:void notifyListener() -> b
+    86:98:void paceChanged(int) -> a
+    104:143:void tellFasterSlower() -> d
+    150:156:void speak() -> c
+com.android.run.demo.pedometer.SpeedNotifier$Listener -> com.android.run.demo.pedometer.p:
+    void valueChanged(float) -> a
+com.android.run.demo.pedometer.StepDetector -> com.android.run.demo.pedometer.q:
+    float mLimit -> a
+    float[] mLastValues -> b
+    float[] mScale -> c
+    float mYOffset -> d
+    float[] mLastDirections -> e
+    float[][] mLastExtremes -> f
+    float[] mLastDiff -> g
+    int mLastMatch -> h
+    java.util.ArrayList mStepListeners -> i
+    57:58:void setSensitivity(float) -> a
+    61:62:void addStepListener(com.android.run.demo.pedometer.StepListener) -> a
+    66:112:void onSensorChanged(android.hardware.SensorEvent) -> onSensorChanged
+    116:116:void onAccuracyChanged(android.hardware.Sensor,int) -> onAccuracyChanged
+com.android.run.demo.pedometer.StepDisplayer -> com.android.run.demo.pedometer.r:
+    int mCount -> c
+    com.android.run.demo.pedometer.PedometerSettings mSettings -> a
+    com.android.run.demo.pedometer.Utils mUtils -> b
+    java.util.ArrayList mListeners -> d
+    43:45:void setSteps(int) -> a
+    47:49:void onStep() -> b
+    51:52:void reloadSettings() -> a
+    68:69:void addListener(com.android.run.demo.pedometer.StepDisplayer$Listener) -> a
+    71:74:void notifyListener() -> d
+    80:85:void speak() -> c
+com.android.run.demo.pedometer.StepDisplayer$Listener -> com.android.run.demo.pedometer.s:
+    void stepsChanged(int) -> a
+com.android.run.demo.pedometer.StepListener -> com.android.run.demo.pedometer.t:
+    void onStep() -> b
+com.android.run.demo.pedometer.StepService -> com.android.run.demo.pedometer.StepService:
+    android.content.SharedPreferences mSettings -> a
+    com.android.run.demo.pedometer.PedometerSettings mPedometerSettings -> b
+    android.content.SharedPreferences mState -> c
+    android.content.SharedPreferences$Editor mStateEditor -> d
+    com.android.run.demo.pedometer.Utils mUtils -> e
+    android.hardware.SensorManager mSensorManager -> f
+    android.hardware.Sensor mSensor -> g
+    com.android.run.demo.pedometer.StepDetector mStepDetector -> h
+    com.android.run.demo.pedometer.StepDisplayer mStepDisplayer -> i
+    com.android.run.demo.pedometer.PaceNotifier mPaceNotifier -> j
+    com.android.run.demo.pedometer.DistanceNotifier mDistanceNotifier -> k
+    com.android.run.demo.pedometer.SpeedNotifier mSpeedNotifier -> l
+    com.android.run.demo.pedometer.CaloriesNotifier mCaloriesNotifier -> m
+    com.android.run.demo.pedometer.SpeakingTimer mSpeakingTimer -> n
+    android.os.PowerManager$WakeLock wakeLock -> o
+    android.app.NotificationManager mNM -> p
+    int mSteps -> q
+    int mPace -> r
+    float mDistance -> s
+    float mSpeed -> t
+    float mCalories -> u
+    android.os.IBinder mBinder -> v
+    com.android.run.demo.pedometer.StepService$ICallback mCallback -> w
+    int mDesiredPace -> x
+    float mDesiredSpeed -> y
+    com.android.run.demo.pedometer.StepDisplayer$Listener mStepListener -> z
+    com.android.run.demo.pedometer.PaceNotifier$Listener mPaceListener -> A
+    com.android.run.demo.pedometer.DistanceNotifier$Listener mDistanceListener -> B
+    com.android.run.demo.pedometer.SpeedNotifier$Listener mSpeedListener -> C
+    com.android.run.demo.pedometer.CaloriesNotifier$Listener mCaloriesListener -> D
+    android.content.BroadcastReceiver mReceiver -> E
+    94:160:void onCreate() -> onCreate
+    164:166:void onStart(android.content.Intent,int) -> onStart
+    170:196:void onDestroy() -> onDestroy
+    199:206:void registerDetector() -> c
+    209:210:void unregisterDetector() -> d
+    214:215:android.os.IBinder onBind(android.content.Intent) -> onBind
+    234:237:void registerCallback(com.android.run.demo.pedometer.StepService$ICallback) -> a
+    248:252:void setDesiredPace(int) -> a
+    259:263:void setDesiredSpeed(float) -> a
+    266:280:void reloadSettings() -> a
+    283:288:void resetValues() -> b
+    365:378:void showNotification() -> e
+    399:412:void acquireWakeLock() -> f
+    75:75:void access$0(com.android.run.demo.pedometer.StepService,int) -> a
+    231:231:com.android.run.demo.pedometer.StepService$ICallback access$1(com.android.run.demo.pedometer.StepService) -> a
+    75:75:int access$2(com.android.run.demo.pedometer.StepService) -> b
+    76:76:void access$3(com.android.run.demo.pedometer.StepService,int) -> b
+    76:76:int access$4(com.android.run.demo.pedometer.StepService) -> c
+    77:77:void access$5(com.android.run.demo.pedometer.StepService,float) -> a
+    77:77:float access$6(com.android.run.demo.pedometer.StepService) -> d
+    78:78:void access$7(com.android.run.demo.pedometer.StepService,float) -> b
+    78:78:float access$8(com.android.run.demo.pedometer.StepService) -> e
+    79:79:void access$9(com.android.run.demo.pedometer.StepService,float) -> c
+    79:79:float access$10(com.android.run.demo.pedometer.StepService) -> f
+    208:208:void access$11(com.android.run.demo.pedometer.StepService) -> g
+    198:198:void access$12(com.android.run.demo.pedometer.StepService) -> h
+    57:57:com.android.run.demo.pedometer.PedometerSettings access$13(com.android.run.demo.pedometer.StepService) -> i
+    72:72:android.os.PowerManager$WakeLock access$14(com.android.run.demo.pedometer.StepService) -> j
+    398:398:void access$15(com.android.run.demo.pedometer.StepService) -> k
+com.android.run.demo.pedometer.StepService$1 -> com.android.run.demo.pedometer.u:
+    com.android.run.demo.pedometer.StepService this$0 -> a
+    295:297:void stepsChanged(int) -> a
+    299:302:void passValue() -> a
+com.android.run.demo.pedometer.StepService$2 -> com.android.run.demo.pedometer.v:
+    com.android.run.demo.pedometer.StepService this$0 -> a
+    309:311:void paceChanged(int) -> a
+    313:316:void passValue() -> a
+com.android.run.demo.pedometer.StepService$3 -> com.android.run.demo.pedometer.w:
+    com.android.run.demo.pedometer.StepService this$0 -> a
+    323:325:void valueChanged(float) -> a
+    327:330:void passValue() -> a
+com.android.run.demo.pedometer.StepService$4 -> com.android.run.demo.pedometer.x:
+    com.android.run.demo.pedometer.StepService this$0 -> a
+    337:339:void valueChanged(float) -> a
+    341:344:void passValue() -> a
+com.android.run.demo.pedometer.StepService$5 -> com.android.run.demo.pedometer.y:
+    com.android.run.demo.pedometer.StepService this$0 -> a
+    351:353:void valueChanged(float) -> a
+    355:358:void passValue() -> a
+com.android.run.demo.pedometer.StepService$6 -> com.android.run.demo.pedometer.z:
+    com.android.run.demo.pedometer.StepService this$0 -> a
+    386:395:void onReceive(android.content.Context,android.content.Intent) -> onReceive
+com.android.run.demo.pedometer.StepService$ICallback -> com.android.run.demo.pedometer.aa:
+    void stepsChanged(int) -> a
+    void paceChanged(int) -> b
+    void distanceChanged(float) -> a
+    void speedChanged(float) -> b
+    void caloriesChanged(float) -> c
+com.android.run.demo.pedometer.StepService$StepBinder -> com.android.run.demo.pedometer.ab:
+    com.android.run.demo.pedometer.StepService this$0 -> a
+    88:88:com.android.run.demo.pedometer.StepService getService() -> a
+com.android.run.demo.pedometer.Utils -> com.android.run.demo.pedometer.ac:
+    android.app.Service mService -> a
+    com.android.run.demo.pedometer.Utils instance -> b
+    android.speech.tts.TextToSpeech mTts -> c
+    boolean mSpeak -> d
+    boolean mSpeakingEngineAvailable -> e
+    20:23:com.android.run.demo.pedometer.Utils getInstance() -> a
+    27:28:void setService(android.app.Service) -> a
+    39:43:void initTTS() -> b
+    45:51:void shutdownTTS() -> c
+    53:58:void say(java.lang.String) -> a
+    63:77:void onInit(int) -> onInit
+    80:81:void setSpeak(boolean) -> a
+    84:84:boolean isSpeakingEnabled() -> d
+    88:88:boolean isSpeakingNow() -> e
+    92:92:void ding() -> f
+    97:99:long currentTimeInMillis() -> g
+com.android.run.demo.pedometer.preferences.BodyWeightPreference -> com.android.run.demo.pedometer.preferences.BodyWeightPreference:
+com.android.run.demo.pedometer.preferences.EditMeasurementPreference -> com.android.run.demo.pedometer.preferences.EditMeasurementPreference:
+    boolean mIsMetric -> a
+    int mTitleResource -> b
+    int mMetricUnitsResource -> c
+    int mImperialUnitsResource -> d
+    40:59:void showDialog(android.os.Bundle) -> showDialog
+    61:64:void onAddEditTextToDialogView(android.view.View,android.widget.EditText) -> onAddEditTextToDialogView
+    66:76:void onDialogClosed(boolean) -> onDialogClosed
+com.android.run.demo.pedometer.preferences.StepLengthPreference -> com.android.run.demo.pedometer.preferences.StepLengthPreference:

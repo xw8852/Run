@@ -1,0 +1,76 @@
+android.annotation.SuppressLint
+android.annotation.TargetApi
+com.android.run.demo.pedometer.CaloriesNotifier:
+    68:69:public void resetValues()
+    72:73:public void isMetric(boolean)
+    75:76:public void setStepLength(float)
+    104:104:public void passValue()
+com.android.run.demo.pedometer.CaloriesNotifier$Listener:
+    public abstract void passValue()
+com.android.run.demo.pedometer.DistanceNotifier:
+    81:81:public void passValue()
+com.android.run.demo.pedometer.DistanceNotifier$Listener:
+    public abstract void passValue()
+com.android.run.demo.pedometer.PaceNotifier:
+    164:164:public void passValue()
+com.android.run.demo.pedometer.PaceNotifier$Listener:
+    public abstract void passValue()
+com.android.run.demo.pedometer.Pedometer:
+    private static final java.lang.String TAG
+    private static final int MENU_SETTINGS
+    private static final int MENU_QUIT
+    private static final int MENU_PAUSE
+    private static final int MENU_RESUME
+    private static final int MENU_RESET
+    private static final int STEPS_MSG
+    private static final int PACE_MSG
+    private static final int DISTANCE_MSG
+    private static final int SPEED_MSG
+    private static final int CALORIES_MSG
+com.android.run.demo.pedometer.SpeakingTimer:
+    59:59:public void passValue()
+    84:84:public boolean isSpeaking()
+com.android.run.demo.pedometer.SpeedNotifier:
+    147:147:public void passValue()
+com.android.run.demo.pedometer.SpeedNotifier$Listener:
+    public abstract void passValue()
+com.android.run.demo.pedometer.StepBuzzer
+com.android.run.demo.pedometer.StepDetector:
+    private static final java.lang.String TAG
+com.android.run.demo.pedometer.StepDisplayer:
+    39:40:public void setUtils(com.android.run.demo.pedometer.Utils)
+    54:54:public void passValue()
+com.android.run.demo.pedometer.StepDisplayer$Listener:
+    public abstract void passValue()
+com.android.run.demo.pedometer.StepListener:
+    public abstract void passValue()
+com.android.run.demo.pedometer.StepService:
+    private static final java.lang.String TAG
+com.android.run.demo.pedometer.Utils:
+    private static final java.lang.String TAG
+com.android.run.demo.pedometer.preferences.BodyWeightPreference:
+    33:34:public BodyWeightPreference(android.content.Context)
+    36:37:public BodyWeightPreference(android.content.Context,android.util.AttributeSet)
+    39:40:public BodyWeightPreference(android.content.Context,android.util.AttributeSet,int)
+    43:46:protected void initPreferenceDetails()
+com.android.run.demo.pedometer.preferences.EditMeasurementPreference:
+    25:27:public EditMeasurementPreference(android.content.Context)
+    29:31:public EditMeasurementPreference(android.content.Context,android.util.AttributeSet)
+    33:35:public EditMeasurementPreference(android.content.Context,android.util.AttributeSet,int)
+    protected abstract void initPreferenceDetails()
+com.android.run.demo.pedometer.preferences.StepLengthPreference:
+    33:34:public StepLengthPreference(android.content.Context)
+    36:37:public StepLengthPreference(android.content.Context,android.util.AttributeSet)
+    39:40:public StepLengthPreference(android.content.Context,android.util.AttributeSet,int)
+    43:46:protected void initPreferenceDetails()
+name.bagi.levente.pedometer.BuildConfig
+name.bagi.levente.pedometer.R
+name.bagi.levente.pedometer.R$array
+name.bagi.levente.pedometer.R$attr
+name.bagi.levente.pedometer.R$color
+name.bagi.levente.pedometer.R$dimen
+name.bagi.levente.pedometer.R$drawable
+name.bagi.levente.pedometer.R$id
+name.bagi.levente.pedometer.R$layout
+name.bagi.levente.pedometer.R$string
+name.bagi.levente.pedometer.R$xml

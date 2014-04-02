@@ -1,37 +1,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:rImage="http://schemas.android.com/apk/res/com.android.ivymobi.runapp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <com.android.ivymobi.runapp.widget.SlidingGroup
-        android:id="@+id/slidingGroup1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        rImage:defaultPostion="1"
-        rImage:offset="50dp" >
+    <!-- xmlns:rImage="http://schemas.android.com/apk/res/com.android.ivymobi.runapp" -->
 
-        <include layout="@layout/fragment_menu" />
+    <include layout="@layout/activity_titlebar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/bmapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:orientation="vertical" >
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bar"
+            android:gravity="center_vertical" >
 
-            <include
-                android:id="@+id/titleBar"
-                layout="@layout/activity_titlebar" />
+            <ImageView
+                android:id="@+id/btn_user"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/btn_user" />
 
-            <LinearLayout
-                android:id="@+id/root"
-                android:layout_width="match_parent"
-                 android:orientation="vertical"
-                android:layout_height="match_parent" >
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/btn_run"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/btn_user" />
+
+            <ImageView
+                android:id="@+id/btn_rank"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                android:src="@drawable/btn_user" />
         </LinearLayout>
-    </com.android.ivymobi.runapp.widget.SlidingGroup>
+    </RelativeLayout>
 
 </LinearLayout>

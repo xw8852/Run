@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
+    android:background="@color/title_blue"
     android:orientation="horizontal" >
 
     <ImageView
@@ -11,15 +12,15 @@
         android:layout_height="wrap_content"
         android:padding="5dp"
         android:scaleType="centerInside"
+         android:visibility="invisible"
         android:src="@drawable/ic_menu" />
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="消息"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
