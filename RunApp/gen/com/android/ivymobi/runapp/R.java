@@ -82,34 +82,40 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int default_big_pic=0x7f020004;
         public static final int ic_launcher=0x7f020005;
         public static final int ic_menu=0x7f020006;
-        public static final int ic_set=0x7f020007;
+        public static final int ic_run=0x7f020007;
+        public static final int ic_set=0x7f020008;
+        public static final int ic_walk=0x7f020009;
     }
     public static final class id {
+        public static final int bar=0x7f040004;
         public static final int bmapView=0x7f040002;
-        public static final int btn_rank=0x7f040005;
-        public static final int btn_run=0x7f040004;
-        public static final int btn_user=0x7f040003;
-        public static final int button1=0x7f040010;
-        public static final int button2=0x7f040011;
+        public static final int btn_rank=0x7f040007;
+        public static final int btn_run=0x7f040006;
+        public static final int btn_user=0x7f040005;
+        public static final int button1=0x7f040013;
+        public static final int button2=0x7f040014;
+        public static final int content=0x7f040003;
         public static final int horizontal=0x7f040000;
-        public static final int imageView1=0x7f040006;
-        public static final int imageView2=0x7f040008;
-        public static final int radio0=0x7f04000c;
-        public static final int radio1=0x7f04000d;
-        public static final int radio2=0x7f04000e;
-        public static final int radio3=0x7f04000f;
-        public static final int radioGroup1=0x7f04000b;
-        public static final int roundImageView1=0x7f040009;
-        public static final int textView1=0x7f04000a;
-        public static final int textView2=0x7f040012;
-        public static final int textView3=0x7f040013;
-        public static final int title=0x7f040007;
+        public static final int imageView1=0x7f040009;
+        public static final int imageView2=0x7f04000b;
+        public static final int radio0=0x7f04000f;
+        public static final int radio1=0x7f040010;
+        public static final int radio2=0x7f040011;
+        public static final int radio3=0x7f040012;
+        public static final int radioGroup1=0x7f04000e;
+        public static final int roundImageView1=0x7f04000c;
+        public static final int textView1=0x7f04000d;
+        public static final int textView2=0x7f040015;
+        public static final int textView3=0x7f040016;
+        public static final int title=0x7f04000a;
+        public static final int titleBar=0x7f040008;
         public static final int vertical=0x7f040001;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int activity_titlebar=0x7f030001;
         public static final int fragment_menu=0x7f030002;
+        public static final int run_walk=0x7f030003;
     }
     public static final class string {
         public static final int action_settings=0x7f070001;

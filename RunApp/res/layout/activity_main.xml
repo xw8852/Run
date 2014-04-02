@@ -20,18 +20,27 @@
             android:clickable="true" />
 
         <LinearLayout
+            android:id="@+id/content"
             android:layout_width="fill_parent"
-            android:layout_height="60dp"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical" >
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="61dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bar"
+            android:id="@+id/bar"
             android:gravity="center_vertical" >
 
             <ImageView
                 android:id="@+id/btn_user"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
                 android:layout_weight="1"
+                android:paddingTop="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/btn_user" />
 
@@ -47,8 +56,8 @@
                 android:id="@+id/btn_rank"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
                 android:layout_weight="1"
+                android:paddingTop="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/btn_user" />
         </LinearLayout>

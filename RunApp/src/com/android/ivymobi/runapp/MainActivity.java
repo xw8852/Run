@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
@@ -18,19 +20,37 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MyLocationOverlay;
 import com.baidu.mapapi.map.MyLocationOverlay.LocationMode;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
+import com.msx7.annotations.Inject;
+import com.msx7.annotations.InjectActivity;
+import com.msx7.annotations.InjectView;
 
-public class MainActivity extends Activity {
-    View msetView;
-
+@InjectActivity(id = R.layout.activity_main)
+public class MainActivity extends Activity implements View.OnClickListener {
+    @InjectView(id=R.id.content)
+    LinearLayout mContent;
+    @InjectView(id = R.id.titleBar)
+    View titleBar;
+    @InjectView(id = R.id.title)
     TextView titleView;
+    @InjectView(id = R.id.bmapView)
     MapView mMapView;
+    /** 用户按钮 */
+    @InjectView(id = R.id.btn_user)
+    ImageView mBtnUser;
+    /** 运动按钮 */
+    @InjectView(id = R.id.btn_run)
+    /**排行榜按钮*/
+    ImageView mBtnRun;
+    @InjectView(id = R.id.btn_rank)
+    ImageView mBtnRank;
     LocationClient mLocClient = null;
     LocationData locData = null;
     MyLocationOverlay myLocationOverlay;
     public MyLocationListenner myListener = new MyLocationListenner();
     private MapController mMapController = null;
-    boolean isRequest = false;//是否手动触发请求定位
-    boolean isFirstLoc = true;//是否首次定位
+    boolean isRequest = false;// 是否手动触发请求定位
+    boolean isFirstLoc = true;// 是否首次定位
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +64,12 @@ public class MainActivity extends Activity {
              */
             app.mBMapManager.init(new RunApplication.MyGeneralListener());
         }
+        Inject.inject(this);
+        titleBar.setVisibility(View.GONE);
+        mBtnRank.setOnClickListener(this);
+        mBtnRun.setOnClickListener(this);
+        mBtnUser.setOnClickListener(this);
         // 初始化地图
-        setContentView(R.layout.activity_main);
-        mMapView = (MapView) findViewById(R.id.bmapView);
         mMapController = mMapView.getController();
 
         mMapView.getController().setZoom(17);
@@ -72,6 +95,27 @@ public class MainActivity extends Activity {
         myLocationOverlay.enableCompass();
         // 修改定位数据后刷新图层生效
         mMapView.refresh();
+    }
+
+    @Override
+    public void onClick(View v) {
+        mBtnRank.setSelected(false);
+        mBtnRun.setSelected(false);
+        mBtnUser.setSelected(false);
+        v.setSelected(true);
+        switch (v.getId()) {
+        case R.id.btn_user:
+            mContent.removeAllViews();
+            break;
+        case R.id.btn_run:
+            titleView.setText("选择运动");
+            titleBar.setVisibility(View.VISIBLE);
+            mContent.removeAllViews();
+            getLayoutInflater().inflate(R.layout.run_walk, mContent);
+            break;
+        case R.id.btn_rank:
+            break;
+        }
     }
 
     /**
@@ -100,10 +144,10 @@ public class MainActivity extends Activity {
                 Log.d("LocationOverlay", "receive location, animate to it");
                 mMapController.animateTo(new GeoPoint((int) (locData.latitude * 1e6), (int) (locData.longitude * 1e6)));
                 isRequest = true;
-                isFirstLoc=false;
+                isFirstLoc = false;
                 myLocationOverlay.setLocationMode(LocationMode.FOLLOWING);
-//                requestLocButton.setText("跟随");
-//                mCurBtnType = E_BUTTON_TYPE.FOLLOW;
+                // requestLocButton.setText("跟随");
+                // mCurBtnType = E_BUTTON_TYPE.FOLLOW;
             }
             // 首次定位完成
             isFirstLoc = false;
