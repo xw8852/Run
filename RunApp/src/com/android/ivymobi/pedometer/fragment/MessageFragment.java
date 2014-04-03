@@ -1,4 +1,4 @@
-package com.android.ivymobi.runapp.fragment;
+package com.android.ivymobi.pedometer.fragment;
 
 import android.support.v4.app.Fragment;
 

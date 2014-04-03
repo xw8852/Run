@@ -1,4 +1,4 @@
-package com.android.ivymobi.runapp.widget;
+package com.android.ivymobi.pedometer.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;

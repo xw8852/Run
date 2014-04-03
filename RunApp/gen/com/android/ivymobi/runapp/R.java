@@ -84,7 +84,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_menu=0x7f020006;
         public static final int ic_run=0x7f020007;
         public static final int ic_set=0x7f020008;
-        public static final int ic_walk=0x7f020009;
+        public static final int ic_state_run=0x7f020009;
+        public static final int ic_state_walk=0x7f02000a;
+        public static final int ic_walk=0x7f02000b;
     }
     public static final class id {
         public static final int bar=0x7f040004;
@@ -92,6 +94,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int btn_rank=0x7f040007;
         public static final int btn_run=0x7f040006;
         public static final int btn_user=0x7f040005;
+        public static final int btn_walk=0x7f040020;
         public static final int button1=0x7f040013;
         public static final int button2=0x7f040014;
         public static final int content=0x7f040003;
@@ -105,8 +108,17 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int radioGroup1=0x7f04000e;
         public static final int roundImageView1=0x7f04000c;
         public static final int textView1=0x7f04000d;
+        public static final int textView10=0x7f04001d;
+        public static final int textView11=0x7f04001e;
+        public static final int textView12=0x7f04001f;
         public static final int textView2=0x7f040015;
         public static final int textView3=0x7f040016;
+        public static final int textView4=0x7f040017;
+        public static final int textView5=0x7f040018;
+        public static final int textView6=0x7f040019;
+        public static final int textView7=0x7f04001a;
+        public static final int textView8=0x7f04001b;
+        public static final int textView9=0x7f04001c;
         public static final int title=0x7f04000a;
         public static final int titleBar=0x7f040008;
         public static final int vertical=0x7f040001;
@@ -115,7 +127,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_main=0x7f030000;
         public static final int activity_titlebar=0x7f030001;
         public static final int fragment_menu=0x7f030002;
-        public static final int run_walk=0x7f030003;
+        public static final int run_state=0x7f030003;
+        public static final int run_walk=0x7f030004;
     }
     public static final class string {
         public static final int action_settings=0x7f070001;

@@ -14,7 +14,7 @@
         android:paddingLeft="20dp"
         android:paddingTop="20dp" >
 
-        <com.android.ivymobi.runapp.widget.RoundImageView
+        <com.android.ivymobi.pedometer.widget.RoundImageView
             android:id="@+id/roundImageView1"
             android:layout_width="72dp"
             android:layout_height="72dp"

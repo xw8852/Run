@@ -1,4 +1,4 @@
-package com.android.ivymobi.runapp.widget;
+package com.android.ivymobi.pedometer.widget;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

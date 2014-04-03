@@ -1,4 +1,4 @@
-package com.android.ivymobi.runapp;
+package com.android.ivymobi.pedometer;
 
 import android.content.Context;
 import android.widget.Toast;
