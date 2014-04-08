@@ -1,17 +1,14 @@
 package com.android.ivymobi.pedometer.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
 import android.graphics.RectF;
-import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -38,15 +35,18 @@ public class RoundImageView extends ImageView {
     }
 
     @Override
-    protected void dispatchDraw(Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
         Drawable drawable = getDrawable();
         if (drawable != null) {
             Path path = configureCircle();
-            canvas.clipPath(path, Op.REPLACE);;
+            Paint paint=new Paint();
+            paint.setColor(Color.RED);
+            paint.setStrokeWidth(3);
+            canvas.drawPath(path, paint);
         }
-        super.dispatchDraw(canvas);
-    }
 
+    }
 
     /**
      * 根据scaleType 设置的src，来确定圆圈的大小，中心位置
