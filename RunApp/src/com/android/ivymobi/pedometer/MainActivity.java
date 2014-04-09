@@ -93,9 +93,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
         Inject.inject(this);
         titleBar.setVisibility(View.GONE);
-        // mBtnRank.setOnClickListener(this);
+         mBtnRank.setOnClickListener(this);
         mBtnRun.setOnClickListener(this);
-        // mBtnUser.setOnClickListener(this);
+         mBtnUser.setOnClickListener(this);
         // 初始化地图
         mMapController = mMapView.getController();
 
@@ -138,6 +138,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         case R.id.btn_user:
             mContent.removeAllViews();
             titleBar.setVisibility(View.GONE);
+            getLayoutInflater().inflate(R.layout.user_home_main, mContent);
             break;
         case R.id.btn_run:
             titleView.setText("选择运动");

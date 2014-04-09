@@ -36,15 +36,13 @@ public class RoundImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+       
         Drawable drawable = getDrawable();
         if (drawable != null) {
             Path path = configureCircle();
-            Paint paint=new Paint();
-            paint.setColor(Color.RED);
-            paint.setStrokeWidth(3);
-            canvas.drawPath(path, paint);
+            canvas.clipPath(path);
         }
+        super.onDraw(canvas);
 
     }
 

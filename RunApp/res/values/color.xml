@@ -2,5 +2,6 @@
 <resources>
 
     <color name="title_blue">#009933</color>
+    <color name="title_backgroud">#139245</color>
 
 </resources>

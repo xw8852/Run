@@ -38,8 +38,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.ForPwd:
-
-            break;
+            startActivity(new Intent(this, ForgetPWD.class));
+            break; 
         case R.id.regist:
             startActivity(new Intent(this, RegisterActivity.class));
             break;
