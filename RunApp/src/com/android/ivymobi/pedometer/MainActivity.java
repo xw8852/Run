@@ -151,6 +151,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         case R.id.btn_rank:
             titleBar.setVisibility(View.GONE);
             mContent.removeAllViews();
+            getLayoutInflater().inflate(R.layout.sport_home_main, mContent);
             break;
         }
     }

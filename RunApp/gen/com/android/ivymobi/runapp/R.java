@@ -62,9 +62,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int radioButtonStyle=0x7f010004;
     }
     public static final class color {
-        public static final int login_btn=0x7f050002;
-        public static final int title_backgroud=0x7f050001;
-        public static final int title_blue=0x7f050000;
+        public static final int gray=0x7f050002;
+        public static final int login_btn=0x7f050001;
+        public static final int title_backgroud=0x7f050000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -77,52 +77,59 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int bottom_bar=0x7f020000;
-        public static final int bottom_bar_center=0x7f020001;
-        public static final int btn_achi_normal=0x7f020002;
-        public static final int btn_achi_selected=0x7f020003;
-        public static final int btn_bar_rank=0x7f020004;
-        public static final int btn_bar_rank_normal=0x7f020005;
-        public static final int btn_bar_rank_selected=0x7f020006;
-        public static final int btn_bar_start_sport=0x7f020007;
-        public static final int btn_bar_start_sport_normal=0x7f020008;
-        public static final int btn_bar_start_sport_selected=0x7f020009;
-        public static final int btn_bar_user=0x7f02000a;
-        public static final int btn_history_normal=0x7f02000b;
-        public static final int btn_history_selected=0x7f02000c;
-        public static final int btn_ilogin=0x7f02000d;
-        public static final int btn_ilogin_normal=0x7f02000e;
-        public static final int btn_ilogin_selected=0x7f02000f;
-        public static final int btn_login_switch=0x7f020010;
-        public static final int btn_password=0x7f020011;
-        public static final int btn_password_normal=0x7f020012;
-        public static final int btn_password_selected=0x7f020013;
-        public static final int btn_points_normal=0x7f020014;
-        public static final int btn_points_selected=0x7f020015;
-        public static final int btn_regist=0x7f020016;
-        public static final int btn_regist_normal=0x7f020017;
-        public static final int btn_regist_selected=0x7f020018;
-        public static final int btn_send_email=0x7f020019;
-        public static final int btn_send_email_default=0x7f02001a;
-        public static final int btn_send_email_selected=0x7f02001b;
-        public static final int btn_send_sure_email=0x7f02001c;
-        public static final int btn_send_sure_email_normal=0x7f02001d;
-        public static final int btn_send_sure_email_selected=0x7f02001e;
-        public static final int btn_user_normal=0x7f02001f;
-        public static final int btn_user_selected=0x7f020020;
-        public static final int default_big_pic=0x7f020021;
-        public static final int ic_launcher=0x7f020022;
-        public static final int ic_menu=0x7f020023;
-        public static final int ic_run=0x7f020024;
-        public static final int ic_set=0x7f020025;
-        public static final int ic_state_run=0x7f020026;
-        public static final int ic_state_walk=0x7f020027;
-        public static final int ic_walk=0x7f020028;
-        public static final int login_bg=0x7f020029;
-        public static final int logo1=0x7f02002a;
-        public static final int logo2=0x7f02002b;
-        public static final int right_green=0x7f02002c;
-        public static final int user_home_bg=0x7f02002d;
+        public static final int bg1=0x7f020000;
+        public static final int bottom_bar=0x7f020001;
+        public static final int bottom_bar_center=0x7f020002;
+        public static final int btn1_normal=0x7f020003;
+        public static final int btn1_selected=0x7f020004;
+        public static final int btn_achi_normal=0x7f020005;
+        public static final int btn_achi_selected=0x7f020006;
+        public static final int btn_bar_rank=0x7f020007;
+        public static final int btn_bar_rank_normal=0x7f020008;
+        public static final int btn_bar_rank_selected=0x7f020009;
+        public static final int btn_bar_start_sport=0x7f02000a;
+        public static final int btn_bar_start_sport_normal=0x7f02000b;
+        public static final int btn_bar_start_sport_selected=0x7f02000c;
+        public static final int btn_bar_user=0x7f02000d;
+        public static final int btn_history_normal=0x7f02000e;
+        public static final int btn_history_selected=0x7f02000f;
+        public static final int btn_ilogin=0x7f020010;
+        public static final int btn_ilogin_normal=0x7f020011;
+        public static final int btn_ilogin_selected=0x7f020012;
+        public static final int btn_login_switch=0x7f020013;
+        public static final int btn_password=0x7f020014;
+        public static final int btn_password_normal=0x7f020015;
+        public static final int btn_password_selected=0x7f020016;
+        public static final int btn_points_normal=0x7f020017;
+        public static final int btn_points_selected=0x7f020018;
+        public static final int btn_regist=0x7f020019;
+        public static final int btn_regist_normal=0x7f02001a;
+        public static final int btn_regist_selected=0x7f02001b;
+        public static final int btn_send_email=0x7f02001c;
+        public static final int btn_send_email_default=0x7f02001d;
+        public static final int btn_send_email_selected=0x7f02001e;
+        public static final int btn_send_sure_email=0x7f02001f;
+        public static final int btn_send_sure_email_normal=0x7f020020;
+        public static final int btn_send_sure_email_selected=0x7f020021;
+        public static final int btn_style_0=0x7f020022;
+        public static final int btn_style_normal=0x7f020023;
+        public static final int btn_style_selected=0x7f020024;
+        public static final int btn_user_normal=0x7f020025;
+        public static final int btn_user_selected=0x7f020026;
+        public static final int ic_launcher=0x7f020027;
+        public static final int ic_menu=0x7f020028;
+        public static final int ic_run=0x7f020029;
+        public static final int ic_set=0x7f02002a;
+        public static final int ic_state_run=0x7f02002b;
+        public static final int ic_state_walk=0x7f02002c;
+        public static final int ic_user_default=0x7f02002d;
+        public static final int ic_walk=0x7f02002e;
+        public static final int left_right=0x7f02002f;
+        public static final int login_bg=0x7f020030;
+        public static final int logo1=0x7f020031;
+        public static final int logo2=0x7f020032;
+        public static final int right_green=0x7f020033;
+        public static final int user_home_bg=0x7f020034;
     }
     public static final class id {
         public static final int ForPwd=0x7f04000a;
@@ -134,6 +141,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int btn_walk=0x7f040028;
         public static final int button1=0x7f04001b;
         public static final int button2=0x7f04001c;
+        public static final int button3=0x7f040029;
         public static final int content=0x7f04000c;
         public static final int email=0x7f040004;
         public static final int horizontal=0x7f040000;
@@ -177,7 +185,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int fragment_menu=0x7f030006;
         public static final int run_state=0x7f030007;
         public static final int run_walk=0x7f030008;
-        public static final int user_home_main=0x7f030009;
+        public static final int sport_home_main=0x7f030009;
+        public static final int user_home_main=0x7f03000a;
     }
     public static final class string {
         public static final int action_settings=0x7f070001;

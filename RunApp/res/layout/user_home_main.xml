@@ -8,17 +8,80 @@
 
     <com.android.ivymobi.pedometer.widget.RoundImageView
         android:id="@+id/roundImageView1"
-        android:layout_marginTop="60dp"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:src="@drawable/default_big_pic" />
+        android:layout_marginTop="40dp"
+        android:src="@drawable/ic_user_default" />
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:text="Sean Hobman"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="TextView" />
+        android:textColor="@color/gray" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="40dp"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_style_0"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:text="积        分" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                 android:layout_marginTop="20dp"
+                 android:textColor="@android:color/white"
+                android:background="@drawable/btn_style_0"
+                 android:textSize="16sp"
+                android:text="成        就" />
+
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColor="@android:color/white"
+                android:background="@drawable/btn_style_0"
+                 android:textSize="16sp"
+                android:text="历史统计" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2" />
+    </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingBottom="10dp"
+            android:src="@drawable/logo1" />
 </LinearLayout>

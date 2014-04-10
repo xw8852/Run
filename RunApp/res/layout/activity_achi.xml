@@ -10,6 +10,6 @@
         android:id="@+id/roundImageView1"
         android:layout_width="100dp"
         android:layout_height="157dp"
-        android:src="@drawable/default_big_pic" />
+        android:src="@drawable/ic_user_default" />
 
 </LinearLayout>

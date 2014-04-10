@@ -76,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:text="登陆"
                 android:textSize="14sp"
-                android:textColor="@color/title_blue" />
+                android:textColor="@color/title_backgroud" />
 
             <ImageView
                 android:layout_width="wrap_content"

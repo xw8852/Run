@@ -19,7 +19,7 @@
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/default_big_pic" />
+            android:src="@drawable/ic_user_default" />
 
         <TextView
             android:id="@+id/textView1"

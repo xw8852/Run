@@ -11,7 +11,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:background="@color/title_blue"
+        android:background="@color/title_backgroud"
         android:orientation="vertical"
         android:padding="10dp" >
 
