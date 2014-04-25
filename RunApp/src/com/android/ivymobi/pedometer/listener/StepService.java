@@ -171,7 +171,9 @@ public class StepService extends Service {
         // Unregister our receiver.
         unregisterReceiver(mReceiver);
         unregisterDetector();
-
+        mStateEditor = mState.edit();
+        mStateEditor.clear();
+        mStateEditor.commit();
         if (PUtils.getSportState() == 0 || PUtils.getSportState() == 1)
             PUtils.saveSportState(2);
         if (PUtils.getSportState() == 2) {
@@ -187,6 +189,7 @@ public class StepService extends Service {
             PUtils.saveLastTime(time);
 
         } else {
+           
             resetValues();
         }
         mNM.cancel(R.string.app_name);
@@ -214,7 +217,9 @@ public class StepService extends Service {
                                                                              * .
                                                                              * TYPE_ORIENTATION
                                                                              */);
-        mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        Sensor sensor=mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        mSensorManager.registerListener( mStepDetector, sensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     private void unregisterDetector() {
@@ -313,7 +318,7 @@ public class StepService extends Service {
         mSettings = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (mStepDetector != null) {
-            mStepDetector.setSensitivity(Float.valueOf(mSettings.getString("sensitivity", "10")));
+            mStepDetector.setSensitivity(Float.valueOf(mSettings.getString("sensitivity", "15")));
         }
 
         if (mStepDisplayer != null)
@@ -340,6 +345,7 @@ public class StepService extends Service {
         PUtils.saveEndTime(0);
         PUtils.saveLastTime(0);
         PUtils.savePauseDate(0);
+       
     }
 
     /**

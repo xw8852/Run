@@ -14,6 +14,10 @@ import java.util.concurrent.Executors;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -41,7 +45,7 @@ public class ImageLoader {
     ImageCache mMemoryCache;
     int mImageWidth;
     int mImageHeight;
-    private static final ImageLoader loader=new ImageLoader();
+    private static final ImageLoader loader = new ImageLoader();
 
     protected ImageLoader() {
         mPools = Executors.newFixedThreadPool(3);
@@ -50,22 +54,23 @@ public class ImageLoader {
         mImageHeight = displayMetrics.heightPixels;
         mImageWidth = displayMetrics.widthPixels;
         try {
-            File file=ImageCache.getDiskCacheDir(Controller.getApplication(), HTTP_CACHE_DIR);
-            if(file!=null){
-                if(!file.exists()){
+            File file = ImageCache.getDiskCacheDir(Controller.getApplication(), HTTP_CACHE_DIR);
+            if (file != null) {
+                if (!file.exists()) {
                     file.mkdirs();
                 }
                 mDiskLruCache = DiskLruCache.open(file, 1, 1, HTTP_CACHE_SIZE);
             }
-           
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static final ImageLoader getInstance(){
+    public static final ImageLoader getInstance() {
         return loader;
     }
+
     public void loadThumbnailImage(String key, ImageView imageView, int resId) {
         loadThumbnailImage(key, imageView, BitmapFactory.decodeResource(Controller.getApplication().getResources(), resId));
     }
@@ -99,8 +104,8 @@ public class ImageLoader {
     }
 
     public void loadImage(ImageData data, ImageView imageView) {
-        String key = String.valueOf(data);
-        imageView.setTag(key);
+        String key = data.mKey;
+        imageView.setTag(data);
         Bitmap bitmap = null;
         bitmap = mMemoryCache.getBitmapFromMemCache(key);
         if (bitmap == null) {
@@ -137,10 +142,8 @@ public class ImageLoader {
 
         @Override
         public void onSuccess(Response response) {
-            Log.d("MSG", " onSuccess  url:"+key);
             if (response == null)
                 return;
-            Log.d("MSG", " onSuccess   response url:"+key);
             Bitmap bitmap = null;
             Object data = response.getData();
             DiskLruCache.Snapshot snapshot;
@@ -150,9 +153,9 @@ public class ImageLoader {
 
             try {
                 if (mDiskLruCache != null) {
-                    snapshot = mDiskLruCache.get(key.hashCode()+"");
+                    snapshot = mDiskLruCache.get(key.hashCode() + "");
                     if (snapshot == null) {
-                        DiskLruCache.Editor editor = mDiskLruCache.edit(key.hashCode()+"");
+                        DiskLruCache.Editor editor = mDiskLruCache.edit(key.hashCode() + "");
                         if (editor != null) {
                             if (downloadUrlToStream(in, editor.newOutputStream(DISK_CACHE_INDEX))) {
                                 editor.commit();
@@ -168,7 +171,8 @@ public class ImageLoader {
             } finally {
 
             }
-            if(bitmap==null)bitmap = getBitmapFromDisk(key);
+            if (bitmap == null)
+                bitmap = getBitmapFromDisk(key);
             if (bitmap != null) {
                 mMemoryCache.addBitmapToCache(key, bitmap);
                 mImageView.post(new ImageRunnable(mImageView, key, bitmap));
@@ -178,7 +182,7 @@ public class ImageLoader {
 
         @Override
         public void onError(Response response) {
-            Log.d("MSG", " onError  url:"+key);
+            Log.d("MSG", " onError  url:" + key);
         }
 
     }
@@ -189,7 +193,7 @@ public class ImageLoader {
         DiskLruCache.Snapshot snapshot;
         Bitmap bitmap = null;
         try {
-            snapshot = mDiskLruCache.get(key.hashCode()+"");
+            snapshot = mDiskLruCache.get(key.hashCode() + "");
             if (snapshot == null)
                 return null;
             FileInputStream fileInputStream = (FileInputStream) snapshot.getInputStream(DISK_CACHE_INDEX);
@@ -367,9 +371,27 @@ public class ImageLoader {
         return inSampleSize;
     }
 
-    public  static class ImageData {
+    public static final Bitmap grey(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap faceIconGreyBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(faceIconGreyBitmap);
+        Paint paint = new Paint();
+        ColorMatrix colorMatrix = new ColorMatrix();
+        colorMatrix.setSaturation(0);
+        ColorMatrixColorFilter colorMatrixFilter = new ColorMatrixColorFilter(colorMatrix);
+        paint.setColorFilter(colorMatrixFilter);
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        return faceIconGreyBitmap;
+    }
+
+    public static class ImageData {
         public static final int IMAGE_TYPE_THUMBNAIL = 0;
         public static final int IMAGE_TYPE_NORMAL = 1;
+        public static final int IMAGE_GRAY = 2;
+        public static final int IMAGE_FIT_BITMAP = 3;
         public String mKey;
         public int mType;
 
@@ -409,7 +431,15 @@ public class ImageLoader {
 
         @Override
         public void run() {
-            if (key.equals(mImageView.getTag())) {
+            ImageData data = null;
+            if (mImageView.getTag() instanceof ImageData) {
+                data = (ImageData) mImageView.getTag();
+            }
+            if (data != null && ImageData.IMAGE_GRAY == data.mType) {
+                bitmap = grey(bitmap);
+            }
+            mImageView.setImageBitmap(bitmap);
+            if (ImageData.IMAGE_FIT_BITMAP == data.mType) {
                 Rect outRect = new Rect();
                 mImageView.getHitRect(outRect);
                 int width = outRect.width();
@@ -420,7 +450,7 @@ public class ImageLoader {
                     params.width = width;
                     mImageView.setLayoutParams(params);
                 }
-                mImageView.setImageBitmap(bitmap);
+
             }
         }
 

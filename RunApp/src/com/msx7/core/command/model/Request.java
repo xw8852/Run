@@ -24,7 +24,30 @@ import com.msx7.core.command.impl.HttpJsonPostCommand;
  *       </ul>
  */
 public class Request {
-	public String url;
-	public IParams Params;
-	public Object object;
+    public String url;
+    public IParams Params;
+    public Object object;
+
+    public Request() {
+        super();
+    }
+
+    public Request(String url) {
+        super();
+        this.url = url;
+    }
+
+    public Request(String url, IParams params) {
+        super();
+        this.url = url;
+        Params = params;
+    }
+
+    public Request(String url, IParams params, Object object) {
+        super();
+        this.url = url;
+        Params = params;
+        this.object = object;
+    }
+    
 }

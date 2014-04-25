@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:toDegrees="7200" 
+    android:fromDegrees="0"
+    android:repeatCount="infinite"
+    android:duration="6000"
+    android:pivotX="50%"
+    android:interpolator="@android:anim/linear_interpolator"
+    android:pivotY="50%">
+
+</rotate>

@@ -1,16 +1,19 @@
 package com.android.ivymobi.pedometer.widget;
 
-import com.android.ivymobi.runapp.R;
-import com.msx7.annotations.Inject;
-import com.msx7.annotations.InjectView;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.Button;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.android.ivymobi.runapp.R;
+import com.msx7.annotations.Inject;
+import com.msx7.annotations.InjectView;
 
 public class SportView extends LinearLayout {
     /** 运动状态，走路or跑步 */
@@ -37,8 +40,11 @@ public class SportView extends LinearLayout {
     /** 速度： 跑步：时速，走路：步数 */
     @InjectView(id = R.id.textView12)
     TextView mSpeed;
-    @InjectView(id = R.id.button1)
-    Button mState;
+    @InjectView(id = R.id.status)
+    CheckBox mState;
+    @InjectView(id=R.id.c_circle)
+    View mStateAnim;
+    Animation mCirCleAnimation;
 
     boolean isRunning;
 
@@ -55,6 +61,7 @@ public class SportView extends LinearLayout {
     void initView() {
         LayoutInflater.from(getContext()).inflate(R.layout.run_state, this);
         Inject.inject(this, this);
+        mCirCleAnimation=AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
     }
 
     /** 设置运动状态 */
@@ -66,13 +73,21 @@ public class SportView extends LinearLayout {
 
     public void setButton(boolean isPause) {
         if (isPause) {
-            mState.setText("继续");
+            mCirCleAnimation.cancel();
+            mState.setChecked(false);
         } else {
-            mState.setText("暂停");
+            mStateAnim.startAnimation(mCirCleAnimation);
+            mState.setChecked(true);
         }
     }
-
-    public Button getButton() {
+    public void reset(){
+        setDate("-");
+        setTime("-");
+        setDTime("- - -");
+        setCals("-");
+        setSpeed("-");
+    }
+    public CheckBox getButton() {
         return mState;
     }
 

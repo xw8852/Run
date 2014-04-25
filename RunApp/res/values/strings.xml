@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">RunApp</string>
+    <string name="app_name">SCH-HRMobile</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="loadingData">正在加载数据...</string>
+    <string name="loginSuccess">登陆成功</string>
 
 </resources>

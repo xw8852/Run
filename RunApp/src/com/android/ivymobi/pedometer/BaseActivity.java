@@ -64,7 +64,7 @@ public abstract class BaseActivity extends Activity {
     }
 
     protected void goGet(Request request, IResponseListener listener) {
-        Manager.getInstance().execute(Manager.CMD_GET, request, listener);
+        Manager.getInstance().execute(Manager.CMD_GET_STRING, request, listener);
     }
 
 }

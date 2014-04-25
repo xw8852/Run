@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <include layout="@layout/activity_titlebar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+         android:visibility="gone"
+        android:background="@color/title_backgroud"
+        android:orientation="vertical" >
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+           
+            android:background="@drawable/white_stroke_rect"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/textView1"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/white_blue_fill_btn_color"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="当前积分"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@drawable/blue_white_btn_color" />
+
+            <RadioButton
+                android:id="@+id/textView2"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/white_blue_fill_btn_color"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="已兑换积分"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@drawable/blue_white_btn_color" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:divider="@drawable/line"
+            android:dividerHeight="1dp"
+            android:paddingBottom="10dp" >
+        </ListView>
+
+        <include
+            android:id="@+id/include1"
+            layout="@layout/score_item_mine" />
+
+        <LinearLayout
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/include1"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="#66000000"
+            android:paddingBottom="5dp"
+            android:gravity="center_horizontal|bottom"
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn1_top"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="@drawable/blue_white_btn_color"
+                android:text="我要兑换" />
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn1_bottom"
+                android:gravity="center"
+                android:textColor="@drawable/blue_white_btn_color"
+                android:padding="10dp"
+                android:text="获得更多积分" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

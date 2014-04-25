@@ -18,8 +18,7 @@ public class PUtils {
      * 运动状态 -1:未开始 0：跑步 1：走路 2:暂停 3:结束
      */
     public static final int getSportState() {
-        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getInt(
-                "pedometer.sport.state", -1);
+        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getInt("pedometer.sport.state", -1);
     }
 
     public static final void saveStartTime(long time) {
@@ -34,13 +33,11 @@ public class PUtils {
     }
 
     public static final long getStartTime() {
-        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong(
-                "pedometer.sport.StartTime", 0);
+        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong("pedometer.sport.StartTime", 0);
     }
 
     public static final long getEndTime() {
-        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong(
-                "pedometer.sport.EndTime", 0);
+        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong("pedometer.sport.EndTime", 0);
     }
 
     public static final void savePauseDate(long date) {
@@ -49,8 +46,7 @@ public class PUtils {
     }
 
     public static final long getPauseDate() {
-        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong(
-                "pedometer.sport.PauseDate", 0);
+        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong("pedometer.sport.PauseDate", 0);
     }
 
     public static final void saveLastTime(long date) {
@@ -59,8 +55,7 @@ public class PUtils {
     }
 
     public static final long getLastTime() {
-        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong(
-                "pedometer.sport.PauseTime", 0);
+        return PreferenceManager.getDefaultSharedPreferences(Controller.getApplication()).getLong("pedometer.sport.PauseTime", 0);
     }
 
     public static final String getNum2(float num) {
@@ -81,5 +76,10 @@ public class PUtils {
     public static final String getNum3(double num) {
         num = num * 1000;
         return String.valueOf(Math.round(num) / 1000.0);
+    }
+
+    public static final void clearStepData() {
+        SharedPreferences preferences = Controller.getApplication().getSharedPreferences("state", 0);
+        preferences.edit().clear().commit();
     }
 }

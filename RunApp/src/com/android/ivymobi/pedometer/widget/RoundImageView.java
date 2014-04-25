@@ -6,8 +6,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -20,7 +23,7 @@ public class RoundImageView extends ImageView {
 
     public RoundImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        setGap(4);
     }
 
     public RoundImageView(Context context, AttributeSet attrs, int defStyle) {
@@ -33,16 +36,28 @@ public class RoundImageView extends ImageView {
     public RoundImageView(Context context) {
         super(context);
     }
-
+    Path clip;
+    Paint paint;
     @Override
     protected void onDraw(Canvas canvas) {
-       
+        canvas.save();
+        canvas.drawColor(Color.TRANSPARENT);
+        canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
         Drawable drawable = getDrawable();
         if (drawable != null) {
-            Path path = configureCircle();
-            canvas.clipPath(path);
+            clip = configureCircle();
+            canvas.clipPath(clip);
         }
+        paint = new Paint();
+        paint.setAntiAlias(true);  
+        paint.setFilterBitmap(true);  
+        paint.setDither(true); 
+        paint.setStrokeWidth(4);
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Style.FILL);
+        canvas.drawPath(clip, paint);
         super.onDraw(canvas);
+        
 
     }
 

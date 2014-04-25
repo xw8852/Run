@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66ffffff"
+    android:gravity="bottom|center_horizontal"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/btn1_top"
+        android:padding="10dp"
+        android:clickable="false"
+        android:text="暂停中，走累了吗？"
+        android:textColor="@drawable/blue_white_btn_color"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/btn1_center"
+        android:padding="10dp"
+        android:text="放弃"
+        android:textColor="@drawable/blue_white_btn_color"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/btn1_bottom"
+        android:padding="10dp"
+        android:text="结束"
+        android:textColor="@drawable/blue_white_btn_color"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/button0"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn1"
+        android:padding="10dp"
+        android:text="继续"
+         android:textColor="@drawable/blue_white_btn_color"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</LinearLayout>

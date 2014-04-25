@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import android.util.Log;
+
 import com.msx7.core.command.AbstractHttpCommand;
 import com.msx7.core.command.ICommand;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.impl.HttpGetCommand;
+import com.msx7.core.command.impl.HttpGetStringCommand;
 import com.msx7.core.command.impl.HttpJsonPostCommand;
 import com.msx7.core.command.model.DefaultResponseListenerImpl;
 import com.msx7.core.command.model.Request;
@@ -35,14 +38,16 @@ public class Manager {
 	 * 类型为cmdId 此值对应 {@link HttpGetCommand}
 	 */
 	public static final int CMD_GET = CMD_JSON_POST << CMD_JSON_POST;
+	public static final int CMD_GET_STRING = CMD_JSON_POST << CMD_GET;
 	private static final Manager instance = new Manager();
 	private HashMap<String, Class<? extends ICommand>> maps = new HashMap<String, Class<? extends ICommand>>();
 	private ExecutorService mPools;
 
 	private Manager() {
-		mPools = Executors.newCachedThreadPool();
+		mPools = Executors.newFixedThreadPool(3);
 		registerCommand(CMD_JSON_POST, HttpJsonPostCommand.class);
 		registerCommand(CMD_GET, HttpGetCommand.class);
+		registerCommand(CMD_GET_STRING, HttpGetStringCommand.class);
 	}
 
 	public static final Manager getInstance() {
@@ -90,6 +95,7 @@ public class Manager {
 	 */
 	public void execute(int cmdId, Request request, IResponseListener listener,
 			boolean isUIThread) {
+	    Log.d("MSG", "URL-->"+request.url);
 		if (isUIThread) {
 			listener = new DefaultResponseListenerImpl(Controller
 					.getApplication().getHandler(), listener);

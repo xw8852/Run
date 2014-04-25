@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/user_home_bg"
@@ -10,6 +10,7 @@
         android:id="@+id/roundImageView1"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
         android:src="@drawable/ic_user_default" />
 
@@ -17,6 +18,7 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:text="Sean Hobman"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -25,6 +27,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_weight="0"
         android:orientation="horizontal" >
 
@@ -33,12 +36,11 @@
             android:layout_height="0dp"
             android:layout_weight="2" />
 
-
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="40dp"
+            android:layout_weight="1"
             android:orientation="vertical" >
 
             <Button
@@ -46,29 +48,29 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_style_0"
+                android:text="积        分"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
-                android:text="积        分" />
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                 android:layout_marginTop="20dp"
-                 android:textColor="@android:color/white"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/btn_style_0"
-                 android:textSize="16sp"
-                android:text="成        就" />
+                android:text="成        就"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/button3"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:textColor="@android:color/white"
                 android:background="@drawable/btn_style_0"
-                 android:textSize="16sp"
-                android:text="历史统计" />
+                android:text="历史统计"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -77,11 +79,13 @@
             android:layout_weight="2" />
     </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingBottom="10dp"
-            android:src="@drawable/logo1" />
-</LinearLayout>
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:paddingBottom="10dp"
+        android:src="@drawable/logo1" />
+
+</merge>

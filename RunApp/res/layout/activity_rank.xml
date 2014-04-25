@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/activity_titlebar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:background="@color/title_backgroud"
+        android:orientation="vertical">
+
+        <RadioGroup
+           android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/topBar"
+            android:background="@drawable/white_stroke_rect"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/credit"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/white_blue_fill_btn_color"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:padding="5dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:text="积分"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@drawable/blue_white_btn_color" />
+
+            <RadioButton
+                android:id="@+id/miles"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:background="@drawable/white_blue_fill_btn_color"
+                android:button="@null"
+                android:gravity="center"
+                   android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_marginRight="1dp"
+                android:padding="5dp"
+                android:text="里程"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@drawable/blue_white_btn_color" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:dividerHeight="1dp"
+            android:divider="@drawable/line"
+            android:cacheColorHint="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:paddingBottom="10dp"
+            android:layout_alignParentTop="true" >
+        </ListView>
+
+        <include layout="@layout/rank_item_mine" />
+    </RelativeLayout>
+
+</LinearLayout>

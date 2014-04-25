@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/user_home_bg"
-    android:gravity="center"
+    android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <com.android.ivymobi.pedometer.widget.RoundImageView
-        android:id="@+id/roundImageView1"
-        android:layout_width="100dp"
-        android:layout_height="157dp"
-        android:src="@drawable/ic_user_default" />
+    <include layout="@layout/activity_titlebar" />
+
+
 
 </LinearLayout>
