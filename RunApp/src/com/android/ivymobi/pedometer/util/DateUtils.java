@@ -32,7 +32,12 @@ public class DateUtils {
 	public static final String FORMAT_DATE_YMMDD_HHMM = "yy-MM-dd HH:mm";
 	public static final String FORMAT_DATE_YYMMDD_HHMM = "yyyy-MM-dd HH:mm";
 	public static final String FORMAT_DATE_YYMMDD_HHMMSS = "yyyy-MM-dd HH:mm:ss";
-
+	/**unix 10位时间戳转换*/
+	 public static String TimeStamp2Date(String timestampString, String formats) {
+	        Long timestamp = Long.parseLong(timestampString) * 1000;
+	        String date = new java.text.SimpleDateFormat(formats).format(new java.util.Date(timestamp));
+	        return date;
+	    }
 	/**
 	 * 
 	 * getDateTimes:获取指定时间字符串对应的毫秒. <br/>

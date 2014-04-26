@@ -89,15 +89,15 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
         mMapView.getController().enableClick(true);
         graphicsOverlay = new GraphicsOverlay(mMapView);
 
-//        mLocClient = new LocationClient(getContext());
+        // mLocClient = new LocationClient(getContext());
         locData = new LocationData();
-//        mLocClient.registerLocationListener(myListener);
-//        LocationClientOption option = new LocationClientOption();
-//        option.setOpenGps(true);// 打开gps
-//        option.setCoorType("bd09ll"); // 设置坐标类型
-//        option.setScanSpan(10000);
-//        mLocClient.setLocOption(option);
-//        mLocClient.start();
+        // mLocClient.registerLocationListener(myListener);
+        // LocationClientOption option = new LocationClientOption();
+        // option.setOpenGps(true);// 打开gps
+        // option.setCoorType("bd09ll"); // 设置坐标类型
+        // option.setScanSpan(10000);
+        // mLocClient.setLocOption(option);
+        // mLocClient.start();
 
         // 定位图层初始化
         myLocationOverlay = new MyLocationOverlay(mMapView);
@@ -120,12 +120,26 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
         if (state > -1 && state < 3) {
             mSportView.setDate(DateUtil.getDate(System.currentTimeMillis()));
             mSportView.setDTime(DateUtil.getTime(System.currentTimeMillis()) + " - ~ ");
+            SharedPreferences mState = getContext().getSharedPreferences("state", 0);
+
+            float distance = mState.getFloat("distance", 0);
+            System.out.println(distance+"-----");
+            mSportView.setDistance(PUtils.getNum3(distance));
+
+            mSportView.setCals(PUtils.getNum3(mState.getFloat("calories", 0)));
+            int _state = new PedometerSettings(PreferenceManager.getDefaultSharedPreferences(getContext())).isRunning() ? 0 : 1;
+            if (_state == 1) {
+                mSportView.setSpeed(mState.getInt("steps", 0) + "");
+            } else if (_state == 2) {
+                mSportView.setSpeed(PUtils.getNum3(mState.getFloat("speed", 0)) + " km/h");
+            }
+
             if (state == 2) {
                 mSportView.setButton(true);
                 return;
             }
             mSportView.setButton(false);
-//            mLocClient.stop();
+            // mLocClient.stop();
             getContext().startService(new Intent(BaiduGPSServer.ACTION));
             startTimer();
             getContext().startService(new Intent(getContext(), StepService.class));
@@ -224,7 +238,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
             }
             if (intent.hasExtra("speed") && state == 0) {
                 float speed = intent.getFloatExtra("speed", 0f);
-                mSportView.setSpeed(PUtils.getNum3(speed) + " km");
+                mSportView.setSpeed(PUtils.getNum3(speed) + " km/h");
             }
         }
     };

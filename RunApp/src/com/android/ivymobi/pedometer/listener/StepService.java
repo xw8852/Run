@@ -239,29 +239,43 @@ public class StepService extends Service {
 
         @Override
         public void stepsChanged(int value) {
-            sendBroadcast(new Intent(ACTION_STEP).putExtra("step", value));
+            mSteps=value;
+            sendBroadcast(new Intent(ACTION_STEP).putExtra("step", value));saveDate();
         }
 
         @Override
         public void speedChanged(float value) {
-            sendBroadcast(new Intent(ACTION_STEP).putExtra("speed", value));
+            mSpeed=value;
+            sendBroadcast(new Intent(ACTION_STEP).putExtra("speed", value)); saveDate();
         }
 
         @Override
         public void paceChanged(int value) {
-            sendBroadcast(new Intent(ACTION_STEP).putExtra("pace", value));
+            mPace=value;
+            sendBroadcast(new Intent(ACTION_STEP).putExtra("pace", value)); saveDate();
         }
 
         @Override
         public void distanceChanged(float value) {
-            sendBroadcast(new Intent(ACTION_STEP).putExtra("distance", value));
+            mDistance=value;
+            sendBroadcast(new Intent(ACTION_STEP).putExtra("distance", value)); saveDate();
         }
 
         @Override
         public void caloriesChanged(float value) {
+            mCalories=value;
             sendBroadcast(new Intent(ACTION_STEP).putExtra("cal", value));
+            saveDate();
         }
-
+        void saveDate(){
+            mStateEditor = mState.edit();
+            mStateEditor.putInt("steps", mSteps);
+            mStateEditor.putInt("pace", mPace);
+            mStateEditor.putFloat("distance", mDistance);
+            mStateEditor.putFloat("speed", mSpeed);
+            mStateEditor.putFloat("calories", mCalories);
+            mStateEditor.commit();
+        }
     };
     /**
      * Receives messages from activity.
