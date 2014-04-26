@@ -125,7 +125,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
                 return;
             }
             mSportView.setButton(false);
-            mLocClient.stop();
+//            mLocClient.stop();
             getContext().startService(new Intent(BaiduGPSServer.ACTION));
             startTimer();
             getContext().startService(new Intent(getContext(), StepService.class));

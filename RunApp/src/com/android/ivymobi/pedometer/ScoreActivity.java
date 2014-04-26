@@ -28,7 +28,7 @@ import com.msx7.core.command.ErrorCode;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.Request;
 import com.msx7.core.command.model.Response;
-import com.msx7.image.ImageLoader;
+import com.msx7.image.AsyncImageLoad;
 
 @InjectActivity(id = R.layout.activity_score)
 public class ScoreActivity extends BaseActivity {
@@ -63,13 +63,13 @@ public class ScoreActivity extends BaseActivity {
                 public void syncFinish() {
                     Mine _mine = UserUtil.getMine();
                     if (_mine != null)
-                        ImageLoader.getInstance().loadImage(_mine.avatar_url, mMineImage);
+                        AsyncImageLoad.getIntance().loadImage(_mine.avatar_url, mMineImage,null);
                 }
             });
         } else {
             Mine _mine = UserUtil.getMine();
             if (_mine != null)
-                ImageLoader.getInstance().loadImage(_mine.avatar_url, mMineImage);
+                AsyncImageLoad.getIntance().loadImage(_mine.avatar_url, mMineImage,null);
         }
 
         view = (TextView) mMine.findViewById(R.id.num);

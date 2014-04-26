@@ -64,7 +64,9 @@ public class StepDetector implements SensorEventListener {
     }
 
     boolean isCalculate;
-
+    public void setCalculate(boolean isCal){
+        this.isCalculate=isCal;
+    }
     // public void onSensorChanged(int sensor, float[] values) {
     public void onSensorChanged(SensorEvent event) {
         Sensor sensor = event.sensor;
@@ -101,7 +103,6 @@ public class StepDetector implements SensorEventListener {
                             boolean isAlmostAsLargeAsPrevious = diff > (mLastDiff[k] * 2 / 3);
                             boolean isPreviousLargeEnough = mLastDiff[k] > (diff / 3);
                             boolean isNotContra = (mLastMatch != 1 - extType);
-                            Log.i(TAG, "step--"+isCalculate);
 
                             if (isAlmostAsLargeAsPrevious && isPreviousLargeEnough && isNotContra&&isCalculate) {
                                 Log.i(TAG, "step");

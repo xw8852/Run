@@ -9,6 +9,7 @@
 package com.msx7.core.command.model;
 
 import android.os.Handler;
+import android.text.TextUtils;
 
 import com.msx7.core.command.IResponseListener;
 

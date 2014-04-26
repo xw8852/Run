@@ -44,11 +44,21 @@
             android:orientation="vertical" >
 
             <Button
+                android:id="@+id/button4"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_style_0"
+                android:text="账号信息"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <Button
                 android:id="@+id/button1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_style_0"
                 android:text="积        分"
+                android:layout_marginTop="20dp"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 

@@ -12,7 +12,7 @@ import com.android.ivymobi.pedometer.widget.RoundImageView;
 import com.android.ivymobi.runapp.R;
 import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectView;
-import com.msx7.image.ImageLoader;
+import com.msx7.image.AsyncImageLoad;
 
 public class RankItemView extends LinearLayout {
     @InjectView(id = R.id.imageView2)
@@ -36,16 +36,17 @@ public class RankItemView extends LinearLayout {
         me.setVisibility(isShow ? View.VISIBLE : View.INVISIBLE);
     }
 
-    public void setData(RankFragment.RankUserInfo info,int num) {
+    public void setData(RankFragment.RankUserInfo info, int num) {
         userName.setText(info.name);
         userName.setTextColor(Color.BLACK);
         score.setTextColor(Color.BLACK);
-        ((TextView)findViewById(R.id.textView4)).setTextColor(Color.BLACK);
+        ((TextView) findViewById(R.id.textView4)).setTextColor(Color.BLACK);
         this.num.setTextColor(Color.BLACK);
-        score.setText((String.valueOf(info.sum_credits>info.sum_miles?info.sum_credits:info.sum_miles)));
+        score.setText((String.valueOf(info.sum_credits > info.sum_miles ? info.sum_credits : info.sum_miles)));
         this.num.setText(String.valueOf(info.rank));
         portrait.setScaleType(ScaleType.CENTER_CROP);
-        ImageLoader.getInstance().loadImage(info.avatar, portrait);
-        
+        portrait.setImageResource(R.drawable.ic_user_default);
+        AsyncImageLoad.getIntance().loadImage(info.avatar, portrait, null);
+
     }
 }

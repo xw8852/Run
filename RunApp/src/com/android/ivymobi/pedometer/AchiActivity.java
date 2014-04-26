@@ -6,16 +6,11 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.android.ivymobi.pedometer.data.BaseModel;
@@ -34,8 +29,8 @@ import com.msx7.core.command.ErrorCode;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.Request;
 import com.msx7.core.command.model.Response;
-import com.msx7.image.ImageLoader;
-import com.msx7.image.ImageLoader.ImageData;
+import com.msx7.image.AsyncImageLoad;
+import com.msx7.image.AsyncImageLoad.ImageData;
 
 @InjectActivity(id = R.layout.activity_achi)
 public class AchiActivity extends BaseActivity {
@@ -81,11 +76,12 @@ public class AchiActivity extends BaseActivity {
                 gallery.setBackgroundColor(i % 2 == 0 ? 0xf0f0f0 : Color.TRANSPARENT);
                 gallery.setAdapter(new AchiAdapter(Arrays.asList(infos[i]), AchiActivity.this));
                 gallery.setDrawingCacheBackgroundColor(Color.TRANSPARENT);
+                gallery.setPadding(10, 10, 10, 10);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT);
-//                params.weight = 1.0f;
+                // params.weight = 1.0f;
                 gallery.setLayoutParams(params);
-                root.addView(gallery,params);
+                root.addView(gallery, params);
 
             }
         }
@@ -116,11 +112,11 @@ public class AchiActivity extends BaseActivity {
             view2.setText(getItem(position).name);
             ImageData data = null;
             if (getItem(position).achieved == 1) {
-                data = new ImageData(getItem(position).icon, ImageData.IMAGE_GRAY);
+                data = new ImageData(null, ImageData.TYPE_GREY,getItem(position).icon);
             } else {
-                data = new ImageData(getItem(position).icon, ImageData.IMAGE_TYPE_NORMAL);
+                data = new ImageData(null, ImageData.TYPE_NONE,getItem(position).icon);
             }
-            ImageLoader.getInstance().loadImage(data, view);
+            AsyncImageLoad.getIntance().loadImageType(getItem(position).icon, view, data);
             convertView.setPadding(10, 0, 10, 0);
             if ((position / 4) % 2 == 0) {
                 convertView.setBackgroundColor(0xf0f0f0);

@@ -185,11 +185,11 @@ public class StepService extends Service {
             mStateEditor.putFloat("calories", mCalories);
             mStateEditor.commit();
             long pauseTime = System.currentTimeMillis();
-            long time = pauseTime-(PUtils.getPauseDate() == 0 ? PUtils.getStartTime() : PUtils.getPauseDate()) +PUtils.getLastTime();
+            long time = pauseTime - (PUtils.getPauseDate() == 0 ? PUtils.getStartTime() : PUtils.getPauseDate()) + PUtils.getLastTime();
             PUtils.saveLastTime(time);
 
         } else {
-           
+
             resetValues();
         }
         mNM.cancel(R.string.app_name);
@@ -218,8 +218,11 @@ public class StepService extends Service {
                                                                              * TYPE_ORIENTATION
                                                                              */);
         mSensorManager.registerListener(mStepDetector, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        Sensor sensor=mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
-        mSensorManager.registerListener( mStepDetector, sensor, SensorManager.SENSOR_DELAY_FASTEST);
+        Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        if (sensor == null) {
+            mStepDetector.setCalculate(true);
+        } else
+            mSensorManager.registerListener(mStepDetector, sensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     private void unregisterDetector() {
@@ -345,7 +348,7 @@ public class StepService extends Service {
         PUtils.saveEndTime(0);
         PUtils.saveLastTime(0);
         PUtils.savePauseDate(0);
-       
+
     }
 
     /**

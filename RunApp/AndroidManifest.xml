@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="UFNZvMaI2KXcDtv2xeykUxix" />
+            android:value="Vz2uuGxvST7jCSkgHqOm3dgU" />
 
         <activity
             android:name="com.android.ivymobi.pedometer.MainActivity"
@@ -29,6 +29,7 @@
             android:name="com.android.ivymobi.pedometer.login.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,6 +61,11 @@
         </activity>
         <activity
             android:name="com.android.ivymobi.pedometer.ScoreActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.android.ivymobi.pedometer.UserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>

@@ -30,9 +30,9 @@
                 android:layout_weight="1"
                 android:background="@drawable/white_blue_left_round_btn_color"
                 android:button="@null"
-                android:checked="true"
                 android:gravity="center"
-                android:text="天"
+                android:text="周"
+                android:checked="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@drawable/blue_white_btn_color" />
 
@@ -84,32 +84,37 @@
         android:paddingRight="40dp" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/d_left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:src="@drawable/left" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/d_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="今天"
+            android:text="本周"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/black" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/d_right"
+              android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/right" />
     </LinearLayout>
 
-    <View
+    <LinearLayout
         android:id="@+id/view1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_weight="1" />
 
     <RelativeLayout
@@ -231,6 +236,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="一公里最快"
+                android:visibility="invisible"
                 android:textColor="@android:color/black" />
 
             <TextView
@@ -238,6 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="- -"
+                android:visibility="invisible"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black" />
         </LinearLayout>

@@ -37,7 +37,7 @@ import com.msx7.core.command.ErrorCode;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.Request;
 import com.msx7.core.command.model.Response;
-import com.msx7.image.ImageLoader;
+import com.msx7.image.AsyncImageLoad;
 
 public class RankFragment extends LinearLayout implements PushHeader.OnRefreshListener, IViewStatus, PageLoader {
     @InjectView(id = R.id.rank_item_mine)
@@ -195,7 +195,7 @@ public class RankFragment extends LinearLayout implements PushHeader.OnRefreshLi
         TextView userName=(TextView)mMine.findViewById(R.id.user_name);
         TextView score=(TextView)mMine.findViewById(R.id.score);
         TextView rank=(TextView)mMine.findViewById(R.id.num);
-        ImageLoader.getInstance().loadImage(mine.avatar_url, mImageView);
+        AsyncImageLoad.getIntance().loadImage(mine.avatar_url, mImageView,null);
         userName.setText(mine.nickname);
         score.setText(isMiles?String.valueOf(mine.sum_miles):String.valueOf(mine.sum_credits));
         rank.setText(String.valueOf(mine.rank));

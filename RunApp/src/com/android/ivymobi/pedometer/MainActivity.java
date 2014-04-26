@@ -18,6 +18,7 @@ import com.baidu.mapapi.map.MyLocationOverlay;
 import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectActivity;
 import com.msx7.annotations.InjectView;
+import com.msx7.core.Controller;
 
 @InjectActivity(id = R.layout.activity_main)
 public class MainActivity extends Activity implements View.OnClickListener {
@@ -59,7 +60,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mBtnRank.setOnClickListener(this);
         mBtnUser.setOnClickListener(this);
         onClick(mBtnRun);
-
+        Controller.getApplication().addActivityHistory(this);
     }
 
     UserFragment userFragment;
@@ -103,9 +104,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     void showView(View v) {
-        if(userFragment!=null)userFragment.setVisibility(View.GONE);
-        if(fragment!=null)fragment.setVisibility(View.GONE);
-        if(fragment2!=null) fragment2.setVisibility(View.GONE);
+        if (userFragment != null)
+            userFragment.setVisibility(View.GONE);
+        if (fragment != null)
+            fragment.setVisibility(View.GONE);
+        if (fragment2 != null)
+            fragment2.setVisibility(View.GONE);
         v.setVisibility(View.VISIBLE);
     }
 

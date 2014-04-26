@@ -32,7 +32,6 @@
             android:background="@android:color/transparent"
             android:hint="name@schneider-electric.com"
             android:inputType="textEmailAddress"
-            android:text="2@g.cn"
             android:textSize="18sp" >
         </EditText>
 
@@ -61,7 +60,6 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:hint="请输入密码"
-            android:text="123456"
             android:inputType="textPassword"
             android:textSize="18sp" >
         </EditText>

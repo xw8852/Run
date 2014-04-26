@@ -27,8 +27,9 @@ public class UserUtil {
         SharedPreferences preferences = Controller.getApplication().getSharedPreferences("User", 0);
         preferences.edit().putString("u_Mine", new Gson().toJson(mine)).commit();
     }
+    
     public static final void clearMine(){
         SharedPreferences preferences = Controller.getApplication().getSharedPreferences("User", 0);
-        preferences.edit().remove("u_Mine").commit();
+        preferences.edit().remove("u_Mine").remove("u_login_sessoin").commit();
     }
 }

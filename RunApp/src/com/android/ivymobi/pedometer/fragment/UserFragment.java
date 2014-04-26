@@ -15,10 +15,11 @@ import com.android.ivymobi.pedometer.AchiActivity;
 import com.android.ivymobi.pedometer.DataHitoryActivity;
 import com.android.ivymobi.pedometer.ScoreActivity;
 import com.android.ivymobi.pedometer.SyncMine;
+import com.android.ivymobi.pedometer.UserInfoActivity;
 import com.android.ivymobi.pedometer.data.Mine;
 import com.android.ivymobi.pedometer.util.UserUtil;
 import com.android.ivymobi.runapp.R;
-import com.msx7.image.ImageLoader;
+import com.msx7.image.AsyncImageLoad;
 
 public class UserFragment extends LinearLayout implements IViewStatus, OnClickListener {
     ImageView imageView;
@@ -45,6 +46,7 @@ public class UserFragment extends LinearLayout implements IViewStatus, OnClickLi
         findViewById(R.id.button1).setOnClickListener(this);
         findViewById(R.id.button2).setOnClickListener(this);
         findViewById(R.id.button3).setOnClickListener(this);
+        findViewById(R.id.button4).setOnClickListener(this);
         if (UserUtil.getMine() == null) {
             SyncMine.getInstance().syncMine(new SyncMine.ISyncMineFinish() {
 
@@ -52,7 +54,7 @@ public class UserFragment extends LinearLayout implements IViewStatus, OnClickLi
                 public void syncFinish() {
                     Mine _mine = UserUtil.getMine();
                     if (_mine != null) {
-                        ImageLoader.getInstance().loadImage(_mine.avatar_url, imageView);
+                        AsyncImageLoad.getIntance().loadImage(_mine.avatar_url, imageView, null);
                         userName.setText(_mine.nickname);
                     }
 
@@ -61,7 +63,7 @@ public class UserFragment extends LinearLayout implements IViewStatus, OnClickLi
         } else {
             Mine _mine = UserUtil.getMine();
             if (_mine != null) {
-                ImageLoader.getInstance().loadImage(_mine.avatar_url, imageView);
+                AsyncImageLoad.getIntance().loadImage(_mine.avatar_url, imageView, null);
                 userName.setText(_mine.nickname);
             }
         }
@@ -97,6 +99,12 @@ public class UserFragment extends LinearLayout implements IViewStatus, OnClickLi
             /** 历史统计 */
             getContext().startActivity(new Intent(getContext(), DataHitoryActivity.class));
             break;
+
+        case R.id.button4:
+            /** 账号信息 */
+            getContext().startActivity(new Intent(getContext(), UserInfoActivity.class));
+            break;
+
         }
     }
 

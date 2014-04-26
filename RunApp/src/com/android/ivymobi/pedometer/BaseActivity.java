@@ -41,7 +41,7 @@ public abstract class BaseActivity extends Activity {
         dismissLoadingDialog();
         mProgressDialog = new ProgressDialog(this);
         mProgressDialog.setMessage(getString(msgId));
-        mProgressDialog.setCancelable(true);
+        mProgressDialog.setCancelable(false);
         mProgressDialog.show();
     }
 

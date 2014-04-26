@@ -10,5 +10,6 @@ public class Config {
     public static final String SEVER_ACHIEVEMENT_LIST=SEVER_URL+"api/achievement/list";
     public static final String SEVER_RANKING_CREDIT=SEVER_URL+"api/ranking/credit";
     public static final String SEVER_RANKING_MILE=SEVER_URL+"api/ranking/mile";
+    public static final String SEVER_WORKOUT_HISTORY=SEVER_URL+"api/workout/history";
     
 }
