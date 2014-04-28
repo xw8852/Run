@@ -27,11 +27,7 @@ public final class SyncMine {
     }
 
     public void syncMine(ISyncMineFinish syncMineFinish) {
-        if (UserUtil.getMine() != null) {
-            if (syncMineFinish != null)
-                syncMineFinish.syncFinish();
-            return;
-        }
+       
         Request request = new Request(Config.SEVER_USER_INFO + "?session_id=" + UserUtil.getSession());
         Manager.getInstance().execute(Manager.CMD_GET_STRING, request, new ResponseListner(syncMineFinish));
     }
@@ -58,7 +54,8 @@ public final class SyncMine {
 
         @Override
         public void onError(Response response) {
-
+            if (finish != null)
+                finish.syncFinish();
         }
 
     }

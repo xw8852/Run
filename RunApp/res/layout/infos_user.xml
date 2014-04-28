@@ -23,7 +23,7 @@
             android:textColor="@android:color/black" />
 
         <com.android.ivymobi.pedometer.widget.RoundImageView
-            android:id="@+id/roundImageView1"
+            android:id="@+id/ic_portail"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginRight="10dp"
@@ -55,11 +55,12 @@
             android:textColor="@android:color/black" />
 
         <TextView
+            android:id="@+id/usrname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="- -"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#f0f0f0" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <View
@@ -82,11 +83,12 @@
             android:textColor="@android:color/black" />
 
         <TextView
+            android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="- -"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#f0f0f0" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <View
@@ -109,11 +111,12 @@
             android:textColor="@android:color/black" />
 
         <TextView
+            android:id="@+id/department"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="- -"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#f0f0f0" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <View
@@ -144,8 +147,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="- -"
+            android:id="@+id/sex"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#f0f0f0" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <View
@@ -172,7 +176,7 @@
             android:layout_height="wrap_content"
             android:text="- -"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#f0f0f0" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <View
@@ -199,7 +203,7 @@
             android:layout_height="wrap_content"
             android:text="- -"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="#f0f0f0" />
+            android:textColor="@android:color/darker_gray" />
     </LinearLayout>
 
     <View
@@ -231,11 +235,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:textColor="@android:color/white"
-                android:paddingTop="2dp"
+                android:background="@drawable/ic_num_bmi"
                 android:gravity="center_horizontal"
+                android:paddingTop="2dp"
                 android:text="23"
-                android:background="@drawable/ic_num_bmi" />
+                android:textColor="@android:color/white" />
 
             <View
                 android:id="@+id/line"
@@ -290,7 +294,35 @@
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
+   <View
+        android:layout_width="fill_parent"
+        android:layout_height="20dp"
+        android:background="#f0f0f0" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+       
+        android:paddingTop="20dp" >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="修改资料"
+             android:id="@+id/modifyInfo"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/right" />
+    </LinearLayout>
     <View
         android:layout_width="fill_parent"
         android:layout_height="20dp"
@@ -325,6 +357,7 @@
         android:background="#f0f0f0" />
 
     <TextView
+        android:id="@+id/loginOut"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -333,7 +366,6 @@
         android:paddingRight="10dp"
         android:paddingTop="20dp"
         android:text="退出登录"
-        android:id="@+id/loginOut"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />
 
@@ -341,7 +373,8 @@
         android:layout_width="fill_parent"
         android:layout_height="20dp"
         android:background="#f0f0f0" />
- <TextView
+
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -352,7 +385,7 @@
         android:text="关于HRMObile"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black" />
-    
+
     <View
         android:layout_width="fill_parent"
         android:layout_height="20dp"

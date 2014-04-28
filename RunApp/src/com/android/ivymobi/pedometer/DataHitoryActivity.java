@@ -80,45 +80,6 @@ public class DataHitoryActivity extends BaseActivity {
         Inject.inject(this);
         mTitleView.setText("历史统计");
 
-        // 用于 保存点集数据 ，包括每条曲线的X，Y坐标
-        //
-        // dataset = new XYMultipleSeriesDataset();// 使用与柱状图
-        // RangeCategorySeries series = new RangeCategorySeries("");//
-        // 括号内为图表底部的文字
-        // for (int k = 0; k < minValues.length; k++) {
-        // series.add( 0, maxValues[k]);
-        // }
-        // dataset.addSeries(series.toXYSeries());
-        //
-        // int[] colors = new int[] { Color.BLACK };// 青色蓝绿色
-        // renderer = buildBarRenderer(colors);
-        // setChartSettings(renderer, "标题", "x", "y", 0.5, 12.5, 0, 150,
-        // Color.GRAY, Color.LTGRAY);// 画笔的颜色预先定义成浅灰色
-        //
-        // renderer.setBarSpacing(0.01);// 设置间距
-        // renderer.setXLabels(0);// 设置 X
-        // 轴不显示数字（改用我们手动添加的文字标签））;//设置X轴显示的刻度标签的个数
-        // for (int i = 0; i < minValues.length; i++) {
-        // renderer.addXTextLabel(i + 1, i+1 + "月");
-        // }
-        // renderer.setYLabels(15);// 设置合适的刻度，在轴上显示的数量是 MAX / labels
-        // renderer.setMargins(new int[] { 30, 70, 10, 0 });// 图形 4 边距 设置4边留白
-        // // 设置图表的外边框
-        // renderer.setYLabelsAlign(Align.RIGHT);// 设置y轴显示的分列，默认是 Align.CENTER
-        // renderer.setPanEnabled(true, false);// 设置x方向可以滑动，y方向不可以滑动
-        // renderer.setZoomEnabled(false, false);// 设置x，y方向都不可以放大或缩小
-        // renderer.setClickEnabled(true);
-        // SimpleSeriesRenderer r = renderer.getSeriesRendererAt(0);
-        // r.setDisplayChartValues(true);// 设置是否在主题上方显示值
-        // r.setChartValuesTextSize(24);// 柱体上方字的大小
-        // r.setChartValuesSpacing(3);// 柱体上方字的与柱体顶部的距离
-        // r.setGradientEnabled(true);
-        // renderer.setBarSpacing(0.5);
-        // renderer.setBarWidth(60);
-        // r.setGradientStart(-20, Color.WHITE);
-        // r.setGradientStop(100, 0xff426c78);
-        // mchartView = ChartFactory.getRangeBarChartView(this, dataset,
-        // renderer, Type.DEFAULT);
 
         mGroup.setOnCheckedChangeListener(checkedChangeListener);
         mLeft.setOnClickListener(changeDateClickListener);
@@ -171,13 +132,11 @@ public class DataHitoryActivity extends BaseActivity {
         renderer.setGridColor(Color.GRAY);
         renderer.setXLabelsAlign(Align.RIGHT);
         renderer.setYLabelsAlign(Align.RIGHT);
-        renderer.setClickEnabled(true);
         renderer.setZoomButtonsVisible(true);
-        renderer.setPanLimits(new double[] { 0, waterSeries.getMaxX() * 30, 0, waterSeries.getMaxY(), });
+        renderer.setPanLimits(new double[] { -waterSeries.getMaxX() * 50, waterSeries.getMaxX() * 50, 0, waterSeries.getMaxY()* 50, });
 
         renderer.setPanEnabled(true, false);// 设置x方向可以滑动，y方向不可以滑动
         renderer.setZoomEnabled(false, false);// 设置x，y方向都不可以放大或缩小
-
         renderer.setLabelsTextSize(30);
 
         renderer.setBarSpacing(0.5);
@@ -344,6 +303,7 @@ public class DataHitoryActivity extends BaseActivity {
         mDistance.setText("- -");
         mSpeed.setText("- -");
         mTimes.setText("- -");
+        mAveSpeed.setText("平均时速: - - km/h");
         mAveSpeed.setText("- -");
         showLoadingDialog(R.string.loadingData);
         Request request = new Request(Config.SEVER_WORKOUT_HISTORY + "?session_id=" + UserUtil.getSession() + "&start_date=" + startDate
@@ -386,6 +346,7 @@ public class DataHitoryActivity extends BaseActivity {
         long distance = 0;
         long sumSpeed = 0;
         int sum = 0;
+        long maxSpeed = 0;
         waterSeries = new XYSeries("");
         int i = 1;
         for (DataHistory dataHistory : list) {
