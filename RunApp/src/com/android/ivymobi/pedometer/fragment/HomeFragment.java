@@ -1,5 +1,6 @@
 package com.android.ivymobi.pedometer.fragment;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -123,7 +124,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
             SharedPreferences mState = getContext().getSharedPreferences("state", 0);
 
             float distance = mState.getFloat("distance", 0);
-            System.out.println(distance+"-----");
+            System.out.println(distance + "-----");
             mSportView.setDistance(PUtils.getNum3(distance));
 
             mSportView.setCals(PUtils.getNum3(mState.getFloat("calories", 0)));
@@ -144,7 +145,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
             startTimer();
             getContext().startService(new Intent(getContext(), StepService.class));
             findViewById(R.id.choise_sport).setVisibility(View.GONE);
-
+            loadLocalLocationLines();
         }
         if (!isRegistBroadCast) {
             isRegistBroadCast = true;
@@ -366,6 +367,28 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
         return popupWindow;
     }
 
+    void loadLocalLocationLines() {
+        LocalLocationLines _locations = PUtils.getLocationLine();
+        if (_locations == null || _locations.locations == null || _locations.locations.size() == 0) {
+            return;
+        }
+        for (BDLocation location : _locations.locations) {
+            myListener.onReceiveLocation(location);
+        }
+
+    }
+
+    public static class LocalLocationLines {
+        public ArrayList<BDLocation> locations;
+
+        public LocalLocationLines() {
+            super();
+            locations = new ArrayList<BDLocation>();
+        }
+
+    }
+
+    LocalLocationLines locations = new LocalLocationLines();
     BDLocation _lastLocation;
 
     /**
@@ -377,7 +400,8 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
         public void onReceiveLocation(BDLocation location) {
             if (location == null)
                 return;
-
+            locations.locations.add(location);
+            PUtils.saveLocationLine(locations);
             locData.latitude = location.getLatitude();
             locData.longitude = location.getLongitude();
             // 如果不显示定位精度圈，将accuracy赋值为0即可

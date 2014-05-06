@@ -29,103 +29,117 @@ import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.DefaultMapRequest;
 import com.msx7.core.command.model.Request;
 import com.msx7.core.command.model.Response;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 @InjectActivity(id = R.layout.activity_login)
-public class LoginActivity extends BaseActivity implements View.OnClickListener, IResponseListener {
-    @InjectView(id = R.id.passwd)
-    TextView mViewPWD;
-    @InjectView(id = R.id.email)
-    TextView mViewEmail;
-    @InjectView(id = R.id.login)
-    Button mBtnLogin;
-    @InjectView(id = R.id.ForPwd)
-    View mForgetPWD;
-    @InjectView(id = R.id.regist)
-    View mRegist;
+public class LoginActivity extends BaseActivity implements
+		View.OnClickListener, IResponseListener {
+	@InjectView(id = R.id.passwd)
+	TextView mViewPWD;
+	@InjectView(id = R.id.email)
+	TextView mViewEmail;
+	@InjectView(id = R.id.login)
+	Button mBtnLogin;
+	@InjectView(id = R.id.ForPwd)
+	View mForgetPWD;
+	@InjectView(id = R.id.regist)
+	View mRegist;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Inject.inject(this);
-        mBtnLogin.setOnClickListener(this);
-        mForgetPWD.setOnClickListener(this);
-        mRegist.setOnClickListener(this);
-        if (!TextUtils.isEmpty(UserUtil.getSession())) {
-            SyncMine.getInstance().syncMine(null);
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-            return;
-        }
-        UserUtil.clearMine();
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		//MobclickAgent.setReportPolicy(ReportPolicy.REALTIME);
+		UmengUpdateAgent.update(this);
+		Inject.inject(this);
+		
+		// SDK在统计Fragment时，需要关闭Activity自带的页面统计，
+		// 然后在每个页面中重新集成页面统计的代码(包括调用了 onResume 和 onPause 的Activity)。
+		// MobclickAgent.openActivityDurationTrack(false);
+		MobclickAgent.updateOnlineConfig(this);
+		
+		mBtnLogin.setOnClickListener(this);
+		mForgetPWD.setOnClickListener(this);
+		mRegist.setOnClickListener(this);
+		if (!TextUtils.isEmpty(UserUtil.getSession())) {
+			SyncMine.getInstance().syncMine(null);
+			startActivity(new Intent(this, MainActivity.class));
+			finish();
+			return;
+		}
+		UserUtil.clearMine();
+	}
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-        case R.id.ForPwd:
-            startActivity(new Intent(this, ForgetPWD.class));
-            break;
-        case R.id.regist:
-            startActivity(new Intent(this, RegisterActivity.class));
-            break;
-        case R.id.login:
-            login();
-            // ToastUtil.showLongToast("登陆成功，暂时假登陆");
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.ForPwd:
+			startActivity(new Intent(this, ForgetPWD.class));
+			break;
+		case R.id.regist:
+			startActivity(new Intent(this, RegisterActivity.class));
+			break;
+		case R.id.login:
+			login();
+			// ToastUtil.showLongToast("登陆成功，暂时假登陆");
 
-            break;
-        default:
-            break;
-        }
-    }
+			break;
+		default:
+			break;
+		}
+	}
 
-    void login() {
-        String email = mViewEmail.getText().toString();
-        if (email == null || "".equals(email) || "".equals(email.trim())) {
-            ToastUtil.showLongToast("邮箱不能为空");
-            return;
-        }
-        if (!RegUtil.isEmail(email)) {
-            ToastUtil.showLongToast("邮箱格式不正确");
-            return;
-        }
-        String passwd = mViewPWD.getText().toString();
-        if (passwd == null || "".equals(passwd) || "".equals(passwd.trim())) {
-            ToastUtil.showLongToast("密码不能为空");
-            return;
-        }
-        HashMap<String, String> maps = new HashMap<String, String>();
-        maps.put("email", email);
-        maps.put("password", MD5Util.getMD5String(email + passwd));
-        showLoadingDialog(R.string.loadingData);
-        Request request = new DefaultMapRequest(Config.SEVER_LOGIN, maps);
-        goPost(request, this);
-    }
+	void login() {
+		String email = mViewEmail.getText().toString();
+		if (email == null || "".equals(email) || "".equals(email.trim())) {
+			ToastUtil.showLongToast("邮箱不能为空");
+			return;
+		}
+//		if (!RegUtil.isEmail(email)) {
+//			ToastUtil.showLongToast("邮箱格式不正确");
+//			return;
+//		}
+		String passwd = mViewPWD.getText().toString();
+		if (passwd == null || "".equals(passwd) || "".equals(passwd.trim())) {
+			ToastUtil.showLongToast("密码不能为空");
+			return;
+		}
+		HashMap<String, String> maps = new HashMap<String, String>();
+		maps.put("email", email);
+		maps.put("password", MD5Util.getMD5String(email + passwd));
+		showLoadingDialog(R.string.loadingData);
+		Request request = new DefaultMapRequest(Config.SEVER_LOGIN, maps);
+		goPost(request, this);
+	}
 
-    @Override
-    public void onSuccess(Response response) {
-        dismissLoadingDialog();
-        String dataString = response.getData().toString();
-        BaseModel<LoginResult> data = new Gson().fromJson(dataString, new TypeToken<BaseModel<LoginResult>>() {
-        }.getType());
-        if ("fail".equals(data.status)) {
-            ToastUtil.showLongToast(data.message);
-        } else {
-            ToastUtil.showLongToast(R.string.loginSuccess);
-            UserUtil.saveSession(data.data.session_id);
-            SyncMine.getInstance().syncMine(null);
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
+	@Override
+	public void onSuccess(Response response) {
+		dismissLoadingDialog();
+		String dataString = response.getData().toString();
+		BaseModel<LoginResult> data = new Gson().fromJson(dataString,
+				new TypeToken<BaseModel<LoginResult>>() {
+				}.getType());
+		if ("fail".equals(data.status)) {
+			ToastUtil.showLongToast(data.message);
+		} else {
+			ToastUtil.showLongToast(R.string.loginSuccess);
+			UserUtil.saveEmail(mViewEmail.getText().toString());
+			UserUtil.saveSession(data.data.session_id);
+			SyncMine.getInstance().syncMine(null);
+			startActivity(new Intent(this, MainActivity.class));
+			finish();
+		}
 
-    }
+	}
 
-    @Override
-    public void onError(Response response) {
-        dismissLoadingDialog();
-        ToastUtil.showLongToast(ErrorCode.getErrorCodeString(response.errorCode));
-    }
+	@Override
+	public void onError(Response response) {
+		dismissLoadingDialog();
+		ToastUtil.showLongToast(ErrorCode
+				.getErrorCodeString(response.errorCode));
+	}
 
-    class LoginResult {
-        String session_id;
-    }
+	class LoginResult {
+		String session_id;
+	}
 }

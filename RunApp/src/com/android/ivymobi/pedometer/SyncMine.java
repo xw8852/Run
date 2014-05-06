@@ -45,11 +45,17 @@ public final class SyncMine {
             String dataString = response.getData().toString();
             BaseModel<Mine> data = new Gson().fromJson(dataString, new TypeToken<BaseModel<Mine>>() {
             }.getType());
+            /**
+             * edit by abel
+             */
+            if (finish != null)
+                finish.syncFinish();
             if (data.data != null) {
                 UserUtil.saveMine(data.data);
-                if (finish != null)
-                    finish.syncFinish();
             }
+            /**
+             * end
+             */
         }
 
         @Override

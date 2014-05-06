@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <com.baidu.mapapi.map.MapView
@@ -22,6 +22,7 @@
         android:id="@+id/choise_sport"
         android:background="@drawable/user_home_bg"
         android:gravity="center"
+    
         android:orientation="vertical" >
 
         <ImageView
@@ -38,4 +39,4 @@
             android:src="@drawable/ic_run" />
     </LinearLayout>
 
-</merge>
+</FrameLayout>

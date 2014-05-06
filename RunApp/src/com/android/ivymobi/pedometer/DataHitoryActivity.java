@@ -1,6 +1,7 @@
 package com.android.ivymobi.pedometer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -19,7 +20,9 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
+import android.service.textservice.SpellCheckerService.Session;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -68,18 +71,20 @@ public class DataHitoryActivity extends BaseActivity {
     TextView mDContent;
     @InjectView(id = R.id.ave_speed)
     TextView mAveSpeed;
+    @InjectView(id = R.id.img_run_state)
+    ImageView mRunState;
     GraphicalView mchartView;
     XYMultipleSeriesDataset dataset;
     XYMultipleSeriesRenderer renderer;
 
     XYSeries waterSeries;
+    List<DataHistory> list;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Inject.inject(this);
         mTitleView.setText("历史统计");
-
 
         mGroup.setOnCheckedChangeListener(checkedChangeListener);
         mLeft.setOnClickListener(changeDateClickListener);
@@ -99,7 +104,9 @@ public class DataHitoryActivity extends BaseActivity {
                 System.out.println("No chart element was clicked");
 
             } else {
-                execute(DataHitoryActivity.this, waterSeries, (int) seriesSelection.getXValue() - 1);
+                int index = new Double(seriesSelection.getXValue()).intValue() - 1;
+                mAveSpeed.setText("平均时速: " + list.get(index).max_speed + "km/h");
+                mRunState.setImageResource(list.get(index).workout_type == 1 ? R.drawable.ic_his_walk : R.drawable.ic_his_run);
                 return;
             }
         }
@@ -133,13 +140,14 @@ public class DataHitoryActivity extends BaseActivity {
         renderer.setXLabelsAlign(Align.RIGHT);
         renderer.setYLabelsAlign(Align.RIGHT);
         renderer.setZoomButtonsVisible(true);
-        renderer.setPanLimits(new double[] { -waterSeries.getMaxX() * 50, waterSeries.getMaxX() * 50, 0, waterSeries.getMaxY()* 50, });
+        renderer.setPanLimits(new double[] { -waterSeries.getMaxX() * 50, waterSeries.getMaxX() * 50, 0, waterSeries.getMaxY() * 50, });
 
         renderer.setPanEnabled(true, false);// 设置x方向可以滑动，y方向不可以滑动
-        renderer.setZoomEnabled(false, false);// 设置x，y方向都不可以放大或缩小
+        renderer.setZoomEnabled(true, false);// 设置x，y方向都不可以放大或缩小
         renderer.setLabelsTextSize(30);
 
         renderer.setBarSpacing(0.5);
+
         XYSeriesRenderer waterRenderer = new XYSeriesRenderer();
         waterRenderer.setColor(Color.BLACK);
         waterRenderer.setGradientEnabled(true);
@@ -157,19 +165,29 @@ public class DataHitoryActivity extends BaseActivity {
             series.add(xV[k], yV[k]);
 
         }
-        dataset.addSeries(series);
-
+        for (int i = 0; i < waterSeries.getItemCount(); i++) {
+            renderer.addXTextLabel(waterSeries.getX(i), xTags.get(i));
+        }
+        renderer.setXLabelsAlign(Align.RIGHT);
+        renderer.setXLabelsAngle(-20);
+        renderer.setClickEnabled(true);
+        // dataset.addSeries(series);
+        renderer.setZoomButtonsVisible(false);
         dataset.addSeries(0, waterSeries);
-
+        renderer.removeAllRenderers();
         renderer.addSeriesRenderer(0, waterRenderer);
         waterRenderer.setDisplayChartValues(true);
 
-        String[] types = new String[] { BarChart.TYPE, LineChart.TYPE };
-//        XYCombinedChartDef[] def=new XYCombinedChartDef[]{new XYCombinedChartDef(BarChart.TYPE, 0),new XYCombinedChartDef(LineChart.TYPE, 1)};
+        String[] types = new String[] { BarChart.TYPE };
+        // XYCombinedChartDef[] def=new XYCombinedChartDef[]{new ,
+        // LineChart.TYPE
+        // XYCombinedChartDef(BarChart.TYPE, 0),new
+        // XYCombinedChartDef(LineChart.TYPE, 1)};
         mchartView = ChartFactory.getCombinedXYChartView(context, dataset, renderer, types);
         mChartLayout.removeAllViews();
         mChartLayout.addView(mchartView);
-//        mchartView.setOnClickListener(chartClickListener);
+
+        mchartView.setOnClickListener(chartClickListener);
 
     }
 
@@ -305,6 +323,8 @@ public class DataHitoryActivity extends BaseActivity {
         mTimes.setText("- -");
         mAveSpeed.setText("平均时速: - - km/h");
         mAveSpeed.setText("- -");
+        mRunState.setVisibility(View.INVISIBLE);
+        list = null;
         showLoadingDialog(R.string.loadingData);
         Request request = new Request(Config.SEVER_WORKOUT_HISTORY + "?session_id=" + UserUtil.getSession() + "&start_date=" + startDate
                 + "&end_date=" + endDate);
@@ -340,27 +360,33 @@ public class DataHitoryActivity extends BaseActivity {
     };
 
     long maxSpeed = 0;
+    ArrayList<String> xTags = new ArrayList<String>();
 
     void showChart(List<DataHistory> list) {
         long duration = 0;
         long distance = 0;
-        long sumSpeed = 0;
-        int sum = 0;
+        this.list = list;
         long maxSpeed = 0;
         waterSeries = new XYSeries("");
+        xTags.clear();
         int i = 1;
+        mRunState.setVisibility(View.VISIBLE);
         for (DataHistory dataHistory : list) {
-            sumSpeed += dataHistory.max_speed;
-            sum++;
+
+            xTags.add(DateUtils.TimeStamp2Date(dataHistory.start_time + "", "MM/dd"));
+            System.out.println(xTags.get(xTags.size() - 1));
             waterSeries.add(i++, dataHistory.max_speed);
             maxSpeed = Math.max(dataHistory.max_speed, maxSpeed);
             duration = Math.max(dataHistory.duration, duration);
-            distance = Math.max(dataHistory.distance, distance);
+            distance = Math.max(dataHistory.distance / 1000, distance);
         }
         mDistance.setText(distance + " km");
         mSpeed.setText(maxSpeed + " km/h");
         mTimes.setText(DateUtil.convertTime(duration * 1000));
-        mAveSpeed.setText("平均时速: " + (sumSpeed / sum) + "km/h");
+        if (list != null && list.size() > 0) {
+            mAveSpeed.setText("平均时速: " + list.get(0).max_speed + "km/h");
+            mRunState.setImageResource(list.get(0).workout_type == 1 ? R.drawable.ic_his_walk : R.drawable.ic_his_run);
+        }
         execute(this, waterSeries, 0);
 
     }

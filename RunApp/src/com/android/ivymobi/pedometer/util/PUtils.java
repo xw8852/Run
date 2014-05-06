@@ -3,6 +3,8 @@ package com.android.ivymobi.pedometer.util;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.android.ivymobi.pedometer.fragment.HomeFragment.LocalLocationLines;
+import com.google.gson.Gson;
 import com.msx7.core.Controller;
 
 public class PUtils {
@@ -81,5 +83,21 @@ public class PUtils {
     public static final void clearStepData() {
         SharedPreferences preferences = Controller.getApplication().getSharedPreferences("state", 0);
         preferences.edit().clear().commit();
+    }
+
+    public static final void saveLocationLine(LocalLocationLines lists) {
+        SharedPreferences preferences = Controller.getApplication().getSharedPreferences("state", 0);
+        preferences.edit().putString("LocationLine",new Gson().toJson(lists)).commit();
+    }
+    public static final LocalLocationLines getLocationLine() {
+        SharedPreferences preferences = Controller.getApplication().getSharedPreferences("state", 0);
+        String  json=preferences.getString("LocationLine", null);
+        if(json==null)return null;
+        return new Gson().fromJson(json, LocalLocationLines.class);
+    }
+
+    public static final void clearLocationLine() {
+        SharedPreferences preferences = Controller.getApplication().getSharedPreferences("state", 0);
+        preferences.edit().remove("LocationLine").commit();
     }
 }

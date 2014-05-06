@@ -7,15 +7,16 @@
     android:orientation="vertical"
     android:padding="10dp" >
 
-    <Button
+    <TextView
         android:id="@+id/button1"
         android:layout_width="fill_parent"
         android:layout_height="80dp"
-        android:background="@drawable/btn1_top"
+        android:background="@drawable/btn2_top_normal"
         android:padding="10dp"
+        android:gravity="center"
         android:clickable="false"
         android:text="暂停中，走累了吗？"
-        android:textColor="@drawable/blue_white_btn_color"
+        android:textColor="@android:color/white"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Button

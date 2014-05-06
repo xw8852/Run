@@ -6,6 +6,7 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/img_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -174,6 +175,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/height"
             android:text="- -"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/darker_gray" />
@@ -202,6 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="- -"
+            android:id="@+id/weight"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/darker_gray" />
     </LinearLayout>
@@ -227,8 +230,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp" >
+            >
 
             <TextView
                 android:id="@+id/bmi_num"
@@ -238,19 +240,24 @@
                 android:background="@drawable/ic_num_bmi"
                 android:gravity="center_horizontal"
                 android:paddingTop="2dp"
-                android:text="23"
+                android:layout_alignLeft="@+id/line"
+                android:text="23.3"
                 android:textColor="@android:color/white" />
 
             <View
                 android:id="@+id/line"
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_below="@+id/bmi_num"
                 android:background="@drawable/line5" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp"
                 android:layout_below="@+id/line" >
 
                 <TextView
@@ -329,6 +336,7 @@
         android:background="#f0f0f0" />
 
     <LinearLayout
+        android:id="@+id/edit_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -375,6 +383,7 @@
         android:background="#f0f0f0" />
 
     <TextView
+        android:id="@+id/about"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

@@ -39,9 +39,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/linear_email"
         android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="发送注册确认邮件"
         android:layout_marginTop="20dp"
-        android:background="@drawable/btn_send_email" />
-
+        android:background="@drawable/btn_style_0" />
+    
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"

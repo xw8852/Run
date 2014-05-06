@@ -60,10 +60,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 ToastUtil.showLongToast("邮箱不能为空");
                 return;
             }
-            if (!RegUtil.isEmail(email)) {
-                ToastUtil.showLongToast("邮箱格式不正确");
-                return;
-            }
+            // if (!RegUtil.isEmail(email)) {
+            // ToastUtil.showLongToast("邮箱格式不正确");
+            // return;
+            // }
             showLoadingDialog(R.string.loadingData);
             Request request = new DefaultMapRequest(Config.SEVER_REGISTER, "email", email);
             goPost(request, this);
@@ -77,9 +77,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void onSuccess(Response response) {
         dismissLoadingDialog();
         String dataString = response.getData().toString();
-        BaseModel model=new Gson().fromJson(dataString, BaseModel.class);
+        BaseModel model = new Gson().fromJson(dataString, BaseModel.class);
         ToastUtil.showLongToast(model.message);
-
     }
 
     @Override

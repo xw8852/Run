@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/uploading_ly"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#b0000000"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:paddingLeft="15dip"
+    android:paddingRight="15dip" >
+
+    <Button
+        android:id="@+id/uploading_b1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/btn_style_0"
+        android:padding="10dp"
+        android:text="拍照"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/uploading_b2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/btn_style_0"
+        android:padding="10dp"
+        android:text="从手机相册选择"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/uploading_b3"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dip"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/btn_style_0"
+        android:padding="10dp"
+        android:text="取消"
+        android:textColor="@android:color/white" />
+
+</LinearLayout>

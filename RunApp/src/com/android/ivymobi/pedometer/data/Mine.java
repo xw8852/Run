@@ -14,4 +14,7 @@ public class Mine {
  public int  sum_credits;//: 20,
  public int  sum_miles;//: 200,
  public int  rank;//: 998
+ public float height;
+ public float weight;
+ public float BMI;
 }

@@ -138,17 +138,12 @@
         android:gravity="center" >
 
         <ImageView
-            android:id="@+id/imageView1"
+            android:id="@+id/img_run_state"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_his_walk" />
 
-        <ImageView
-            android:id="@+id/imageView1"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_his_run" />
+      
     </LinearLayout>
 
     <RelativeLayout

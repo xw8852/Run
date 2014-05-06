@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.ivymobi.runapp"
-    android:versionCode="2"
-    android:versionName="V0.2" >
+    android:versionCode="10"
+    android:versionName="V1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="5"
         android:targetSdkVersion="8" />
 
     <application
@@ -17,7 +17,16 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="Vz2uuGxvST7jCSkgHqOm3dgU" />
-
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="535a941c56240b176803307c" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Android" />
+        
+		<activity android:name="com.umeng.fb.ConversationActivity"/>
+        <activity android:name="com.umeng.fb.ContactActivity"/>
+        
         <activity
             android:name="com.android.ivymobi.pedometer.MainActivity"
             android:configChanges="orientation|keyboardHidden"
@@ -70,6 +79,21 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >
         </activity>
         <activity
+            android:name="com.android.ivymobi.pedometer.CropImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.android.ivymobi.pedometer.EditPwdActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+         <activity
+            android:name="com.android.ivymobi.pedometer.AboutActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.android.ivymobi.pedometer.WebActivity"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Black.NoTitleBar" >
@@ -87,6 +111,15 @@
         </service>
         <service android:name="com.android.ivymobi.pedometer.listener.StepService" >
         </service>
+        <service
+            android:name="com.umeng.common.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
     </application>
 
     <permission android:name="android.permission.BAIDU_LOCATION_SERVICE" >

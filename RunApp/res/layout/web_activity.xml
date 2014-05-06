@@ -6,8 +6,20 @@
     android:orientation="vertical" >
 
     <include layout="@layout/activity_titlebar" />
+    
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/net_error"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:text="无法连接互联网">
+    </TextView>
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
