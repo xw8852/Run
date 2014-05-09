@@ -1,6 +1,7 @@
 package com.android.ivymobi.pedometer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import com.android.ivymobi.pedometer.fragment.HomeFragment;
 import com.android.ivymobi.pedometer.fragment.RankFragment;
 import com.android.ivymobi.pedometer.fragment.UserFragment;
+import com.android.ivymobi.pedometer.util.PUtils;
 import com.android.ivymobi.runapp.R;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.BMapManager;
@@ -46,7 +48,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
+        FilterActivity.clearConfig();
         RunApplication app = (RunApplication) this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(getApplicationContext());
@@ -69,6 +71,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        int state = PUtils.getSportState();
+        if (state > -1 && state < 3)
+            return;
         if (v.isSelected())
             return;
         mBtnRank.setSelected(false);
@@ -114,6 +119,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (userFragment != null)
+            userFragment.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
         if (fragment != null && fragment.getPopupWindow() != null && fragment.getPopupWindow().isShowing()) {
             fragment.getPopupWindow().dismiss();
@@ -126,6 +138,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public void finish() {
         super.finish();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        fragment2.onActivityResult(requestCode, resultCode, data);
     }
 
 }

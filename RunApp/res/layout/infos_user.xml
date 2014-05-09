@@ -240,7 +240,7 @@
                 android:background="@drawable/ic_num_bmi"
                 android:gravity="center_horizontal"
                 android:paddingTop="2dp"
-                android:layout_alignLeft="@+id/line"
+                android:layout_alignParentLeft="true"
                 android:text="23.3"
                 android:textColor="@android:color/white" />
 

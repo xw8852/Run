@@ -39,6 +39,7 @@ import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectActivity;
 import com.msx7.annotations.InjectView;
 import com.msx7.core.Manager;
+import com.msx7.core.command.ErrorCode;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.Request;
 import com.msx7.core.command.model.Response;
@@ -341,10 +342,10 @@ public class DataHitoryActivity extends BaseActivity {
             BaseModel<List<DataHistory>> data = new Gson().fromJson(dataString, new TypeToken<BaseModel<List<DataHistory>>>() {
             }.getType());
             if ("fail".equals(data.status)) {
-                ToastUtil.showLongToast(data.message);
+                ToastUtil.showShortToast(data.message);
             } else {
                 if (data.data == null || data.data.size() == 0) {
-                    ToastUtil.showLongToast("数据为空");
+                    ToastUtil.showShortToast("数据为空");
                     return;
                 }
                 showChart(data.data);
@@ -354,7 +355,7 @@ public class DataHitoryActivity extends BaseActivity {
         @Override
         public void onError(Response response) {
             dismissLoadingDialog();
-
+            ToastUtil.showLongToast(ErrorCode.getErrorCodeString(response.errorCode));
         }
 
     };

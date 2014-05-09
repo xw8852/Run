@@ -48,11 +48,12 @@ public final class SyncMine {
             /**
              * edit by abel
              */
-            if (finish != null)
-                finish.syncFinish();
             if (data.data != null) {
                 UserUtil.saveMine(data.data);
             }
+            if (finish != null)
+                finish.syncFinish();
+           
             /**
              * end
              */

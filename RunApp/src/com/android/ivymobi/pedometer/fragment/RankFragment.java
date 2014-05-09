@@ -1,15 +1,17 @@
 package com.android.ivymobi.pedometer.fragment;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -17,6 +19,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.android.ivymobi.pedometer.Config;
+import com.android.ivymobi.pedometer.FilterActivity;
 import com.android.ivymobi.pedometer.data.BaseModel;
 import com.android.ivymobi.pedometer.data.Mine;
 import com.android.ivymobi.pedometer.util.ToastUtil;
@@ -42,8 +45,8 @@ import com.msx7.image.AsyncImageLoad;
 public class RankFragment extends LinearLayout implements PushHeader.OnRefreshListener, IViewStatus, PageLoader {
     @InjectView(id = R.id.rank_item_mine)
     View mMine;
-    @InjectView(id = R.id.title_right)
-    View mReload;
+    @InjectView(id = R.id.right_title)
+    TextView mFilter;
     @InjectView(id = R.id.title)
     TextView mTitle;
     @InjectView(id = R.id.listView1)
@@ -55,6 +58,7 @@ public class RankFragment extends LinearLayout implements PushHeader.OnRefreshLi
     RankAdapter rankAdapter;
     PageFooter footer;
     String url;
+    View headMine;
 
     public RankFragment(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -66,35 +70,56 @@ public class RankFragment extends LinearLayout implements PushHeader.OnRefreshLi
         initView();
     }
 
-    Animation anim;
-    boolean animFinish;
-
     void initView() {
         url = Config.SEVER_RANKING_CREDIT;
         LayoutInflater.from(getContext()).inflate(R.layout.activity_rank, this);
         Inject.inject(this, this);
         mMine.setBackgroundColor(0x66000000);
-        
+        headMine = LayoutInflater.from(getContext()).inflate(R.layout.rank_item_mine, null);
         mTitle.setText("排行榜");
         // header = new PushHeader(mListView);
         // header.setOnRefreshListener(this);
         footer = new PageFooter(mListView, this, page);
         footer.getView().setPadding(0, 0, 0, 20);
-        mReload.setVisibility(View.VISIBLE);
-        mReload.setOnClickListener(new View.OnClickListener() {
+        mFilter.setVisibility(View.VISIBLE);
+        mFilter.setText("筛选");
+        mFilter.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                if (!animFinish)
-                    return;
-
-                onRefresh();
+                ((Activity) getContext()).startActivityForResult(new Intent(getContext(), FilterActivity.class), 4);
+                ;
             }
         });
         rankAdapter = new RankAdapter(new ArrayList<RankFragment.RankUserInfo>(), getContext());
         mGroup.setOnCheckedChangeListener(mCheckedChangeListener);
+        mListView.addHeaderView(headMine);
+        headMine.setVisibility(View.INVISIBLE);
         mListView.setAdapter(rankAdapter);
-        anim = AnimationUtils.loadAnimation(getContext(), R.anim.rotate);
+    }
+
+    String subffix = "";
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 4 && resultCode == Activity.RESULT_OK) {
+            subffix = "";
+            if (data.hasExtra("depart")) {
+                String aa = data.getStringExtra("depart");
+                try {
+                    aa = URLEncoder.encode(aa, "utf-8").replaceAll("\\+", "%20");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                subffix = "&" + subffix + "filter_department=" + aa;
+            }
+            if (data.hasExtra("city"))
+                subffix = "&" + subffix + "filter_location=" + data.getStringExtra("city");
+            if (data.hasExtra("sex"))
+                subffix = "&" + subffix + "filter_sexual=" + data.getStringExtra("sex");
+            if (data.hasExtra("year"))
+                subffix = "&" + subffix + "filter_age=" + data.getStringExtra("year");
+            onRefresh();
+        }
     }
 
     RadioGroup.OnCheckedChangeListener mCheckedChangeListener = new RadioGroup.OnCheckedChangeListener() {
@@ -106,7 +131,9 @@ public class RankFragment extends LinearLayout implements PushHeader.OnRefreshLi
             } else {
                 url = Config.SEVER_RANKING_MILE;
             }
-           rankAdapter.clear();
+            FilterActivity.clearConfig();
+            subffix="";
+            rankAdapter.clear();
             onRefresh();
         }
 
@@ -115,21 +142,21 @@ public class RankFragment extends LinearLayout implements PushHeader.OnRefreshLi
     @Override
     public void onRefresh() {
         mListView.setSelection(0);
-        mReload.startAnimation(anim);
         Request request = new Request();
         footer.reset();
         mMine.setVisibility(View.GONE);
-        animFinish = false;
+
         footer.showFooter(false);
-        request.url = url + "?session_id=" + UserUtil.getSession() + "&pr=" + page.mAVECount + "&pn=" + page.mStartPage;
+        request.url = url + "?session_id=" + UserUtil.getSession() + "&pr=" + page.mAVECount + "&pn=" + page.mStartPage + subffix;
+
         Manager.getInstance().execute(Manager.CMD_GET_STRING, request, listener);
     }
 
     @Override
     public void loadPage(int pageNumber) {
-        mReload.startAnimation(anim);
         Request request = new Request();
-        request.url = url+ "?session_id=" + UserUtil.getSession() + "&pr=" + page.mAVECount + "&pn=" + pageNumber;
+        request.url = url + "?session_id=" + UserUtil.getSession() + "&pr=" + page.mAVECount + "&pn=" + pageNumber + subffix;
+
         Manager.getInstance().execute(Manager.CMD_GET_STRING, request, listener);
     }
 
@@ -151,24 +178,23 @@ public class RankFragment extends LinearLayout implements PushHeader.OnRefreshLi
     IResponseListener listener = new IResponseListener() {
 
         @Override
-        public void onSuccess(Response response) {          
+        public void onSuccess(Response response) {
             String str = response.getData().toString();
             BaseModel<RankInfo> baseModel = new Gson().fromJson(str, new TypeToken<BaseModel<RankInfo>>() {
             }.getType());
             List<RankUserInfo> infos = baseModel.data.ranklist;
-            if(infos.size()>0){
-                RankUserInfo info=infos.get(0);
-                if(mGroup.getCheckedRadioButtonId()==R.id.credit&&info.sum_miles>info.sum_credits){
+            if (infos.size() > 0) {
+                RankUserInfo info = infos.get(0);
+                if (mGroup.getCheckedRadioButtonId() == R.id.credit && info.sum_miles > info.sum_credits) {
                     return;
-                }else if(mGroup.getCheckedRadioButtonId()==R.id.miles&&info.sum_miles<info.sum_credits){
+                } else if (mGroup.getCheckedRadioButtonId() == R.id.miles && info.sum_miles < info.sum_credits) {
                     return;
                 }
             }
-            showMine(mGroup.getCheckedRadioButtonId()==R.id.miles, baseModel.data.mine);
+            showMine(mGroup.getCheckedRadioButtonId() == R.id.miles, baseModel.data.mine);
             mMine.setVisibility(View.VISIBLE);
-            anim.cancel();
-            anim.reset();
-            animFinish = true;
+            headMine.setVisibility(View.VISIBLE);
+
             if (infos.size() < page.mAVECount) {
                 footer.showFooter(false);
             } else {
@@ -184,21 +210,23 @@ public class RankFragment extends LinearLayout implements PushHeader.OnRefreshLi
         @Override
         public void onError(Response response) {
             ToastUtil.showLongToast(ErrorCode.getErrorCodeString(response.errorCode));
-            anim.cancel();
-            animFinish = true;
-            anim.reset();
             footer.onPageLoaderFinish();
         }
     };
-    void showMine(boolean isMiles,Mine mine){
-        ImageView mImageView=(ImageView)mMine.findViewById(R.id.portrait);
-        TextView userName=(TextView)mMine.findViewById(R.id.user_name);
-        TextView score=(TextView)mMine.findViewById(R.id.score);
-        TextView rank=(TextView)mMine.findViewById(R.id.num);
-        AsyncImageLoad.getIntance().loadImage(mine.avatar_url, mImageView,null);
+
+    void showMine(boolean isMiles, Mine mine) {
+        ImageView mImageView = (ImageView) mMine.findViewById(R.id.portrait);
+        TextView userName = (TextView) mMine.findViewById(R.id.user_name);
+        TextView score = (TextView) mMine.findViewById(R.id.score);
+        TextView rank = (TextView) mMine.findViewById(R.id.num);
+        if (UserUtil.getMine() != null) {
+            AsyncImageLoad.getIntance().loadImage(UserUtil.getMine().avatar_url, mImageView, null);
+        } else
+            AsyncImageLoad.getIntance().loadImage(mine.avatar_url, mImageView, null);
         userName.setText(mine.nickname);
-        score.setText(isMiles?String.valueOf(mine.sum_miles):String.valueOf(mine.sum_credits));
+        score.setText(isMiles ? String.valueOf(mine.sum_miles) : String.valueOf(mine.sum_credits));
         rank.setText(String.valueOf(mine.rank));
+
     }
 
     class RankAdapter extends AbstractAdapter<RankUserInfo> {

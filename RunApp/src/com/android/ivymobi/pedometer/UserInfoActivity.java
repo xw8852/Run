@@ -15,7 +15,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Matrix;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -28,7 +28,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,7 +47,6 @@ import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectActivity;
 import com.msx7.annotations.InjectView;
 import com.msx7.core.Controller;
-import com.msx7.core.Manager;
 import com.msx7.core.command.ErrorCode;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.DefaultMapRequest;
@@ -116,6 +114,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
             return;
         }
         showLoadingDialog(R.string.loadingData);
+        Mine _mine = UserUtil.getMine();
+        if (_mine != null) {
+            AsyncImageLoad.getIntance().loadImage(_mine.avatar_url, portail, null);
+            showMine(_mine);
+        }
         SyncMine.getInstance().syncMine(new SyncMine.ISyncMineFinish() {
 
             @Override
@@ -147,15 +150,15 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         bmi.getHitRect(rect);
         Rect rect2 = new Rect();
         line.getHitRect(rect2);
-        System.out.println(rect);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) bmi.getLayoutParams();
+        if (params == null) {
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        }
         int dx = new Float((Math.max(Math.min(mine.BMI, 35f), 20f) - 20f) * (rect2.width() / 15.0f)).intValue();
-        TranslateAnimation animation=new TranslateAnimation(rect.left, rect2.left -rect.width()+ dx, 0, 0);
-        animation.setDuration(1);
-        animation.setFillAfter(true);
-        animation.setFillEnabled(true);
-        bmi.startAnimation(animation);
+        params.leftMargin = rect2.left - rect.width() / 2 + dx;
+        bmi.setLayoutParams(params);
         bmi.requestLayout();
-        
+
     }
 
     @Override
@@ -257,8 +260,11 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void doPickPhotoFromGallery() {
         try {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
+            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            cancelSync = true;
+
+            // Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            // intent.setType("image/*");
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GALLERY_IMAGE);
         } catch (ActivityNotFoundException e) {
             ToastUtil.showShortToast("图片集为空");
@@ -267,6 +273,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
     private void doTakePhoto() {
         try {
+            cancelSync = true;
             resultFilepath = Environment.getExternalStorageDirectory() + "/com.android.ivymobi.pedometer/" + getNormalTime() + ".jpg";
             File mCurrentPhotoFile = new File(resultFilepath);// 给新照的照片文件命名
             if (!mCurrentPhotoFile.getParentFile().exists())
@@ -291,8 +298,8 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     boolean cancelSync;
-
-    @Override
+String path;
+@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
@@ -301,15 +308,14 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
 
         switch (requestCode) {
         case REQUEST_TAKE_PHOTO:
-            if (null == data) {
-                return;
-            }
 
             if (resultFilepath != null && resultFilepath.length() > 0 && new File(resultFilepath).exists()) {
                 File f = new File(resultFilepath);
-                Intent intent = new Intent(UserInfoActivity.this, CropImageActivity.class);
-                intent.putExtra("path", f.getAbsolutePath());
-                startActivityForResult(intent, REQUEST_MODIFY_FINISH);
+                path=resultFilepath;
+                cropImageUri(Uri.fromFile(f), 200 , 200, REQUEST_MODIFY_FINISH);
+//                Intent intent = new Intent(UserInfoActivity.this, CropImageActivity.class);
+//                intent.putExtra("path", f.getAbsolutePath());
+//                startActivityForResult(intent, REQUEST_MODIFY_FINISH);
                 cancelSync = true;
                 return;
             }
@@ -323,18 +329,20 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
                 Cursor cursor = UserInfoActivity.this.getContentResolver().query(_uri, null, null, null, null);
                 cursor.moveToFirst();
                 resultFilepath = cursor.getString(1); // 返回图片的地址
+                path=resultFilepath;
                 cursor.close();
                 File f = new File(resultFilepath);
-                Intent intent = new Intent(UserInfoActivity.this, CropImageActivity.class);
-                intent.putExtra("path", f.getAbsolutePath());
+                cropImageUri(Uri.fromFile(f), 200 , 200, REQUEST_MODIFY_FINISH);
+//                Intent intent = new Intent(UserInfoActivity.this, CropImageActivity.class);
+//                intent.putExtra("path", f.getAbsolutePath());
                 cancelSync = true;
-                startActivityForResult(intent, REQUEST_MODIFY_FINISH);
+//                startActivityForResult(intent, REQUEST_MODIFY_FINISH);
             }
             break;
         case REQUEST_MODIFY_FINISH:
             if (data != null) {
 
-                resultFilepath = data.getStringExtra("path");
+                resultFilepath =path;
                 updateImg();
                 Request request = new Request(Config.SEVER_UPDATE_AVATAR + "?session_id=" + UserUtil.getSession(), new ImgUpdateIparam(
                         resultFilepath, UserUtil.getSession()));
@@ -377,6 +385,21 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    private void cropImageUri(Uri uri, int outputX, int outputY, int requestCode){
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", outputX);
+        intent.putExtra("outputY", outputY);
+        intent.putExtra("scale", true);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        intent.putExtra("return-data", false);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        intent.putExtra("noFaceDetection", true); // no face detection
+        startActivityForResult(intent, requestCode);
+       }
     private void updateImg() {
         dismissPopupWindow();
         if (resultFilepath != null && resultFilepath.length() > 0) {

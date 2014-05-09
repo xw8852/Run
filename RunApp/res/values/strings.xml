@@ -5,19 +5,19 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="loadingData">正在加载数据...</string>
+    <string name="SyncSportData">正在同步运动数据...</string>
     <string name="loginSuccess">登陆成功</string>
     <string name="logoutSuccess">登出成功</string>
     <string name="resetSuccess">修改成功</string>
     <string name="modified_info">修改资料</string>
- 	<string name="about_title">关于HRMobile</string>
- 	
+    <string name="about_title">关于HRMobile</string>
     <string name="umeng_example_home_btn_analytics">统计分析</string>
     <string name="umeng_example_home_btn_xp">应用联盟</string>
     <string name="umeng_example_home_btn_ad">移动广告</string>
     <string name="umeng_example_home_btn_tools">工具</string>
     <string name="umeng_example_home_btn_fb">用户反馈</string>
     <string name="umeng_example_home_btn_update">自动更新</string>
-     <string name="umeng_example_home_btn_game">游戏统计</string>
+    <string name="umeng_example_home_btn_game">游戏统计</string>
     <string name="umeng_example_home_btn_plus">社交分享</string>
     <string name="umeng_example_home_btn_xp_ufp">Umeng For Publisher</string>
     <string name="umeng_example_xp_home_btn_container">嵌入容器</string>
@@ -36,7 +36,23 @@
     <string name="umeng_example_fb_home_btn_simple">简单反馈</string>
     <string name="actionbar_activity_not_found">打开Activity失败</string>
     <string name="umeng_example_home_hint_wait">敬请期待</string>
-
     <string name="intro"> 下面展示使用 js 调用友盟 自定义事件  APIs</string>
-    
+
+    <string-array name="domain">
+        <item>schneider-electric.com </item>
+        <item>cn.schneider-electric.com </item>
+        <item>non.schneider-electric.com </item>
+        <item>clipsal.com.cn </item>
+        <item>cn.crouzet.com </item>
+        <item>wgats.com.cn </item>
+        <item>wilco-electrical.com </item>
+        <item>wuxi-proface.com.cn </item>
+        <item>mgeups.com </item>
+        <item>APCC.com </item>
+        <item>areva-td.com </item>
+        <item>telvent.com </item>
+        <item>ivymobi.com </item>
+        <item>qq.com </item>
+    </string-array>
+
 </resources>

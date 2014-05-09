@@ -1,9 +1,11 @@
 package com.android.ivymobi.pedometer.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -21,18 +23,21 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.android.ivymobi.pedometer.Config;
+import com.android.ivymobi.pedometer.data.BaseModel;
 import com.android.ivymobi.pedometer.gps.BaiduGPSServer;
 import com.android.ivymobi.pedometer.listener.PedometerSettings;
 import com.android.ivymobi.pedometer.listener.StepService;
 import com.android.ivymobi.pedometer.util.DateUtil;
+import com.android.ivymobi.pedometer.util.MD5Util;
 import com.android.ivymobi.pedometer.util.PUtils;
 import com.android.ivymobi.pedometer.util.ToastUtil;
+import com.android.ivymobi.pedometer.util.UserUtil;
 import com.android.ivymobi.pedometer.widget.SportView;
 import com.android.ivymobi.runapp.R;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.Geometry;
 import com.baidu.mapapi.map.Graphic;
 import com.baidu.mapapi.map.GraphicsOverlay;
@@ -45,8 +50,14 @@ import com.baidu.mapapi.map.Symbol;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectView;
+import com.msx7.core.Manager;
+import com.msx7.core.command.IResponseListener;
+import com.msx7.core.command.model.DefaultMapRequest;
+import com.msx7.core.command.model.Request;
+import com.msx7.core.command.model.Response;
 
 public class HomeFragment extends RelativeLayout implements IViewStatus {
     @InjectView(id = R.id.sportView1)
@@ -120,7 +131,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
         int state = PUtils.getSportState();
         if (state > -1 && state < 3) {
             mSportView.setDate(DateUtil.getDate(System.currentTimeMillis()));
-            mSportView.setDTime(DateUtil.getTime(System.currentTimeMillis()) + " - ~ ");
+            mSportView.setDTime(DateUtil.getTime(System.currentTimeMillis()));
             SharedPreferences mState = getContext().getSharedPreferences("state", 0);
 
             float distance = mState.getFloat("distance", 0);
@@ -191,7 +202,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
                             long time = System.currentTimeMillis() - (PUtils.getPauseDate() == 0 ? PUtils.getStartTime() : PUtils.getPauseDate())
                                     + PUtils.getLastTime();
                             mSportView.setTime(DateUtil.convertTime(time));
-                            mSportView.setDTime(DateUtil.getTime(PUtils.getStartTime()) + " -  " + DateUtil.getTime(System.currentTimeMillis()));
+                            mSportView.setDTime(DateUtil.getTime(PUtils.getStartTime()));
                         }
                     }
                 });
@@ -272,7 +283,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
             PUtils.saveLastTime(0);
             PUtils.savePauseDate(0);
             mSportView.setDate(DateUtil.getDate(time));
-            mSportView.setDTime(DateUtil.getTime(time) + " -  " + DateUtil.getTime(time));
+            mSportView.setDTime(DateUtil.getTime(time));
             mSportView.setButton(false);
             startTimer();
             getContext().startService(new Intent(BaiduGPSServer.ACTION));
@@ -350,17 +361,98 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
             @Override
             public void onClick(View v) {
                 PUtils.saveSportState(3);
-                onFinish();
-                mSportView.reset();
-                ToastUtil.showShortToast("结束");
-                findViewById(R.id.choise_sport).setVisibility(View.VISIBLE);
-                if (popupWindow != null && popupWindow.isShowing()) {
-                    popupWindow.dismiss();
+                if(PUtils.getEndTime()==0)
+                    PUtils.saveEndTime(System.currentTimeMillis());
+
+                int state = new PedometerSettings(PreferenceManager.getDefaultSharedPreferences(getContext())).isRunning() ? 0 : 1;
+                SharedPreferences mState = getContext().getSharedPreferences("state", 0);
+                float distance = mState.getFloat("distance", 0);
+                mSportView.setDistance(PUtils.getNum3(distance));
+                long time = System.currentTimeMillis() - (PUtils.getPauseDate() == 0 ? PUtils.getStartTime() : PUtils.getPauseDate())
+                        + PUtils.getLastTime();
+                HashMap<String, Object> maps = new HashMap<String, Object>();
+                float speed = mState.getFloat("speed", 0);
+                if (speed == 0 && time > 0) {
+                    speed = 3.6f*distance*1000 / (time / 1000);
                 }
-                PUtils.clearStepData();
+                speed=Math.max(0, speed);
+                maps.put("session_id", UserUtil.getSession());
+                maps.put("workout_type", state);
+                maps.put("avg_speed", speed);
+                maps.put("max_speed", speed);
+                String workOut = MD5Util.getMD5String(System.currentTimeMillis() + "");
+                maps.put("workout_uuid", workOut);
+                maps.put("distance", new Float(distance).intValue() * 1000);
+                maps.put("duration", time/1000);
+                maps.put("start_time", PUtils.getStartTime() / 1000);
+                maps.put("end_time", PUtils.getEndTime() / 1000);
+                showLoadingDialog(R.string.SyncSportData);
+                Request request = new DefaultMapRequest(Config.SEVER_WORK_SYNC + "?session_id" + UserUtil.getSession(), maps);
+                Manager.getInstance().execute(Manager.CMD_JSON_POST, request, new IResponseListener() {
+
+                    @Override
+                    public void onSuccess(Response response) {
+                        dismissLoadingDialog();
+                        String dataString = response.getData().toString();
+                        BaseModel data = new Gson().fromJson(dataString, new TypeToken<BaseModel>() {
+                        }.getType());
+                        if ("ok".equals(data.status)) {
+                            ToastUtil.showLongToast("上传运动数据成功");
+                            onFinish();
+                            mSportView.reset();
+                            ToastUtil.showShortToast("结束");
+                            findViewById(R.id.choise_sport).setVisibility(View.VISIBLE);
+                            if (popupWindow != null && popupWindow.isShowing()) {
+                                popupWindow.dismiss();
+                            }
+                            PUtils.clearStepData();
+                        } else {
+                            ToastUtil.showLongToast("上传运动数据失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response response) {
+                        dismissLoadingDialog();
+                        ToastUtil.showLongToast("上传运动数据失败");
+                    }
+
+                });
+
             }
 
         });
+    }
+
+    /**
+     * 
+     * showLoadingDialog:显示数据加载框. <br/>
+     * 
+     * @author maple
+     * @since JDK 1.6
+     */
+    ProgressDialog mProgressDialog;
+
+    protected void showLoadingDialog(int msgId) {
+        dismissLoadingDialog();
+        mProgressDialog = new ProgressDialog(getContext());
+        mProgressDialog.setMessage(getResources().getString(msgId));
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.show();
+    }
+
+    /***
+     * 
+     * dismissDialog:关闭数据加载弹出框. <br/>
+     * 
+     * @author maple
+     * @since JDK 1.6
+     */
+    protected void dismissLoadingDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     public PopupWindow getPopupWindow() {

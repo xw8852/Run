@@ -25,12 +25,12 @@ public class HttpJsonPostCommand extends AbstractHttpCommand {
     protected void onBeforeExecute(HttpRequestBase request) {
         try {
             HttpPost post = (HttpPost) request;
-            boolean flag=getRequest().Params.toParams()!=null&&!TextUtils.isEmpty(getRequest().Params.toParams());
+            boolean flag=getRequest().Params != null&&getRequest().Params.toParams()!=null&&!TextUtils.isEmpty(getRequest().Params.toParams());
             if (getRequest().Params != null && flag) {
                 StringEntity entity = new StringEntity(getRequest().Params.toParams(), HTTP.UTF_8);
                 entity.setContentType("application/json");
                 post.setEntity(entity);
-            }else{
+            }else if(getRequest().Params != null){
                 post.setEntity(getRequest().Params.getEntity());
                 
             }

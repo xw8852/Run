@@ -91,19 +91,19 @@ public class ScoreActivity extends BaseActivity {
             }
 
         });
-        mMine.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                menu.setVisibility(View.VISIBLE);
-                menu.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        menu.setVisibility(View.GONE);
-                    }
-                });
-            }
-
-        });
+//        mMine.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                menu.setVisibility(View.VISIBLE);
+//                menu.setOnClickListener(new View.OnClickListener() {
+//                    public void onClick(View v) {
+//                        menu.setVisibility(View.GONE);
+//                    }
+//                });
+//            }
+//
+//        });
         loadData();
     }
 

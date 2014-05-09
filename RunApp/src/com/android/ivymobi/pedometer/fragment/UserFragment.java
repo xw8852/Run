@@ -71,7 +71,26 @@ public class UserFragment extends LinearLayout implements IViewStatus, OnClickLi
 
     @Override
     public void onResume() {
+        if (UserUtil.getMine() == null) {
+            SyncMine.getInstance().syncMine(new SyncMine.ISyncMineFinish() {
 
+                @Override
+                public void syncFinish() {
+                    Mine _mine = UserUtil.getMine();
+                    if (_mine != null) {
+                        AsyncImageLoad.getIntance().loadImage(_mine.avatar_url, imageView, null);
+                        userName.setText(_mine.nickname);
+                    }
+
+                }
+            });
+        } else {
+            Mine _mine = UserUtil.getMine();
+            if (_mine != null) {
+                AsyncImageLoad.getIntance().loadImage(_mine.avatar_url, imageView, null);
+                userName.setText(_mine.nickname);
+            }
+        }
     }
 
     @Override

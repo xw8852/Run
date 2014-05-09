@@ -4,6 +4,7 @@
     <item android:drawable="@drawable/btn_send_sure_email_selected" android:state_selected="true"></item>
     <item android:drawable="@drawable/btn_send_sure_email_selected" android:state_pressed="true"></item>
     <item android:drawable="@drawable/btn_send_sure_email_selected" android:state_checked="true"></item>
+    <item android:drawable="@drawable/btn_send_sure_email_selected" android:state_enabled="false"></item>
     <item android:drawable="@drawable/btn_send_sure_email_normal"></item>
 
 </selector>

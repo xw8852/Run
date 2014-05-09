@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" 邮箱 : "
+            android:text="邮箱:"
             android:textColor="@android:color/black"
             android:textSize="18sp" >
 
@@ -30,19 +30,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:hint="name@schneider-electric.com"
+            android:hint="请填写邮箱名"
             android:inputType="textEmailAddress"
             android:textSize="18sp" >
         </EditText>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/emailSuffix"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_email"
+        android:background="@android:color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" 邮箱 : "
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/suffix"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:hint="请选择邮箱后缀" />
+
+        <ImageView
+            android:id="@+id/down"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="0"
+            android:scaleType="centerInside"
+            android:src="@drawable/down" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear_pwd"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linear_email"
+        android:layout_below="@+id/emailSuffix"
         android:background="@android:color/white"
         android:orientation="horizontal"
         android:padding="10dp" >
