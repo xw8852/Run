@@ -158,7 +158,7 @@ public class ForgetPWD extends BaseActivity implements View.OnClickListener, IRe
             // return;
             // }
             showLoadingDialog(R.string.loadingData);
-            Request request = new DefaultMapRequest(Config.SEVER_REGISTER, "email", email);
+            Request request = new DefaultMapRequest(Config.SEVER_FORGET_PAW, "email", email);
             goPost(request, this);
             break;
         default:

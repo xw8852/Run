@@ -28,6 +28,7 @@ import com.android.ivymobi.pedometer.util.ToastUtil;
 import com.android.ivymobi.pedometer.util.UserUtil;
 import com.android.ivymobi.runapp.R;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectActivity;
 import com.msx7.annotations.InjectView;
@@ -144,8 +145,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     public void onSuccess(Response response) {
         dismissLoadingDialog();
         String dataString = response.getData().toString();
-        BaseModel model = new Gson().fromJson(dataString, BaseModel.class);
-        ToastUtil.showLongToast(model.message);
+        System.out.println(dataString);
+        try {
+            BaseModel model = new Gson().fromJson(dataString, BaseModel.class);
+            ToastUtil.showLongToast(model.message);
+        } catch (JsonSyntaxException e) {
+            e.printStackTrace();
+            ToastUtil.showShortToast("请重试");
+        }
     }
 
     @Override

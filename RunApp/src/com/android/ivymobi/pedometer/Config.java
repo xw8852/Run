@@ -6,7 +6,7 @@ public class Config {
     public static final String SEVER_METADATA=SEVER_URL+"api/metadata";
     public static final String SEVER_LOGOUT=SEVER_URL+"api/user/logout";
     public static final String SEVER_RESETPSD=SEVER_URL+"api/user/resetpassword";
-    public static final String SEVER_FORGETPAW=SEVER_URL+"api/user/login";
+    public static final String SEVER_FORGET_PAW=SEVER_URL+"api/user/iforgot";
     public static final String SEVER_REGISTER=SEVER_URL+"api/user/register";
     public static final String SEVER_USER_INFO=SEVER_URL+"api/user/info";
     public static final String SEVER_WORK_SYNC=SEVER_URL+"api/workout/sync";

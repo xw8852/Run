@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:hint="请填写邮箱名 "
+            android:hint="请填写邮箱名 " android:singleLine="true"
             android:inputType="textEmailAddress"
             android:textSize="18sp" >
         </EditText>
@@ -56,6 +56,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:singleLine="true"
+            android:editable="false"
             android:background="@android:color/white"
             android:hint="请选择邮箱后缀" />
 

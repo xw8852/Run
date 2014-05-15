@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/com.android.ivymobi.pedometer.RunApplication"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg1"
+    android:orientation="vertical" >
+
+    <include layout="@layout/activity_titlebar" />
+
+    <com.android.ivymobi.pedometer.widget.ViewFlow
+        android:id="@+id/viewflow"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        app:sidebuffer="3" >
+    </com.android.ivymobi.pedometer.widget.ViewFlow>
+
+    <com.android.ivymobi.pedometer.widget.CircleFlowIndicator
+        android:id="@+id/viewflowindic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:padding="10dip"
+        app:fadeOut="1000"
+        app:inactiveType="fill" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:padding="10dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/btn_style_0"
+        android:text="查看我的成就" />
+
+</LinearLayout>

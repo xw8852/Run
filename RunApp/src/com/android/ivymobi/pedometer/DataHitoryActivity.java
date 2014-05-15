@@ -367,7 +367,7 @@ public class DataHitoryActivity extends BaseActivity {
         long duration = 0;
         long distance = 0;
         this.list = list;
-        long maxSpeed = 0;
+        float maxSpeed = 0;
         waterSeries = new XYSeries("");
         xTags.clear();
         int i = 1;
@@ -399,8 +399,8 @@ public class DataHitoryActivity extends BaseActivity {
         public int workout_type;
         public long distance;
         public long duration;
-        public long max_speed;
-        public long avg_speed;
+        public float max_speed;
+        public float avg_speed;
         public long start_time;
         public long end_time;
         public long timestamp;

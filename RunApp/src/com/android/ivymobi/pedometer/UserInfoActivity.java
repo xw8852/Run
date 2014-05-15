@@ -107,7 +107,7 @@ public class UserInfoActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (cancelSync) {
             cancelSync = false;

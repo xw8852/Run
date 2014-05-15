@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -23,11 +24,13 @@ import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
+import com.android.ivymobi.pedometer.AwardActivity;
 import com.android.ivymobi.pedometer.Config;
 import com.android.ivymobi.pedometer.data.BaseModel;
 import com.android.ivymobi.pedometer.gps.BaiduGPSServer;
 import com.android.ivymobi.pedometer.listener.PedometerSettings;
 import com.android.ivymobi.pedometer.listener.StepService;
+import com.android.ivymobi.pedometer.listener.Utils;
 import com.android.ivymobi.pedometer.util.DateUtil;
 import com.android.ivymobi.pedometer.util.MD5Util;
 import com.android.ivymobi.pedometer.util.PUtils;
@@ -53,6 +56,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectView;
+import com.msx7.core.Controller;
 import com.msx7.core.Manager;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.DefaultMapRequest;
@@ -361,7 +365,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
             @Override
             public void onClick(View v) {
                 PUtils.saveSportState(3);
-                if(PUtils.getEndTime()==0)
+                if (PUtils.getEndTime() == 0)
                     PUtils.saveEndTime(System.currentTimeMillis());
 
                 int state = new PedometerSettings(PreferenceManager.getDefaultSharedPreferences(getContext())).isRunning() ? 0 : 1;
@@ -373,21 +377,23 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
                 HashMap<String, Object> maps = new HashMap<String, Object>();
                 float speed = mState.getFloat("speed", 0);
                 if (speed == 0 && time > 0) {
-                    speed = 3.6f*distance*1000 / (time / 1000);
+                    speed = 3.6f * distance * 1000 / (time / 1000);
                 }
-                speed=Math.max(0, speed);
+                speed = Math.max(0, speed);
                 maps.put("session_id", UserUtil.getSession());
                 maps.put("workout_type", state);
                 maps.put("avg_speed", speed);
                 maps.put("max_speed", speed);
                 String workOut = MD5Util.getMD5String(System.currentTimeMillis() + "");
                 maps.put("workout_uuid", workOut);
-                maps.put("distance", new Float(distance).intValue() * 1000);
-                maps.put("duration", time/1000);
+                maps.put("distance", Math.round(distance * 1000));
+                maps.put("duration", time / 1000);
                 maps.put("start_time", PUtils.getStartTime() / 1000);
                 maps.put("end_time", PUtils.getEndTime() / 1000);
                 showLoadingDialog(R.string.SyncSportData);
-                Request request = new DefaultMapRequest(Config.SEVER_WORK_SYNC + "?session_id" + UserUtil.getSession(), maps);
+                PUtils.saveRunDate(new Gson().toJson(maps));
+                System.out.println(Math.round(distance * 1000) + "-----" + distance);
+                Request request = new DefaultMapRequest(Config.SEVER_WORK_SYNC + "?session_id=" + UserUtil.getSession(), maps);
                 Manager.getInstance().execute(Manager.CMD_JSON_POST, request, new IResponseListener() {
 
                     @Override
@@ -398,27 +404,74 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
                         }.getType());
                         if ("ok".equals(data.status)) {
                             ToastUtil.showLongToast("上传运动数据成功");
-                            onFinish();
-                            mSportView.reset();
+                          
                             ToastUtil.showShortToast("结束");
                             findViewById(R.id.choise_sport).setVisibility(View.VISIBLE);
                             if (popupWindow != null && popupWindow.isShowing()) {
                                 popupWindow.dismiss();
                             }
-                            PUtils.clearStepData();
+                            checkAward();
+                            PUtils.clearRunDate();
+
                         } else {
-                            ToastUtil.showLongToast("上传运动数据失败");
+                            ToastUtil.showLongToast("上传运动数据失败,下次启动时自动发送");
+                            if (popupWindow != null && popupWindow.isShowing()) {
+                                popupWindow.dismiss();
+                            }
                         }
+                        onFinish();
+                        mSportView.reset();
+                        PUtils.clearStepData();
                     }
 
                     @Override
                     public void onError(Response response) {
                         dismissLoadingDialog();
-                        ToastUtil.showLongToast("上传运动数据失败");
+                        ToastUtil.showLongToast("上传运动数据失败,下次启动时自动发送");
+                        if (popupWindow != null && popupWindow.isShowing()) {
+                            popupWindow.dismiss();
+                        }
+                        onFinish();
+                        mSportView.reset();
+                      
+                        PUtils.clearStepData();
                     }
 
                 });
 
+            }
+
+        });
+    }
+
+    void checkAward() {
+        Request request = new Request("http://hrm.ivymobi.com:8003/api/workout/award?session_id=" + UserUtil.getSession());
+        Manager.getInstance().execute(Manager.CMD_GET_STRING, request, new IResponseListener() {
+
+            @Override
+            public void onSuccess(Response response) {
+                String dataString = response.getData().toString();
+                System.out.println(dataString);
+                BaseModel data = new Gson().fromJson(dataString, new TypeToken<BaseModel>() {
+                }.getType());
+
+                if ("ok".equals(data.status)) {
+                    if (TextUtils.isEmpty(new Gson().toJson(data.data))) {
+                        ToastUtil.showLongToast("没有获得成就");
+                        return;
+                    }
+                    getContext().startActivity(new Intent(getContext(), AwardActivity.class).putExtra("param", new Gson().toJson(data.data)));
+                } else {
+                    if (TextUtils.isEmpty(data.message)) {
+                        ToastUtil.showLongToast("查询成就失败");
+                    } else
+                        ToastUtil.showShortToast(data.message);
+                }
+            }
+
+            @Override
+            public void onError(Response response) {
+                ToastUtil.showLongToast("查询成就失败");
             }
 
         });

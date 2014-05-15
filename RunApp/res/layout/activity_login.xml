@@ -32,6 +32,7 @@
             android:background="@android:color/transparent"
             android:hint="请填写邮箱名"
             android:inputType="textEmailAddress"
+            android:singleLine="true"
             android:textSize="18sp" >
         </EditText>
     </LinearLayout>
@@ -59,6 +60,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:singleLine="true"
+            android:editable="false"
             android:background="@android:color/white"
             android:hint="请选择邮箱后缀" />
 
@@ -85,6 +88,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text=" 密码 : "
             android:textColor="@android:color/black"
             android:textSize="18sp" />

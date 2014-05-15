@@ -100,4 +100,21 @@ public class PUtils {
         SharedPreferences preferences = Controller.getApplication().getSharedPreferences("state", 0);
         preferences.edit().remove("LocationLine").commit();
     }
+    
+    public static final void saveRunDate(String data) {
+        SharedPreferences preferences = Controller.getApplication().getSharedPreferences("RunDate", 0);
+        preferences.edit().putString("RunDate",data).commit();
+    }
+    public static final String getRunDate() {
+        SharedPreferences preferences = Controller.getApplication().getSharedPreferences("RunDate", 0);
+        String  json=preferences.getString("RunDate", null);
+        if(json==null)return null;
+        return json;
+    }
+
+    public static final void clearRunDate() {
+        SharedPreferences preferences = Controller.getApplication().getSharedPreferences("RunDate", 0);
+        preferences.edit().remove("RunDate").commit();
+    }
+    
 }

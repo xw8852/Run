@@ -68,13 +68,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         // MobclickAgent.setReportPolicy(ReportPolicy.REALTIME);
         UmengUpdateAgent.update(this);
+        MobclickAgent.setDebugMode( true );
+
         Inject.inject(this);
 
         // SDK在统计Fragment时，需要关闭Activity自带的页面统计，
         // 然后在每个页面中重新集成页面统计的代码(包括调用了 onResume 和 onPause 的Activity)。
         // MobclickAgent.openActivityDurationTrack(false);
         MobclickAgent.updateOnlineConfig(this);
-
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.update(this);
         mBtnLogin.setOnClickListener(this);
         mForgetPWD.setOnClickListener(this);
         mRegist.setOnClickListener(this);

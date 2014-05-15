@@ -16,6 +16,7 @@ import android.app.ProgressDialog;
 import com.msx7.core.Manager;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.Request;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * ClassName:BaseActivity <br/>
@@ -43,6 +44,17 @@ public abstract class BaseActivity extends Activity {
         mProgressDialog.setMessage(getString(msgId));
         mProgressDialog.setCancelable(false);
         mProgressDialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     /***

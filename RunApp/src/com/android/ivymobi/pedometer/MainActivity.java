@@ -1,29 +1,42 @@
 package com.android.ivymobi.pedometer;
 
-import android.app.Activity;
+import java.util.Map;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.ivymobi.pedometer.data.BaseModel;
 import com.android.ivymobi.pedometer.fragment.HomeFragment;
 import com.android.ivymobi.pedometer.fragment.RankFragment;
 import com.android.ivymobi.pedometer.fragment.UserFragment;
 import com.android.ivymobi.pedometer.util.PUtils;
+import com.android.ivymobi.pedometer.util.ToastUtil;
+import com.android.ivymobi.pedometer.util.UserUtil;
 import com.android.ivymobi.runapp.R;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.LocationData;
 import com.baidu.mapapi.map.MyLocationOverlay;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.msx7.annotations.Inject;
 import com.msx7.annotations.InjectActivity;
 import com.msx7.annotations.InjectView;
 import com.msx7.core.Controller;
+import com.msx7.core.Manager;
+import com.msx7.core.command.IResponseListener;
+import com.msx7.core.command.model.DefaultMapRequest;
+import com.msx7.core.command.model.Request;
+import com.msx7.core.command.model.Response;
+import com.umeng.analytics.MobclickAgent;
 
 @InjectActivity(id = R.layout.activity_main)
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
     /** 最小化线的距离，单位米 */
     public static final int MIN_DISTANCE = 5;
     @InjectView(id = R.id.content)
@@ -63,11 +76,50 @@ public class MainActivity extends Activity implements View.OnClickListener {
         mBtnUser.setOnClickListener(this);
         onClick(mBtnRun);
         Controller.getApplication().addActivityHistory(this);
+        sendRunData();
+    }
+
+    void sendRunData() {
+        String data = PUtils.getRunDate();
+        if (TextUtils.isEmpty(data))
+            return;
+        Map<String, Object> map = new Gson().fromJson(data, new TypeToken<Map<String, Object>>() {
+        }.getType());
+        Request request = new DefaultMapRequest(Config.SEVER_WORK_SYNC + "?session_id=" + UserUtil.getSession(), map);
+        Manager.getInstance().execute(Manager.CMD_JSON_POST, request, new IResponseListener() {
+
+            @Override
+            public void onSuccess(Response response) {
+                dismissLoadingDialog();
+                String dataString = response.getData().toString();
+                BaseModel data = new Gson().fromJson(dataString, new TypeToken<BaseModel>() {
+                }.getType());
+                if ("ok".equals(data.status)) {
+                    ToastUtil.showLongToast("上传运动数据成功");
+
+                    PUtils.clearRunDate();
+                    ToastUtil.showShortToast("结束");
+
+                } else {
+                    ToastUtil.showLongToast("上传运动数据失败,下次启动时自动发送");
+
+                }
+            }
+
+            @Override
+            public void onError(Response response) {
+                dismissLoadingDialog();
+                ToastUtil.showLongToast("上传运动数据失败,下次启动时自动发送");
+
+            }
+
+        });
     }
 
     UserFragment userFragment;
     HomeFragment fragment;
     RankFragment fragment2;
+    String screanPage = "HomeFragment";
 
     @Override
     public void onClick(View v) {
@@ -76,6 +128,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             return;
         if (v.isSelected())
             return;
+        MobclickAgent.onPageEnd(screanPage);
         mBtnRank.setSelected(false);
         mBtnRun.setSelected(false);
         mBtnUser.setSelected(false);
@@ -87,6 +140,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mContent.addView(userFragment);
                 userFragment.onResume();
             }
+            screanPage = "UserFragment";
             showView(userFragment);
             break;
         case R.id.btn_run:
@@ -95,6 +149,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mContent.addView(fragment);
                 fragment.onResume();
             }
+            screanPage = "HomeFragment";
             showView(fragment);
             break;
         case R.id.btn_rank:
@@ -103,9 +158,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 mContent.addView(fragment2);
                 fragment2.onResume();
             }
+            screanPage = "RankFragment";
             showView(fragment2);
             break;
         }
+        MobclickAgent.onPageStart(screanPage);
     }
 
     void showView(View v) {
@@ -119,7 +176,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         if (userFragment != null)
             userFragment.onResume();

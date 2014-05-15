@@ -15,6 +15,7 @@ public class RunApplication extends Controller {
     public void onCreate() {
         super.onCreate();
         initEngineManager(this);
+        
     }
 
     public void initEngineManager(Context context) {
