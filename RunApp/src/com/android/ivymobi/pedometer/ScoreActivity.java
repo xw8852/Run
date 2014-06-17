@@ -185,6 +185,7 @@ public class ScoreActivity extends BaseActivity {
         String via;
         long timestamp;
         String credit_id;
+        String name;
         String uuid;
         long id;
         /**
@@ -228,7 +229,7 @@ public class ScoreActivity extends BaseActivity {
             portrait.setVisibility(View.GONE);
             root.setBackgroundColor(Color.TRANSPARENT);
             userName.setTextColor(Color.BLACK);
-            userName.setText(info.credit_id);
+            userName.setText(info.name);
             num.setTextColor(Color.BLACK);
             num.setText(String.valueOf(info.credits));
         }

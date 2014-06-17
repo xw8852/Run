@@ -96,7 +96,8 @@ public class ViewFlow extends AdapterView<Adapter> {
 		 * @param view
 		 *            the {@link View} currently in focus.
 		 * @param position
-		 *            The position in the adapter of the {@link View} currently in focus.
+		 *            The position in the adapter of the {@link View} currently
+		 *            in focus.
 		 */
 		void onSwitched(View view, int position);
 
@@ -143,7 +144,8 @@ public class ViewFlow extends AdapterView<Adapter> {
 	public void onConfigurationChanged(Configuration newConfig) {
 		if (newConfig.orientation != mLastOrientation) {
 			mLastOrientation = newConfig.orientation;
-			getViewTreeObserver().addOnGlobalLayoutListener(orientationChangeListener);
+			getViewTreeObserver().addOnGlobalLayoutListener(
+					orientationChangeListener);
 		}
 	}
 
@@ -154,19 +156,19 @@ public class ViewFlow extends AdapterView<Adapter> {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		
+
 		final int width = MeasureSpec.getSize(widthMeasureSpec);
 		final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-//		if (widthMode != MeasureSpec.EXACTLY && !isInEditMode()) {
-//			throw new IllegalStateException(
-//					"ViewFlow can only be used in EXACTLY mode.");
-//		}
+		// if (widthMode != MeasureSpec.EXACTLY && !isInEditMode()) {
+		// throw new IllegalStateException(
+		// "ViewFlow can only be used in EXACTLY mode.");
+		// }
 
 		final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-//		if (heightMode != MeasureSpec.EXACTLY && !isInEditMode()) {
-//			throw new IllegalStateException(
-//					"ViewFlow can only be used in EXACTLY mode.");
-//		}
+		// if (heightMode != MeasureSpec.EXACTLY && !isInEditMode()) {
+		// throw new IllegalStateException(
+		// "ViewFlow can only be used in EXACTLY mode.");
+		// }
 
 		// The children are given the same width and height as the workspace
 		final int count = getChildCount();
@@ -397,14 +399,18 @@ public class ViewFlow extends AdapterView<Adapter> {
 		if (direction > 0) {
 			if (mLazyInit.contains(LazyInit.RIGHT)) {
 				mLazyInit.remove(LazyInit.RIGHT);
-				if (mCurrentBufferIndex+1 < mLoadedViews.size())
-					mViewInitializeListener.onViewLazyInitialize(mLoadedViews.get(mCurrentBufferIndex + 1), mCurrentAdapterIndex + 1);
+				if (mCurrentBufferIndex + 1 < mLoadedViews.size())
+					mViewInitializeListener.onViewLazyInitialize(
+							mLoadedViews.get(mCurrentBufferIndex + 1),
+							mCurrentAdapterIndex + 1);
 			}
 		} else {
 			if (mLazyInit.contains(LazyInit.LEFT)) {
 				mLazyInit.remove(LazyInit.LEFT);
 				if (mCurrentBufferIndex > 0)
-					mViewInitializeListener.onViewLazyInitialize(mLoadedViews.get(mCurrentBufferIndex - 1), mCurrentAdapterIndex - 1);
+					mViewInitializeListener.onViewLazyInitialize(
+							mLoadedViews.get(mCurrentBufferIndex - 1),
+							mCurrentAdapterIndex - 1);
 			}
 		}
 	}
@@ -472,8 +478,9 @@ public class ViewFlow extends AdapterView<Adapter> {
 		int dx = (mCurrentScreen * getWidth()) - mScroller.getCurrX();
 		mScroller.startScroll(mScroller.getCurrX(), mScroller.getCurrY(), dx,
 				0, 0);
-		if(dx == 0)
-			onScrollChanged(mScroller.getCurrX() + dx, mScroller.getCurrY(), mScroller.getCurrX() + dx, mScroller.getCurrY());
+		if (dx == 0)
+			onScrollChanged(mScroller.getCurrX() + dx, mScroller.getCurrY(),
+					mScroller.getCurrX() + dx, mScroller.getCurrY());
 		if (uiThread)
 			invalidate();
 		else
@@ -504,7 +511,7 @@ public class ViewFlow extends AdapterView<Adapter> {
 	public void setAdapter(Adapter adapter) {
 		setAdapter(adapter, 0);
 	}
-	
+
 	public void setAdapter(Adapter adapter, int initialPosition) {
 		if (mAdapter != null) {
 			mAdapter.unregisterDataSetObserver(mDataSetObserver);
@@ -519,20 +526,20 @@ public class ViewFlow extends AdapterView<Adapter> {
 		}
 		if (mAdapter == null || mAdapter.getCount() == 0)
 			return;
-		
-		setSelection(initialPosition);		
+
+		setSelection(initialPosition);
 	}
-	
+
 	@Override
 	public View getSelectedView() {
 		return (mCurrentBufferIndex < mLoadedViews.size() ? mLoadedViews
 				.get(mCurrentBufferIndex) : null);
 	}
 
-    @Override
-    public int getSelectedItemPosition() {
-        return mCurrentAdapterIndex;
-    }
+	@Override
+	public int getSelectedItemPosition() {
+		return mCurrentAdapterIndex;
+	}
 
 	/**
 	 * Set the FlowIndicator
@@ -566,9 +573,9 @@ public class ViewFlow extends AdapterView<Adapter> {
 		mScroller.forceFinished(true);
 		if (mAdapter == null)
 			return;
-		
+
 		position = Math.max(position, 0);
-		position = Math.min(position, mAdapter.getCount()-1);
+		position = Math.min(position, mAdapter.getCount() - 1);
 
 		recycleViews();
 
@@ -578,12 +585,12 @@ public class ViewFlow extends AdapterView<Adapter> {
 		if (mViewInitializeListener != null)
 			mViewInitializeListener.onViewLazyInitialize(currentView, position);
 
-		for(int offset = 1; mSideBuffer - offset >= 0; offset++) {
+		for (int offset = 1; mSideBuffer - offset >= 0; offset++) {
 			int leftIndex = position - offset;
 			int rightIndex = position + offset;
-			if(leftIndex >= 0)
+			if (leftIndex >= 0)
 				mLoadedViews.addFirst(makeAndAddView(leftIndex, false));
-			if(rightIndex < mAdapter.getCount())
+			if (rightIndex < mAdapter.getCount())
 				mLoadedViews.addLast(makeAndAddView(rightIndex, true));
 		}
 
@@ -613,7 +620,8 @@ public class ViewFlow extends AdapterView<Adapter> {
 			if (i == mCurrentAdapterIndex) {
 				mCurrentBufferIndex = mLoadedViews.size() - 1;
 				if (mViewInitializeListener != null)
-					mViewInitializeListener.onViewLazyInitialize(mLoadedViews.getLast(), mCurrentAdapterIndex);
+					mViewInitializeListener.onViewLazyInitialize(
+							mLoadedViews.getLast(), mCurrentAdapterIndex);
 			}
 		}
 		logBuffer();
@@ -676,6 +684,8 @@ public class ViewFlow extends AdapterView<Adapter> {
 	}
 
 	private View setupChild(View child, boolean addToEnd, boolean recycle) {
+		if (child == null)
+			return null;
 		ViewGroup.LayoutParams p = (ViewGroup.LayoutParams) child
 				.getLayoutParams();
 		if (p == null) {
@@ -696,7 +706,7 @@ public class ViewFlow extends AdapterView<Adapter> {
 
 	private View makeAndAddView(int position, boolean addToEnd, View convertView) {
 		View view = mAdapter.getView(position, convertView, this);
-		if(view != convertView && convertView != null)
+		if (view != convertView && convertView != null)
 			mRecycledViews.add(convertView);
 		return setupChild(view, addToEnd, view == convertView);
 	}
@@ -726,9 +736,11 @@ public class ViewFlow extends AdapterView<Adapter> {
 
 	private void logBuffer() {
 
-		Log.d("viewflow", "Size of mLoadedViews: " + mLoadedViews.size() +
-				", Size of mRecycledViews: " + mRecycledViews.size() +
-				", X: " + mScroller.getCurrX() + ", Y: " + mScroller.getCurrY());
+		Log.d("viewflow",
+				"Size of mLoadedViews: " + mLoadedViews.size()
+						+ ", Size of mRecycledViews: " + mRecycledViews.size()
+						+ ", X: " + mScroller.getCurrX() + ", Y: "
+						+ mScroller.getCurrY());
 		Log.d("viewflow", "IndexInAdapter: " + mCurrentAdapterIndex
 				+ ", IndexInBuffer: " + mCurrentBufferIndex);
 	}

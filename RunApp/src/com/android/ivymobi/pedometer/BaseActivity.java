@@ -10,6 +10,9 @@
 
 package com.android.ivymobi.pedometer;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 
@@ -79,4 +82,81 @@ public abstract class BaseActivity extends Activity {
         Manager.getInstance().execute(Manager.CMD_GET_STRING, request, listener);
     }
 
+    public static int jsonToInt(JSONObject jsonObject, String key)
+			throws Exception {
+		try {
+			if (!jsonObject.isNull(key))
+				return jsonObject.getInt(key);
+		} catch (Exception e) {
+
+		}
+		return 0;
+	}
+
+	public static String jsonToString(JSONObject jsonObject, String key)
+			throws Exception {
+		try {
+			if (!jsonObject.isNull(key))
+				return jsonObject.getString(key);
+		} catch (Exception e) {
+
+		}
+		return "";
+	}
+
+	public static long jsonToLong(JSONObject jsonObject, String key)
+			throws Exception {
+		try {
+			if (!jsonObject.isNull(key))
+				return jsonObject.getLong(key);
+		} catch (Exception e) {
+
+		}
+		return 0;
+	}
+	
+	public static float jsonToFloat(JSONObject jsonObject, String key)
+			throws Exception {
+		try {
+			if (!jsonObject.isNull(key)){
+				String value = jsonToString(jsonObject, "key");
+				if (value != null && value.length() > 0) {
+					return Float.parseFloat(value);
+				}
+			}
+		} catch (Exception e) {
+
+		}
+		return 0;
+	}
+	
+	
+	
+	public static boolean jsonToBoolean(JSONObject jsonObject, String key)
+			throws Exception {
+		try {
+			if (!jsonObject.isNull(key))
+				return jsonObject.getBoolean(key);
+		} catch (Exception e) {
+
+		}
+		return false;
+	}
+
+	public static JSONArray jsonToArray(JSONObject jsonObject, String key)
+			throws Exception {
+		if (!jsonObject.isNull(key))
+			return jsonObject.getJSONArray(key);
+		return new JSONArray();
+	}
+
+	public static JSONObject jsonToJSON(JSONObject jsonObject, String key)
+			throws Exception {
+		if (!jsonObject.isNull(key))
+			return jsonObject.getJSONObject(key);
+		return null;
+	}
+    
+	
+	
 }

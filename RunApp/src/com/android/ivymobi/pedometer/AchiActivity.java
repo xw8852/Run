@@ -111,7 +111,7 @@ public class AchiActivity extends BaseActivity {
             view2.setTextColor(Color.BLACK);
             view2.setText(getItem(position).name);
             ImageData data = null;
-            if (getItem(position).achieved == 1) {
+            if (getItem(position).achieved == 0) {
                 data = new ImageData(null, ImageData.TYPE_GREY,getItem(position).icon);
             } else {
                 data = new ImageData(null, ImageData.TYPE_NONE,getItem(position).icon);

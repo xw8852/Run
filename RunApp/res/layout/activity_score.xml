@@ -59,23 +59,9 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <ListView
-            android:id="@+id/listView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"
-            android:listSelector="@android:color/transparent"
-            android:divider="@drawable/line"
-            android:dividerHeight="1dp"
-            android:paddingBottom="10dp" >
-        </ListView>
-
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        
         <include
             android:id="@+id/include1"
             layout="@layout/score_item_mine" />
@@ -118,4 +104,19 @@
         </LinearLayout>
     </RelativeLayout>
 
+     <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"
+            android:listSelector="@android:color/transparent"
+            android:divider="@drawable/line"
+            android:dividerHeight="1dp"
+            android:paddingBottom="10dp" >
+        </ListView>
+    
+    
 </LinearLayout>

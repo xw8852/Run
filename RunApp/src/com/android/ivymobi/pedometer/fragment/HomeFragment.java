@@ -179,9 +179,9 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
     @Override
     public void onFinish() {
         if (isRegistBroadCast) {
+        	isRegistBroadCast = false;
             getContext().unregisterReceiver(baiduGpsReceiver);
             getContext().unregisterReceiver(stepBroadcastReceiver);
-            isRegistBroadCast = false;
         }
 
         if (timer != null)
@@ -444,6 +444,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
         });
     }
 
+   
     void checkAward() {
         Request request = new Request("http://hrm.ivymobi.com:8003/api/workout/award?session_id=" + UserUtil.getSession());
         Manager.getInstance().execute(Manager.CMD_GET_STRING, request, new IResponseListener() {
@@ -456,7 +457,7 @@ public class HomeFragment extends RelativeLayout implements IViewStatus {
                 }.getType());
 
                 if ("ok".equals(data.status)) {
-                    if (TextUtils.isEmpty(new Gson().toJson(data.data))) {
+                    if (TextUtils.isEmpty(new Gson().toJson(data.data))||"[]".equals(new Gson().toJson(data.data))) {
                         ToastUtil.showLongToast("没有获得成就");
                         return;
                     }

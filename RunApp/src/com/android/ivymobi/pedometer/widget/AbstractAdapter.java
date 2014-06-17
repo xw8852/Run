@@ -45,6 +45,8 @@ public abstract class AbstractAdapter<T> extends BaseAdapter {
 
 	@Override
 	public T getItem(int position) {
+		if (data == null || position < 0 || position >= data.size())
+			return null;
 		return data.get(position);
 	}
 
@@ -59,6 +61,8 @@ public abstract class AbstractAdapter<T> extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		if (data == null || position < 0 || position >= data.size())
+			return null;
 		return createView(position, convertView, parent, mInflater);
 	}
 
@@ -83,15 +87,15 @@ public abstract class AbstractAdapter<T> extends BaseAdapter {
 		return data.remove(t);
 	}
 
-	public void clear(){
+	public void clear() {
 		if (data == null) {
 			return;
 		}
 		data.clear();
 		notifyDataSetChanged();
 	}
-	
-	public List<T> getList(){
-	    return data;
+
+	public List<T> getList() {
+		return data;
 	}
 }
