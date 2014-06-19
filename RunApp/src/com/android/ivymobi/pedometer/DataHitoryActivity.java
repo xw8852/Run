@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint.Align;
 import android.os.Bundle;
@@ -41,6 +42,14 @@ import com.msx7.core.command.ErrorCode;
 import com.msx7.core.command.IResponseListener;
 import com.msx7.core.command.model.Request;
 import com.msx7.core.command.model.Response;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.RequestType;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.SinaSsoHandler;
+import com.umeng.socialize.sso.UMSsoHandler;
+import com.umeng.socialize.sso.UMWXHandler;
 
 @InjectActivity(id = R.layout.history_activity)
 public class DataHitoryActivity extends BaseActivity {
@@ -51,7 +60,7 @@ public class DataHitoryActivity extends BaseActivity {
 	@InjectView(id = R.id.title)
 	TextView mTitleView;
 	@InjectView(id = R.id.title_right)
-	View mRightTitle;
+	ImageView mRightTitle;
 	@InjectView(id = R.id.speed)
 	TextView mSpeed;
 	@InjectView(id = R.id.distance)
@@ -78,7 +87,9 @@ public class DataHitoryActivity extends BaseActivity {
 
 	XYSeries waterSeries;
 	List<DataHistory> list;
-
+	
+	final UMSocialService mController = UMServiceFactory.getUMSocialService("com.umeng.share",
+            RequestType.SOCIAL);
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,6 +101,65 @@ public class DataHitoryActivity extends BaseActivity {
 		mRight.setOnClickListener(changeDateClickListener);
 
 		checkedChangeListener.onCheckedChanged(mGroup, R.id.day);
+		mRightTitle.setImageResource(R.drawable.share);
+		mRightTitle.setVisibility(View.VISIBLE);
+		
+		// 设置分享内容
+		mController.setShareContent("友盟社会化组件（SDK）让移动应用快速整合社交分享功能，http://www.umeng.com/social");
+		// 设置分享图片, 参数2为图片的url地址
+		mController.setShareMedia(new UMImage(this, 
+		                                      "http://www.umeng.com/images/pic/banner_module_social.png"));
+	     // wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
+        String appID = "wx967daebe835fbeac";
+        // 微信图文分享必须设置一个url 
+        String contentUrl = "http://www.umeng.com/social";
+        // 添加微信平台，参数1为当前Activity, 参数2为用户申请的AppID, 参数3为点击分享内容跳转到的目标url
+        UMWXHandler wxHandler = mController.getConfig().supportWXPlatform(this,appID, contentUrl);
+        //设置分享标题
+        wxHandler.setWXTitle("友盟社会化组件很不错");
+        // 支持微信朋友圈
+        UMWXHandler circleHandler = mController.getConfig().supportWXCirclePlatform(this,appID, contentUrl) ;
+        circleHandler.setCircleTitle("友盟社会化组件还不错...");
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
+
+
+/**
+ // 设置分享到微信的内容, 图片类型
+UMImage mUMImgBitmap = new UMImage(getActivity(),
+                "http://www.umeng.com/images/pic/banner_module_social.png");
+WeiXinShareContent weixinContent = new WeiXinShareContent(mUMImgBitmap);
+weixinContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能，微信");
+mController.setShareMedia(weixinContent);
+
+// 设置朋友圈分享的内容
+CircleShareContent circleMedia = new CircleShareContent(new UMImage(getActivity(),
+                "http://www.umeng.com/images/pic/social/chart_1.png"));
+circleMedia.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能，朋友圈");
+mController.setShareMedia(circleMedia);
+ */
+		
+		mRightTitle.setOnClickListener(new View.OnClickListener(){
+		    @Override
+		    public void onClick(View v) {
+		        mController.getConfig().removePlatform(SHARE_MEDIA.QZONE, SHARE_MEDIA.QQ, SHARE_MEDIA.RENREN, SHARE_MEDIA.TENCENT,
+                        SHARE_MEDIA.DOUBAN, SHARE_MEDIA.SMS, SHARE_MEDIA.EMAIL, SHARE_MEDIA.GOOGLEPLUS, SHARE_MEDIA.FACEBOOK, SHARE_MEDIA.TWITTER,
+                        SHARE_MEDIA.LAIWANG, SHARE_MEDIA.LAIWANG_DYNAMIC, SHARE_MEDIA.YIXIN, SHARE_MEDIA.YIXIN_CIRCLE, SHARE_MEDIA.INSTAGRAM,
+                        SHARE_MEDIA.GENERIC);
+		        mController.getConfig().setPlatformOrder(SHARE_MEDIA.SINA,SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE);
+		        mController.openShare(DataHitoryActivity.this, false);
+		    }
+		});
+
+	}
+	
+	@Override 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    /**使用SSO授权必须添加如下代码 */
+	    UMSsoHandler ssoHandler = mController.getConfig().getSsoHandler(requestCode) ;
+	    if(ssoHandler != null){
+	       ssoHandler.authorizeCallBack(requestCode, resultCode, data);
+	    }
 	}
 
 	View.OnClickListener chartClickListener = new View.OnClickListener() {
