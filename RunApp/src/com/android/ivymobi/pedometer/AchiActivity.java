@@ -92,8 +92,12 @@ public class AchiActivity extends BaseActivity {
         // 支持微信朋友圈
         UMWXHandler circleHandler = mController.getConfig().supportWXCirclePlatform(this,appID, contentUrl) ;
         circleHandler.setCircleTitle("友盟社会化组件还不错...");
-        mController.getConfig().setSsoHandler(new SinaSsoHandler());
-
+      
+        
+/* 
+ * 自动登陆sso，需要友盟后台正确绑定新浪微博的相关信息    
+ *    mController.getConfig().setSsoHandler(new SinaSsoHandler());
+*/
 
         /**
         // 设置分享到微信的内容, 图片类型
